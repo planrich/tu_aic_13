@@ -9,7 +9,7 @@ To decide on how to implement this assignment I would like to take the view of a
 
 When I use our final product, as I customer I would like to see the following:
 
-        HTML
+~~~
 +------------------------------------------------------+
 |                                                      |
 |                        +---------------------+       |
@@ -23,9 +23,11 @@ When I use our final product, as I customer I would like to see the following:
 |                        Show results                  | 
 |                                                      |
 +------------------------------------------------------+
+~~~
 
 Then the result could look like the following:
 
+~~~
 +------------------------------------------------------+
 |                                                      |
 | In the last 3 months Apple has been mentioned        |
@@ -56,6 +58,7 @@ Then the result could look like the following:
 | ...                                                  |
 |                                                      |
 +------------------------------------------------------+
+~~~
 
 First how is the sentiment calculated:
 
