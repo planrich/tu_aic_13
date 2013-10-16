@@ -1,0 +1,4 @@
+lxml
+flask
+psycopg2
+MobileWorks

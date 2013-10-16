@@ -1,9 +1,52 @@
 AIC 13
 =========
 
+# Setup
 
+To get started you need pip (optionally virtualenv) installed.
 
-## An idea (rich)
+## virtualenv
+
+Virtual env is a way to manage the pip packages locally.
+You simply execute the following:
+
+~~~
+$ virtualenv venv/
+~~~
+
+This creates a venv/ folder.
+Then before you can install packages and run the application you must 
+activate the environment in venv/
+
+~~~
+$ source venv/bin/activate
+(venv) $
+~~~
+
+Then to install the dependencies:
+
+~~~
+(venv) $ pip install -r requirements.txt
+~~~
+
+## Without virtualenv
+
+~~~
+$ pip install -r requirements.txt
+~~~
+
+An pip will try to install the dependencies into the global package directory. 
+On most setups it is required to be root to issue this command.
+
+## Start the development webserver
+
+After you have installed the requirements you can simple issue:
+
+~~~
+(env) $ python aic/app.py
+~~~
+
+# An idea (rich)
 
 To decide on how to implement this assignment I would like to take the view of a customer:
 
@@ -63,7 +106,7 @@ Then the result could look like the following:
 First how is the sentiment calculated:
 
 My idea is to take a survey approach. We have these workers that complete
-difficult tasks. A computer cannot do it that easily. Therefore we supply
+difficult tasks. A computer cannot do it that easy. Therefore we supply
 this task x times. (x > 1). Lets say x = 3. Then 
 every worker has to supply the following:
 
@@ -104,4 +147,5 @@ of results -> pick the most accurate, or if none exists just pick
 the name in the article.
 2) Create a routine that finds names that seem to be equal. Then you can
 merge double entries by hand.
+
 
