@@ -1,11 +1,11 @@
 import psycopg2 as postgres
 import requests
 import xml.etree.ElementTree as ET
+import settings
 
-db = postgres.connect("dbname=aic user=aic password=aic host=127.0.0.1")
-default_url = "http://finance.yahoo.com/news/?format=rss"
+db = postgres.connect(**settings.DB)
 
-def fetch(url=default_url):
+def fetch(url=settings.RSS_URL):
     print("fetching from %s" % url)
     rss_req = requests.get(url)
     print("got %d with response type %s" % (rss_req.status_code, rss_req.headers['content-type']))
@@ -27,5 +27,5 @@ def process(rss):
         # TODO persist into database and create mobile work tasks
 
 if __name__ == "__main__":
-  rss = fetch()
-  process(rss)
+    rss = fetch()
+    process(rss)

@@ -1,8 +1,9 @@
 import flask
 import psycopg2 as postgres
+import settings
 
 app = flask.Flask(__name__)
-db = postgres.connect("dbname=aic user=aic password=aic host=127.0.0.1")
+db = postgres.connect(**settings.DB)
 
 @app.route("/")
 def hello():
