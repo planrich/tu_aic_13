@@ -3,15 +3,11 @@ import requests
 import xml.etree.ElementTree as ET
 import settings
 from dateutil.parser import parse
-from HTMLParser import HTMLParser
+from lxml import etree
+from StringIO import StringIO
+import re
 
 db = postgres.connect(**settings.DB)
-
-class ArticleHTMLExtractor(HTMLParser):
-    def handle_starttag(self, tag, attrs):
-        pass
-    def handle_endtag(self, tag):
-        pass
 
 def rss_date(date_str):
     return parse(date_str)
@@ -20,7 +16,6 @@ def fetch(url=settings.RSS_URL):
     print("fetching from %s" % url)
     rss_req = requests.get(url)
     print(" -> got %d with response type %s" % (rss_req.status_code, rss_req.headers['content-type']))
-    print("")
     return ET.fromstring(rss_req.text.encode('utf-8'))
 
 def fetch_article(url):
@@ -36,7 +31,16 @@ def process_article(html):
     if html is None:
         return None
 
-    html_tree = htmlparser.feed(html).close()
+    html_parser = etree.HTMLParser()
+    html_tree = etree.parse(StringIO(html), html_parser)
+
+    text_div = html_tree.xpath("//div[@id='mediaarticlebody' or @itemprop='articleBody']")[0]
+    for paragraph in text_div.xpath("./div/p/text()"):
+        paragraph_normalized = re.sub(r"(\s|\n){2,}", r" ", paragraph)
+        print(str(paragraph.encode('utf-8')))
+        print("")
+        break
+
     return None
 
 def process(rss):
@@ -54,6 +58,7 @@ def process(rss):
 
         html = fetch_article(link)
         plain_text = process_article(html)
+        break
 
         # TODO persist into database and create mobile work tasks
 

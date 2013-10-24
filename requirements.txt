@@ -2,3 +2,5 @@ flask
 psycopg2
 MobileWorks
 requests
+lxml
+python-dateutil
