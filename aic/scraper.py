@@ -36,6 +36,7 @@ def process_article(html):
 
     text_div = html_tree.xpath("//div[@id='mediaarticlebody' or @itemprop='articleBody']")[0]
 
+    # some rare articles have an additional wrapping, so unwarp that here
     if text_div.xpath("count(div/p)") == 0:
         text_div = text_div.xpath("div[@class='bd']")[0]
 
