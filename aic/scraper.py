@@ -35,13 +35,21 @@ def process_article(html):
     html_tree = etree.parse(StringIO(html), html_parser)
 
     text_div = html_tree.xpath("//div[@id='mediaarticlebody' or @itemprop='articleBody']")[0]
-    for paragraph in text_div.xpath("./div/p/text()"):
-        paragraph_normalized = re.sub(r"(\s|\n){2,}", r" ", paragraph)
-        print(str(paragraph.encode('utf-8')))
-        print("")
-        break
 
-    return None
+    if text_div.xpath("count(div/p)") == 0:
+        text_div = text_div.xpath("div[@class='bd']")[0]
+
+    paragraphs = []
+    for node in text_div.xpath("div/p"):
+        paragraph = etree.tostring(node, encoding="utf-8", method="text")
+        # they include some related articles which are not very interesting for us
+        # -> filtered
+        if paragraph.startswith("Related:"):
+            continue
+        paragraphs.append(paragraph)
+
+    print("found %d" % len(paragraphs))
+    return paragraphs
 
 def process(rss):
     #print(ET.tostring(rss))
@@ -57,8 +65,7 @@ def process(rss):
         print("Title: %s" % title)
 
         html = fetch_article(link)
-        plain_text = process_article(html)
-        break
+        paragraphs = process_article(html)
 
         # TODO persist into database and create mobile work tasks
 
