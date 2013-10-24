@@ -9,7 +9,7 @@ Session = sqlalchemy.orm.sessionmaker(bind=engine)
 Base = sqlalchemy.ext.declarative.declarative_base()
 
 class Publication(Base):
-    __tablename__ = 'publication'
+    __tablename__ = 'publications'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
     date = sqlalchemy.Column(sqlalchemy.Date)
 
