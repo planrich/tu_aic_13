@@ -11,10 +11,27 @@ Base = sqlalchemy.ext.declarative.declarative_base()
 class Publication(Base):
     __tablename__ = 'publications'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
-    date = sqlalchemy.Column(sqlalchemy.Date)
+    datetime = sqlalchemy.Column(sqlalchemy.DateTime)
 
-    def __init__(self, date):
-        self.date = date;
+    def __init__(self, datetime):
+        self.datetime = datetime;
+
+class Keyword(Base):
+    __tablename__ = 'keywords'
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
+    keyword = sqlalchemy.Column(sqlalchemy.String)
+
+    def __init__(self, keyword):
+        self.keyword = keyword
+
+class Task(Base):
+    __tablename__ = 'tables'
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
+    paragraph = sqlalchemy.Column(sqlalchemy.String)
+
+    def __init__(self, keyword):
+        self.keyword = keyword
+
 
 Base.metadata.create_all(engine)
 

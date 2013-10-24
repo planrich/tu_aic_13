@@ -5,9 +5,14 @@ from dateutil.parser import parse
 from lxml import etree
 from StringIO import StringIO
 import re
+import db
+import datetime
+import sqlalchemy
+import pytz
 
 def rss_date(date_str):
-    return parse(date_str)
+    date = parse(date_str)
+    return date.replace(tzinfo=None)
 
 def fetch(url=settings.RSS_URL):
     print("fetching from %s" % url)
@@ -49,24 +54,43 @@ def process_article(html):
     print("found %d" % len(paragraphs))
     return paragraphs
 
-def process(rss):
+def process(rss, session):
     #print(ET.tostring(rss))
     last_build_date_element = rss.find("./channel/pubDate")
     # parse into date time and compare with the last fetch (from db) if something has changed...
-    print("last build date: %s" % last_build_date_element.text)
     last_build_date = rss_date(last_build_date_element.text)
+    print("last build date: %s" % last_build_date)
+
+    try:
+        last = session.query(db.Publication).one()
+        print("# last was publication date was: %s" % last_build_date)
+    except sqlalchemy.orm.exc.NoResultFound:
+        last = db.Publication(datetime.datetime(1970,1,1))
+        session.add(last)
+
+    last_pub_date = last.datetime
 
     for item in rss.findall('.//item'):
         title = item.find('./title').text
         link = item.find('./link').text
         pubDate = rss_date(item.find('./pubDate').text)
-        print("Title: %s" % title)
+
+        if pubDate < last_pub_date:
+            continue
+
+        if pubDate > last.datetime:
+            print("setting new date: %s" % pubDate)
+            last.datetime = pubDate
 
         html = fetch_article(link)
         paragraphs = process_article(html)
+
+    session.commit()
+
 
         # TODO persist into database and create mobile work tasks
 
 if __name__ == "__main__":
     rss = fetch()
-    process(rss)
+    session = db.Session()
+    process(rss, session)
