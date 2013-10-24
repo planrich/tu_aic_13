@@ -46,7 +46,20 @@ After you have installed the requirements you can simple issue:
 (env) $ python aic/app.py
 ~~~
 
-# An idea (rich)
+
+# The idea
+
+Task is a question "Keyword mentioned bad/neutral/negative in this paragrpah"
+We aggrate the answers of workers only when a task is complete. Before the aggregation we should find
+bad workers.
+
+
+
+
+
+
+
+# The old idea
 
 To decide on how to implement this assignment I would like to take the view of a customer:
 
@@ -74,7 +87,7 @@ Then the result could look like the following:
 +------------------------------------------------------+
 |                                                      |
 | In the last 3 months Apple has been mentioned        |
-| 1324 times.                                          |
+| in 1324 of all 23000 articles.                i
 | It has been mentioned 234124 since the start of the  |
 | service. (234124/1324 = 17.7%)                       |
 |                                                      |
@@ -147,5 +160,3 @@ of results -> pick the most accurate, or if none exists just pick
 the name in the article.
 2) Create a routine that finds names that seem to be equal. Then you can
 merge double entries by hand.
-
-
