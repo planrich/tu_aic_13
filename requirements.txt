@@ -4,3 +4,4 @@ MobileWorks
 requests
 lxml
 python-dateutil
+sqlalchemy

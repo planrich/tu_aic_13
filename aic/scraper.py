@@ -1,4 +1,3 @@
-import psycopg2 as postgres
 import requests
 import xml.etree.ElementTree as ET
 import settings
@@ -6,8 +5,6 @@ from dateutil.parser import parse
 from lxml import etree
 from StringIO import StringIO
 import re
-
-db = postgres.connect(**settings.DB)
 
 def rss_date(date_str):
     return parse(date_str)
