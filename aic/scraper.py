@@ -34,6 +34,7 @@ def is_feed_processed(feed):
     session = db.Session()
     query = session.query(db.Publication).filter(db.Publication.datetime == feed['date'])
     results = query.all()
+    session.close()
     return len(results) != 0
 
 
