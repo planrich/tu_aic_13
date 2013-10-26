@@ -6,7 +6,6 @@ from lxml import etree
 from StringIO import StringIO
 import db
 
-
 TEXT_SIZE = 250
 
 
