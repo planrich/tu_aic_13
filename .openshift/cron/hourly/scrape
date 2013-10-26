@@ -1,3 +1,0 @@
-#!/bin/bash
-
-python aic/scraper.py >> scrape.log

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source $OPENSHIFT_PYTHON_DIR/virenv/bin/activate
+cd $OPENSHIFT_REPO_DIR
+python wsgi/aic/scraper.py >> $OPENSHIFT_PYTHON_LOG_DIR/scrape.log
