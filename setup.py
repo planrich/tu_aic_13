@@ -6,5 +6,5 @@ setup(name='YourAppName',
       author='Your Name',
       author_email='example@example.com',
       url='http://www.python.org/sigs/distutils-sig/',
-      install_requires=['flask'],
+      install_requires=['Flask', 'psycopg2', 'MobileWorks', 'requests', 'lxml', 'python-dateutil', 'sqlalchemy', 'pytz' ],
      )
