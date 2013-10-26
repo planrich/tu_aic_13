@@ -1,10 +1,15 @@
-import flask
+from flask import Flask
+import platform
+application = Flask(__name__)
 
-app = flask.Flask(__name__)
+@application.route("/")
+def index():
+    return 'Hello from Flask(1)'
 
-@app.route("/")
-def hello():
-    return "Hello World!"
+@application.route("/info")
+def info():
+    return platform.python_version()
 
 if __name__ == "__main__":
+    app.debug = True
     app.run()
