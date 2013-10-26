@@ -8,4 +8,4 @@ try:
 except IOError:
     pass
 
-from app import application
+from aic.app import application
