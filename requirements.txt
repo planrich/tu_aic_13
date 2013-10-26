@@ -5,3 +5,4 @@ requests
 lxml
 python-dateutil
 sqlalchemy
+gunicorn

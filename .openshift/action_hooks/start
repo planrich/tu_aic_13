@@ -1,0 +1,1 @@
+gunicorn --pid /tmp/topic2.pid --python $OPENSHIFT_REPO_DIR/aic/ app:app 
