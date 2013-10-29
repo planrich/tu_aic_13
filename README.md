@@ -47,6 +47,7 @@ After you have installed the requirements you can simple issue:
 ~~~
 
 
+
 # The idea
 
 Task is a question "Keyword mentioned bad/neutral/negative in this paragrpah"
@@ -160,3 +161,9 @@ of results -> pick the most accurate, or if none exists just pick
 the name in the article.
 2) Create a routine that finds names that seem to be equal. Then you can
 merge double entries by hand.
+
+
+Apple, Facebook, Google, Microsoft, Yahoo, Oracle
+iPhone, 
+
+
