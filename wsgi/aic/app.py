@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 import platform
 import db
 
@@ -21,6 +21,10 @@ def index():
 @application.route("/info")
 def info():
     return platform.python_version()
+
+@app.route('/webhook', methods=['GET', 'POST'])
+def webhook():
+	return "a"
 
 if __name__ == "__main__":
     application.debug = True
