@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask, request
 import platform
 import db
+import os
 
 application = Flask(__name__)
 
@@ -21,6 +22,18 @@ def index():
 @application.route("/info")
 def info():
     return platform.python_version()
+
+@application.route("/webhook", methods=['GET', 'POST'])
+def webhook():
+    folder = os.environ['OPENSHIFT_TMP_DIR']
+    if request.method == 'POST':
+        data = str(request.stream.read())
+        f = open(folder+'/datafile','a')
+        f.write(data + ' ### ')
+        return '<h1>' + data +'</h1>'
+
+    f = open (folder+'/datafile', 'r')
+    return '<p>'+ f.read() +'</p>'
 
 if __name__ == "__main__":
     application.debug = True
