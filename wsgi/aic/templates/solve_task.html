@@ -1,9 +1,16 @@
 {% extends "layout.html" %}
-{% block title %}Android Record{% endblock %}
+{% block title %}AIC 13{% endblock %}
 {% block content %}
 <h1>Solve a task</h1>
 
+{% if not task %}
+    <p class="lead">Oh, there is not task available to solve!</p>
+
+{% else %}
 <form action="{{ url_for("solve_task") }}" method="POST">
+    
     <input class="btn" type="submit" value="Save and Continue" />
 </form>
+
+{% endif %}
 {% endblock %}
