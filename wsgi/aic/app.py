@@ -2,6 +2,7 @@ from flask import Flask, request
 import platform
 import db
 import os
+import json
 
 application = Flask(__name__)
 
@@ -22,6 +23,20 @@ def index():
 @application.route("/info")
 def info():
     return platform.python_version()
+
+@application.route("/task", methods=['POST']) #to post a new Task
+def task():
+    if not request.json or not 'title' in request.json:
+        abort(400)
+    task = {
+        'id': 1,
+        'title': request.json['title'],
+        'description': request.json.get('description', ""),
+        'done': False
+    }
+    #tasks.append(task)
+    # abfrage ob json objekt gültig
+    return str(task)
 
 @application.route("/webhook", methods=['GET', 'POST'])
 def webhook():
