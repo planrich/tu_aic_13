@@ -9,11 +9,9 @@ import mobileworks as mw
 
 TEXT_SIZE = 250
 
-
 def fetch_rss(url):
     response = requests.get(url)
     return ET.fromstring(response.text.encode('utf-8'))
-
 
 def parse_date(date_str):
     date = dateutil.parser.parse(date_str)

@@ -1,8 +1,8 @@
-from flask import Flask, request
+# encoding: utf-8
+from flask import Flask, request, render_template, json
 import platform
 import db
 import os
-import json
 
 application = Flask(__name__)
 
@@ -20,23 +20,60 @@ def index():
 
     return out
 
+@application.route("/list_tasks", methods=['GET'])
+def list_tasks():
+    sess = db.Session()
+    open_tasks = sess.query(db.OpenTask).all()
+
+    return render_template("task_list.html", tasks = open_tasks)
+
+
 @application.route("/info")
 def info():
     return platform.python_version()
 
-@application.route("/task", methods=['POST']) #to post a new Task
+def sanitize_post_task(json):
+    if not json:
+        print("fail")
+        return None
+
+    if not 'id' in json or\
+       not 'task_description' in json or\
+       not 'answer_possibilities' in json or\
+       not 'callback_link' in json or\
+       not 'price' in json:
+       return None
+
+    return json
+
+@application.route("/tasks", methods=['POST'])
 def task():
-    if not request.json or not 'title' in request.json:
-        abort(400)
-    task = {
-        'id': 1,
-        'title': request.json['title'],
-        'description': request.json.get('description', ""),
-        'done': False
-    }
-    #tasks.append(task)
-    # abfrage ob json objekt gültig
-    return str(task)
+    j = sanitize_post_task(request.get_json(force=True,silent=True))
+    if not j:
+        return json.dumps({ 'error': 'provide a json body' }), 400
+
+    session = db.Session()
+
+    tid = j['id']
+    if session.query(db.OpenTask).filter(db.OpenTask.id == tid).count() != 0:
+        return json.dumps({ 'error': 'id already exists' }), 400
+
+    answers = j['answer_possibilities']
+    answer = None
+    if type(answers) is type([]):
+        answer = "|".join(answers)
+    elif answers == 'text':
+        answer = "text"
+    else:
+        return json.dumps({ 'error': 'answer_possibilities must either be of type list ["yes","no",...] or "text"' }), 400
+
+    open_task = db.OpenTask(j['id'], j['task_description'], answer, j['callback_link'], j['price'])
+    session.add(open_task)
+    session.commit()
+
+    result = { 'error': None, 'success': True }
+
+    return json.dumps(result), 200
 
 @application.route("/webhook", methods=['GET', 'POST'])
 def webhook():
