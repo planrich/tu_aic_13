@@ -60,7 +60,7 @@ def process_feed(feed):
                     session.add(t)
                     session.commit()
                     url = "http://127.0.0.1:5000/tasks"
-                    data = {'id': '1','task_description': 'bla','answer_possibilities': ['a','b'],'callback_link': 'asdf','price': 111}
+                    data = {'id': t.id,'task_description': 'adf','answer_possibilities': ['Positive','Neutral','Negative'],'callback_link': 'asdf','price': 111}
                     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}      
                     response = requests.post(url, data=json.dumps(data), headers=headers)
                     print response.text                    
