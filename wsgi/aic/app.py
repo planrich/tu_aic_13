@@ -16,7 +16,10 @@ def index():
 @application.route("/solve_task")
 def solve_task():
 
-    return render_template("solve_task.html")
+    sess = db.Session()
+    task = sess.query(db.OpenTask).limit(1)
+
+    return render_template("solve_task.html", task=task)
 
 
 @application.route("/list_tasks", methods=['GET'])
