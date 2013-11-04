@@ -8,29 +8,23 @@ application = Flask(__name__)
 
 @application.route("/")
 def index():
-    sess = db.Session()
-    pubs = sess.query(db.Publication).all()
+    #sess = db.Session()
+    #pubs = sess.query(db.Publication).all()
 
-    out = 'AIC 2013 crowd sourcing<br/>\n'
+    return render_template("index.html")
 
-    i = 0
-    for pub in pubs:
-        out += "scrape %d: %s,<br/>\n" % (i,str(pub.datetime))
-        i += 1
+@application.route("/solve_task")
+def solve_task():
 
-    return out
+    return render_template("solve_task.html")
+
 
 @application.route("/list_tasks", methods=['GET'])
 def list_tasks():
     sess = db.Session()
     open_tasks = sess.query(db.OpenTask).all()
-
     return render_template("task_list.html", tasks = open_tasks)
 
-
-@application.route("/info")
-def info():
-    return platform.python_version()
 
 def sanitize_post_task(json):
     if not json:

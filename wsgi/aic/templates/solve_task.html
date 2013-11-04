@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block title %}Android Record{% endblock %}
+{% block content %}
+<h1>Solve a task</h1>
+
+<form action="{{ url_for("solve_task") }}" method="POST">
+    <input class="btn" type="submit" value="Save and Continue" />
+</form>
+{% endblock %}
