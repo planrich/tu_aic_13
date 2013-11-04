@@ -37,6 +37,7 @@ def is_feed_processed(feed):
 
 
 def process_feed(feed):
+    session = db.Session()
     register_feed(feed)
     keywords = ['Apple','Microsoft','Facebook','General Motors', 'Google', 'Yahoo', 'Western Union', 'JP Morgan', 'NSA']
     for item in feed['items']:
@@ -44,39 +45,21 @@ def process_feed(feed):
         texts = parse_article(html)
         projectCreated = False
         for text in texts:
-            #print text
             for keyword in keywords:
                 if text.find(keyword) != -1:
                     if projectCreated == False:
-                        #create mobileworks project
-                        p = mw.Project()
-                        #resourcetypte t=text
-                        p.set_params(resourcetype="t", redundancy="3")
-                        #worker can give one of the three possible answers
-                        p.add_field('Rating', 'm', choices='positive, neutral, negative')
-                        #set webhook for callback
-                        p.set_params(webhooks=settings.mobileWorks_Webhook)
+                        p = db.Project("????", item['url'], 0)
+                        session.add(p)
+                        session.commit()
                         projectCreated = True
-                        print '-project created'    
-                    #create mw task
-                    t = mw.Task(instructions='Is '+ keyword+' mentioned in this paragraph positiv, neutral or negative?', resource=text)
-                    #add mw task to project
-                    p.add_task(t)
-                    #print t.get_param('workerId')
-                    #print 'found: \n' + keyword
-                    #print '---------------------'
+                        print '-project created '
+
+                    t = db.Task(p,keyword,text)
+                    session.add(t)
+                    session.commit()
                     print '--task created'
+        session.close()
         if projectCreated == True:
-            #post projekt to mobile works
-            p.post()
-            #print(p.post())
-            #print(p.retrieve(p))
-            #print p.to_json()
-            #response = requests.get(tmp)
-            #data=json.load(p.to_json())
-            #print data['id']
-            #print jp['projectid']
-            #print p.url()
             print '-project posted'
 
 
@@ -118,5 +101,5 @@ if __name__ == '__main__':
     mw.sandbox()
     rss = fetch_rss(settings.RSS_URL)
     feed = parse_rss(rss)
-    if not is_feed_processed(feed):
-        process_feed(feed)
+    # if not is_feed_processed(feed):
+    process_feed(feed)

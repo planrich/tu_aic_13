@@ -100,9 +100,10 @@ class Task(Base):
     keyword_id = Column(sqlalchemy.Integer, ForeignKey('keywords.id'))
     answers = relationship("Answer")
 
-    def __init__(self, project, keyword):
+    def __init__(self, project, keyword, paragraph):
         self.project_id = project.id
         self.keyword = keyword
+        self.paragraph = paragraph
 
 
 Base.metadata.create_all(engine)
