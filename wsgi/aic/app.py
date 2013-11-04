@@ -34,7 +34,28 @@ def webhook():
 
     f = open (folder+'/datafile', 'r')
     return '<p>'+ f.read() +'</p>'
-
+    
+@application.route('/query/<company>', defaults={'timespan': 999999})
+@application.route("/query/<company>/<int:timespan>")
+def query(company, timespan):
+    out=''
+    sess = db.Session()
+    tasks = sess.query(db.Keyword, db.Task, db.Project).filter \
+        (db.Keyword.keyword==company \
+        # and db.Project.finishedRating != None \  does not work
+        and db.projects.datetime > date.today - timespan)
+    cnt=0
+    total=0
+    for k,t,p in tasks:
+        if p.finishedRating == None:
+            continue
+        cnt+=1
+        total+=int(p.finishedRating or 0)
+        out += str(total)
+    if cnt == 0:
+        return '{}'
+    return '{"'+company+ '":' + str(1.0*total/cnt) + '}'
+	
 if __name__ == "__main__":
     application.debug = True
     application.run()
