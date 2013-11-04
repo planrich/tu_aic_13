@@ -102,8 +102,8 @@ def parse_article(html):
 
 if __name__ == '__main__':
     # set mobileworks username and pw
-    mw.username = settings.mobileWorks_Username
-    mw.password = settings.mobileWorks_Password
+    # mw.username = settings.mobileWorks_Username
+    # mw.password = settings.mobileWorks_Password
     # use mobileworks sandbox
     mw.sandbox()
     rss = fetch_rss(settings.RSS_URL)
