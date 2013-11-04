@@ -17,13 +17,15 @@ class OpenTask(Base):
     id = Column(sqlalchemy.Integer, primary_key=True)
     datetime = Column(DateTime)
     task_description = Column(String)
+    task_text = Column(String)
     answer_possibility = Column(String) # hacky
     price_cents = Column(Integer)
     callback_link = Column(String)
 
-    def __init__(self, id, desc, answer, link, cents):
+    def __init__(self, id, desc, text, answer, link, cents):
         self.id = id
         self.task_description = desc
+        self.task_text = text
         self.answer_possibility = answer
         self.callback_link = link
         self.price_cents = cents

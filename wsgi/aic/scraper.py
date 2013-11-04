@@ -59,7 +59,7 @@ def process_feed(feed):
                     session.add(t)
                     session.commit()
                     url = settings.POST_TASK_LINK
-                    data = {'id': t.id,'task_description': 'Is ' + keyword.keyword +' mentioned in this text positive, neutral or negative','answer_possibilities': ['Positive','Neutral','Negative'],'callback_link': settings.CALLBACK_LINK,'price': 11}
+                    data = {'id': t.id,'task_description': 'Is ' + keyword.keyword +' mentioned in this text positive, neutral or negative','task_text': text,'answer_possibilities': ['Positive','Neutral','Negative'],'callback_link': settings.CALLBACK_LINK,'price': 11}
                     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}      
                     response = requests.post(url, data=json.dumps(data), headers=headers)
                     print response.text                    
@@ -102,5 +102,5 @@ def parse_article(html):
 if __name__ == '__main__':
     rss = fetch_rss(settings.RSS_URL)
     feed = parse_rss(rss)
-    # if not is_feed_processed(feed):
-    process_feed(feed)
+    if not is_feed_processed(feed):
+        process_feed(feed)
