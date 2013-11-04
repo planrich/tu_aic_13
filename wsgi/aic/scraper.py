@@ -5,7 +5,6 @@ import dateutil.parser
 from lxml import etree
 from StringIO import StringIO
 import db
-import mobileworks as mw
 import json
 
 TEXT_SIZE = 250
@@ -59,8 +58,8 @@ def process_feed(feed):
                     t = db.Task(p,keyword,text)
                     session.add(t)
                     session.commit()
-                    url = "http://127.0.0.1:5000/tasks"
-                    data = {'id': t.id,'task_description': 'adf','answer_possibilities': ['Positive','Neutral','Negative'],'callback_link': 'asdf','price': 111}
+                    url = settings.POST_TASK_LINK
+                    data = {'id': t.id,'task_description': 'Is ' + keyword.keyword +' mentioned in this text positive, neutral or negative','answer_possibilities': ['Positive','Neutral','Negative'],'callback_link': settings.CALLBACK_LINK,'price': 11}
                     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}      
                     response = requests.post(url, data=json.dumps(data), headers=headers)
                     print response.text                    
@@ -101,11 +100,6 @@ def parse_article(html):
 
 
 if __name__ == '__main__':
-    # set mobileworks username and pw
-    # mw.username = settings.mobileWorks_Username
-    # mw.password = settings.mobileWorks_Password
-    # use mobileworks sandbox
-    mw.sandbox()
     rss = fetch_rss(settings.RSS_URL)
     feed = parse_rss(rss)
     # if not is_feed_processed(feed):

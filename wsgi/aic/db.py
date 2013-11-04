@@ -14,7 +14,7 @@ Base = sqlalchemy.ext.declarative.declarative_base()
 
 class OpenTask(Base):
     __tablename__ = 'open_tasks'
-    id = Column(String, primary_key=True)
+    id = Column(sqlalchemy.Integer, primary_key=True)
     datetime = Column(DateTime)
     task_description = Column(String)
     answer_possibility = Column(String) # hacky
