@@ -6,8 +6,6 @@ from lxml import etree
 from StringIO import StringIO
 import db
 import mobileworks as mw
-import json
-import time
 
 TEXT_SIZE = 250
 
@@ -122,5 +120,5 @@ if __name__ == '__main__':
     mw.sandbox()
     rss = fetch_rss(settings.RSS_URL)
     feed = parse_rss(rss)
-#    if not is_feed_processed(feed):
-    process_feed(feed)
+    if not is_feed_processed(feed):
+        process_feed(feed)
