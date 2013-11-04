@@ -6,6 +6,7 @@ from lxml import etree
 from StringIO import StringIO
 import db
 import mobileworks as mw
+import json
 
 TEXT_SIZE = 250
 
@@ -39,14 +40,15 @@ def is_feed_processed(feed):
 def process_feed(feed):
     session = db.Session()
     register_feed(feed)
-    keywords = ['Apple','Microsoft','Facebook','General Motors', 'Google', 'Yahoo', 'Western Union', 'JP Morgan', 'NSA']
+    keywords = session.query(db.Keyword).all() #['Apple','Microsoft','Facebook','General Motors', 'Google', 'Yahoo', 'Western Union', 'JP Morgan', 'NSA']
     for item in feed['items']:
         html = requests.get(item['url']).text
         texts = parse_article(html)
         projectCreated = False
         for text in texts:
             for keyword in keywords:
-                if text.find(keyword) != -1:
+                #print keyword.keyword
+                if text.decode('utf-8').find(keyword.keyword) != -1:
                     if projectCreated == False:
                         p = db.Project("????", item['url'], 0)
                         session.add(p)
@@ -57,6 +59,11 @@ def process_feed(feed):
                     t = db.Task(p,keyword,text)
                     session.add(t)
                     session.commit()
+                    url = "http://127.0.0.1:5000/tasks"
+                    data = {'id': '1','task_description': 'bla','answer_possibilities': ['a','b'],'callback_link': 'asdf','price': 111}
+                    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}      
+                    response = requests.post(url, data=json.dumps(data), headers=headers)
+                    print response.text                    
                     print '--task created'
         session.close()
         if projectCreated == True:
