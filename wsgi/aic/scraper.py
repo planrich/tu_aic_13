@@ -39,14 +39,15 @@ def is_feed_processed(feed):
 def process_feed(feed):
     session = db.Session()
     register_feed(feed)
-    keywords = ['Apple','Microsoft','Facebook','General Motors', 'Google', 'Yahoo', 'Western Union', 'JP Morgan', 'NSA']
+    keywords = session.query(db.Keyword).all()
+    # keywords = ['Apple','Microsoft','Facebook','General Motors', 'Google', 'Yahoo', 'Western Union', 'JP Morgan', 'NSA']
     for item in feed['items']:
         html = requests.get(item['url']).text
         texts = parse_article(html)
         projectCreated = False
         for text in texts:
             for keyword in keywords:
-                if text.find(keyword) != -1:
+                if text.decode('utf-8').find(keyword.keyword) != -1:
                     if projectCreated == False:
                         p = db.Project("????", item['url'], 0)
                         session.add(p)
@@ -54,6 +55,8 @@ def process_feed(feed):
                         projectCreated = True
                         print '-project created '
 
+
+                    # print "task: " + text.decode('utf-8') + "\n" + str(keyword.id) + "  " + keyword.keyword
                     t = db.Task(p,keyword,text)
                     session.add(t)
                     session.commit()

@@ -102,7 +102,7 @@ class Task(Base):
 
     def __init__(self, project, keyword, paragraph):
         self.project_id = project.id
-        self.keyword = keyword
+        self.keyword_id = keyword.id
         self.paragraph = paragraph
 
 
