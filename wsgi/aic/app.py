@@ -81,6 +81,7 @@ def sanitize_post_task(json):
 
     if not 'id' in json or\
        not 'task_description' in json or\
+       not 'task_text' in json or\
        not 'answer_possibilities' in json or\
        not 'callback_link' in json or\
        not 'price' in json:
@@ -109,7 +110,7 @@ def task():
     else:
         return json.dumps({ 'error': 'answer_possibilities must either be of type list ["yes","no",...] or "text"' }), 400
 
-    open_task = db.OpenTask(j['id'], j['task_description'], answer, j['callback_link'], j['price'])
+    open_task = db.OpenTask(j['id'], j['task_description'], j['task_text'], answer, j['callback_link'], j['price'])
     session.add(open_task)
     session.commit()
 

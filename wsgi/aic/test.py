@@ -12,7 +12,7 @@ p = db.Project("paragraph", "http", 0)
 session.add(p)
 session.commit()
 
-t = db.Task(p,"apple")
+t = db.Task(p,"apple", "paragraph")
 session.add(t)
 session.commit()
 

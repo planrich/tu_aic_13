@@ -5,7 +5,7 @@ import dateutil.parser
 from lxml import etree
 from StringIO import StringIO
 import db
-import mobileworks as mw
+import json
 
 TEXT_SIZE = 250
 
@@ -37,46 +37,35 @@ def is_feed_processed(feed):
 
 
 def process_feed(feed):
+    session = db.Session()
     register_feed(feed)
-    keywords = ['Apple','Microsoft','Facebook','General Motors', 'Google', 'Yahoo', 'Western Union', 'JP Morgan', 'NSA']
+    keywords = session.query(db.Keyword).all() #['Apple','Microsoft','Facebook','General Motors', 'Google', 'Yahoo', 'Western Union', 'JP Morgan', 'NSA']
     for item in feed['items']:
         html = requests.get(item['url']).text
         texts = parse_article(html)
         projectCreated = False
         for text in texts:
-            #print text
             for keyword in keywords:
-                if text.find(keyword) != -1:
+                #print keyword.keyword
+                if text.decode('utf-8').find(keyword.keyword) != -1:
                     if projectCreated == False:
-                        #create mobileworks project
-                        p = mw.Project()
-                        #resourcetypte t=text
-                        p.set_params(resourcetype="t", redundancy="3")
-                        #worker can give one of the three possible answers
-                        p.add_field('Rating', 'm', choices='positive, neutral, negative')
-                        #set webhook for callback
-                        p.set_params(webhooks=settings.mobileWorks_Webhook)
+                        p = db.Project("????", item['url'], 0)
+                        session.add(p)
+                        session.commit()
                         projectCreated = True
-                        print '-project created'    
-                    #create mw task
-                    t = mw.Task(instructions='Is '+ keyword+' mentioned in this paragraph positiv, neutral or negative?', resource=text)
-                    #add mw task to project
-                    p.add_task(t)
-                    #print t.get_param('workerId')
-                    #print 'found: \n' + keyword
-                    #print '---------------------'
+                        print '-project created '
+
+                    t = db.Task(p,keyword,text)
+                    session.add(t)
+                    session.commit()
+                    url = settings.POST_TASK_LINK
+                    data = {'id': t.id,'task_description': 'Is ' + keyword.keyword +' mentioned in this text positive, neutral or negative','task_text': text,'answer_possibilities': ['Positive','Neutral','Negative'],'callback_link': settings.CALLBACK_LINK,'price': 11}
+                    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}      
+                    response = requests.post(url, data=json.dumps(data), headers=headers)
+                    print response.text                    
                     print '--task created'
+        session.close()
         if projectCreated == True:
-            #post projekt to mobile works
-            p.post()
-            #print(p.post())
-            #print(p.retrieve(p))
-            #print p.to_json()
-            #response = requests.get(tmp)
-            #data=json.load(p.to_json())
-            #print data['id']
-            #print jp['projectid']
-            #print p.url()
             print '-project posted'
 
 
@@ -111,11 +100,6 @@ def parse_article(html):
 
 
 if __name__ == '__main__':
-    # set mobileworks username and pw
-    mw.username = settings.mobileWorks_Username
-    mw.password = settings.mobileWorks_Password
-    # use mobileworks sandbox
-    mw.sandbox()
     rss = fetch_rss(settings.RSS_URL)
     feed = parse_rss(rss)
     if not is_feed_processed(feed):

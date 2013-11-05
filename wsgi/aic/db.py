@@ -14,17 +14,19 @@ Base = sqlalchemy.ext.declarative.declarative_base()
 
 class OpenTask(Base):
     __tablename__ = 'open_tasks'
-    id = Column(String, primary_key=True)
+    id = Column(sqlalchemy.Integer, primary_key=True)
     datetime = Column(DateTime)
     task_description = Column(String)
+    task_text = Column(String)
     answer_possibility = Column(String) # hacky
     price_cents = Column(Integer)
     callback_link = Column(String)
     solved = Column(Boolean)
 
-    def __init__(self, id, desc, answer, link, cents):
+    def __init__(self, id, desc, text, answer, link, cents):
         self.id = id
         self.task_description = desc
+        self.task_text = text
         self.answer_possibility = answer
         self.callback_link = link
         self.price_cents = cents
@@ -105,9 +107,10 @@ class Task(Base):
     keyword_id = Column(sqlalchemy.Integer, ForeignKey('keywords.id'))
     answers = relationship("Answer")
 
-    def __init__(self, project, keyword):
+    def __init__(self, project, keyword, paragraph):
         self.project_id = project.id
-        self.keyword = keyword
+        self.keyword_id = keyword.id
+        self.paragraph = paragraph
 
 
 Base.metadata.create_all(engine)
