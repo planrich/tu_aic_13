@@ -1,17 +1,17 @@
 {% extends "layout.html" %}
 {% block title %}AIC 13{% endblock %}
 {% block content %}
-<h1>Solve a task</h1>
+<style type="text/css">
+.task_text {
+    margin-top: -10px;
+    background-color: #e3e3e3;
+    padding: 5px;
+    padding-left: 10px;
+    border-radius: 2px;
 
-{% with messages = get_flashed_messages(with_categories=True) %}
-{% if messages %}
-  <p>
-  {% for category,message in messages %}
-  <span class="alert alert-{{category}}">{{message}}</span>
-  {% endfor %}
-  </p>
-{% endif %}
-{% endwith %}
+}
+</style>
+<h1>Solve a task</h1>
 {% if not task %}
 <p class="lead">Oh, there is not task to solve! Try again later...</p>
 {% else %}
@@ -23,14 +23,15 @@
         </div>
     </div>
     <div>
-    <span class="lead">Question:</span>
-    <p>{{task.task_description}}</p>
+        <p class="lead">Question: {{task.task_description}} </p>
+        <p class="task_text">{{task.task_text}}</p>
     </div>
     <div>
         {% for option in task.answer_options() %}
             <input type="radio" name="answer" value="{{option}}" /> {{option}}
         {% endfor %}
     </div>
+    <br/>
     <input class="btn" type="submit" value="Save and Continue" />
 </form>
 

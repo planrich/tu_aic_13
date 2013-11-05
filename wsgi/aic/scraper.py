@@ -6,6 +6,8 @@ from lxml import etree
 from StringIO import StringIO
 import db
 import json
+import crowd
+import re
 
 TEXT_SIZE = 250
 
@@ -17,7 +19,6 @@ def parse_date(date_str):
     date = dateutil.parser.parse(date_str)
     return date.replace(tzinfo=None)
 
-
 def parse_rss(rss):
     feed = { 'date': parse_date(rss.find("./channel/pubDate").text), 'items': [] }
     for i in rss.findall('.//item'):
@@ -27,7 +28,6 @@ def parse_rss(rss):
         feed['items'].append({ 'title': title, 'url': url, 'date': date })
     return feed
 
-
 def is_feed_processed(feed):
     session = db.Session()
     query = session.query(db.Publication).filter(db.Publication.datetime == feed['date'])
@@ -35,38 +35,52 @@ def is_feed_processed(feed):
     session.close()
     return len(results) != 0
 
+def find_keywords(keywords, paragraph):
+    found = []
+    for keyword in keywords:
+        regex = re.compile(keyword.keyword, re.IGNORECASE)
+        if regex.search(paragraph.decode('utf-8')):
+            found.append(keyword)
+    return found 
 
 def process_feed(feed):
     session = db.Session()
     register_feed(feed)
-    keywords = session.query(db.Keyword).all() #['Apple','Microsoft','Facebook','General Motors', 'Google', 'Yahoo', 'Western Union', 'JP Morgan', 'NSA']
+    keywords = session.query(db.Keyword).all()
     for item in feed['items']:
         html = requests.get(item['url']).text
         texts = parse_article(html)
-        projectCreated = False
-        for text in texts:
-            for keyword in keywords:
-                #print keyword.keyword
-                if text.decode('utf-8').find(keyword.keyword) != -1:
-                    if projectCreated == False:
-                        p = db.Project("????", item['url'], 0)
-                        session.add(p)
-                        session.commit()
-                        projectCreated = True
-                        print '-project created '
 
-                    t = db.Task(p,keyword,text)
-                    session.add(t)
+        print("---")
+        project = db.Project("yahoo finance", item['url'])
+        session.add(project)
+        session.commit()
+
+        for text in texts:
+            kws = find_keywords(keywords, text)
+            if len(kws) > 0:
+                for keyword in kws:
+                    task = db.Task(project,keyword,text)
+                    session.add(task)
                     session.commit()
-                    url = settings.POST_TASK_LINK
-                    data = {'id': t.id,'task_description': 'Is ' + keyword.keyword +' mentioned in this text positive, neutral or negative','task_text': text,'answer_possibilities': ['Positive','Neutral','Negative'],'callback_link': settings.CALLBACK_LINK,'price': 11}
-                    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}      
-                    response = requests.post(url, data=json.dumps(data), headers=headers)
-                    print response.text                    
-                    print '--task created'
+
+                    posted_count = crowd.post(settings.POST_TASK_LINK, task, keyword.keyword)
+                    if posted_count > 0:
+                        task.posted_count = posted_count
+                        session.commit()
+                        print('task (id: %d) created, keyword: %s' % (task.id,keyword.keyword))
+                    else:
+                        print('task was not created')
+                        session.delete(task)
+                        session.commit()
+
+        if len(project.tasks) == 0:
+            print("no task posted. removing project")
+            session.delete(project)
+            session.commit()
+        else:
+            print("project with %d tasks created" % len(project.tasks))
         session.close()
-        if projectCreated == True:
-            print '-project posted'
 
 
 def register_feed(feed):

@@ -12,36 +12,10 @@ engine = sqlalchemy.create_engine(settings.DB_URL)
 Session = sqlalchemy.orm.sessionmaker(bind=engine)
 Base = sqlalchemy.ext.declarative.declarative_base()
 
-class OpenTask(Base):
-    __tablename__ = 'open_tasks'
-    id = Column(sqlalchemy.Integer, primary_key=True)
-    datetime = Column(DateTime)
-    task_description = Column(String)
-    task_text = Column(String)
-    answer_possibility = Column(String) # hacky
-    price_cents = Column(Integer)
-    callback_link = Column(String)
-    solved = Column(Boolean)
-
-    def __init__(self, id, desc, text, answer, link, cents):
-        self.id = id
-        self.task_description = desc
-        self.task_text = text
-        self.answer_possibility = answer
-        self.callback_link = link
-        self.price_cents = cents
-        self.datetime = dt.datetime.now()
-        self.solved = False
-
-    def answer_options(self):
-        return self.answer_possibility.split("|")
-
-
 class Publication(Base):
     __tablename__ = 'publications'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
     datetime = sqlalchemy.Column(sqlalchemy.DateTime)
-
 
     def __init__(self, datetime):
         self.datetime = datetime;
@@ -61,18 +35,14 @@ class Project(Base):
     link = Column(sqlalchemy.String)
     datetime = sqlalchemy.Column(sqlalchemy.DateTime)
     paragraph = sqlalchemy.Column(sqlalchemy.String)
-    finishedRating = sqlalchemy.Column(sqlalchemy.Integer)
 
     tasks = relationship("Task")
 
 
-    def __init__(self, paragraph, link,\
-            finishedRating = None,\
-            datetime=dt.datetime.now()):
+    def __init__(self, paragraph, link, datetime=dt.datetime.now()):
         self.link = link
         self.paragraph = paragraph
         self.datetime = datetime
-        self.finishedRating = finishedRating
 
 class Answer(Base):
     __tablename__ = 'answers'
@@ -83,7 +53,7 @@ class Answer(Base):
     worker_id = Column(sqlalchemy.String, ForeignKey('workers.id'))
 
     def __init__(self, task, worker, rating, datetime=dt.datetime.now()):
-        self.taks_id = task.id
+        self.task_id = task.id
         self.worker_id = worker.id
         self.datetime = datetime
         self.rating = rating
@@ -105,13 +75,16 @@ class Task(Base):
     paragraph =  Column(sqlalchemy.String)
     project_id = Column(sqlalchemy.Integer, ForeignKey('projects.id'))
     keyword_id = Column(sqlalchemy.Integer, ForeignKey('keywords.id'))
+    finishedRating = sqlalchemy.Column(sqlalchemy.Integer)
+    answers_posted = Column(Integer)
+    
     answers = relationship("Answer")
 
     def __init__(self, project, keyword, paragraph):
         self.project_id = project.id
         self.keyword_id = keyword.id
         self.paragraph = paragraph
-
+        self.finishedRating = None
 
 Base.metadata.create_all(engine)
 
