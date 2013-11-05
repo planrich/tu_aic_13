@@ -1,14 +1,13 @@
-AIC 13
-=========
-
 # Setup
 
 You must also setup https://github.com/planrich/tu_aic_crowd_source using the same commands below to get this working.
 
 recommended structure:
-aic:
-  crowd -> https://github.com/planrich/tu_aic_crowd_source
-  main -> https://github.com/planrich/tu_aic_13
+~~~
+aic/
+  crowd/-> https://github.com/planrich/tu_aic_crowd_source
+  main/ -> https://github.com/planrich/tu_aic_13
+~~~
 
 To get started you need pip (optionally virtualenv) installed.
 
