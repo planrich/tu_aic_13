@@ -1,10 +1,13 @@
 # encoding: utf-8
-from flask import Flask, request, render_template, json
+from flask import Flask, request, render_template, json, flash, redirect, url_for, session
 import platform
 import db
 import os
+import settings
+from sqlalchemy.orm.exc import NoResultFound
 
 application = Flask(__name__)
+application.secret_key = settings.SECRET_KEY
 
 @application.route("/")
 def index():
@@ -13,13 +16,55 @@ def index():
 
     return render_template("index.html")
 
-@application.route("/solve_task")
+@application.route("/solve_task", methods=["POST","GET"])
 def solve_task():
-
     sess = db.Session()
-    task = sess.query(db.OpenTask).limit(1)
+    if request.method == "POST":
+        if "answer" not in request.form:
+            flash("Task was not rated. No answer provided. Here is a new task!", "danger")
+            return redirect(url_for("solve_task",r="t"))
 
-    return render_template("solve_task.html", task=task)
+        if "user_id" not in request.form:
+            flash("You did not provide your user_id. Here is a new task! Try again.", "danger")
+            return redirect(url_for("solve_task",r="t"))
+        
+        if "task_id" not in request.form:
+            flash("Internal failure. Here is a new task!", "danger")
+            return redirect(url_for("solve_task",r="t"))
+
+        answer = request.form["answer"]
+        task_id = request.form["task_id"]
+        user_id = request.form["user_id"]
+
+        if user_id is None or user_id.strip() == "":
+            flash("You did not provide your user_id. Here is a new task! Try again.", "danger")
+            return redirect(url_for("solve_task",r="t"))
+
+        session['user_id'] = user_id
+
+        try:
+            task = sess.query(db.OpenTask).filter(db.OpenTask.id == task_id).one()
+        except NoResultFound:
+            flash("Internal failure. Here is a new task!", "danger")
+            return redirect(url_for("solve_task",r="t"))
+
+        # TODO request.get callback url with answer!
+        task.solved = True
+        sess.commit()
+
+        requests.get("")
+
+        flash("Solved task. Here is a new one!", "success")
+        return redirect(url_for("solve_task",r="t"))
+    else:
+        try:
+            task = sess.query(db.OpenTask).filter(db.OpenTask.solved == False).one()
+        except NoResultFound:
+            task = None
+
+        user_id = session.get("user_id") or ""
+        return render_template("solve_task.html", task=task, user_id=user_id)
+
 
 
 @application.route("/list_tasks", methods=['GET'])

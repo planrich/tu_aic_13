@@ -2,7 +2,7 @@ import sqlalchemy
 import sqlalchemy.ext.declarative
 import sqlalchemy.orm
 import settings
-from sqlalchemy import Table, Column, Integer, ForeignKey, String, DateTime
+from sqlalchemy import Table, Column, Integer, ForeignKey, String, DateTime, Boolean
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 import datetime as dt
@@ -20,6 +20,7 @@ class OpenTask(Base):
     answer_possibility = Column(String) # hacky
     price_cents = Column(Integer)
     callback_link = Column(String)
+    solved = Column(Boolean)
 
     def __init__(self, id, desc, answer, link, cents):
         self.id = id
@@ -28,6 +29,10 @@ class OpenTask(Base):
         self.callback_link = link
         self.price_cents = cents
         self.datetime = dt.datetime.now()
+        self.solved = False
+
+    def answer_options(self):
+        return self.answer_possibility.split("|")
 
 
 class Publication(Base):
