@@ -84,8 +84,8 @@ class Task(Base):
     paragraph =  Column(sqlalchemy.String)
     project_id = Column(sqlalchemy.Integer, ForeignKey('projects.id'))
     keyword_id = Column(sqlalchemy.Integer, ForeignKey('keywords.id'))
-    finishedRating = sqlalchemy.Column(sqlalchemy.Integer)
-    answers_posted = Column(Integer)
+    finished_rating = sqlalchemy.Column(sqlalchemy.Integer)
+    answers_requested = Column(Integer)
 
     answers = relationship("Answer")
 
@@ -93,7 +93,7 @@ class Task(Base):
         self.project_id = project.id
         self.keyword_id = keyword.id
         self.paragraph = paragraph
-        self.finishedRating = None
+        self.finished_rating = None
 
 Base.metadata.create_all(engine)
 
