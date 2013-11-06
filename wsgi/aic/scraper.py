@@ -64,10 +64,9 @@ def process_feed(feed):
                     session.add(task)
                     session.commit()
 
-                    crowd_endpoint = settings.CROWD_DOMAIN + '/tasks'
-                    posted_count = crowd.post(crowd_endpoint, task, keyword.keyword)
-                    if posted_count > 0:
-                        task.posted_count = posted_count
+                    answers_requested = crowd.post_task(task, keyword)
+                    if answers_requested > 0:
+                        task.answers_requested = answers_requested
                         session.commit()
                         print('task (id: %d) created, keyword: %s' % (task.id,keyword.keyword))
                     else:
