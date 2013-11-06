@@ -58,6 +58,15 @@ class Answer(Base):
         self.datetime = datetime
         self.rating = rating
 
+    def as_dict(self):
+        return {
+            'id': self.id,
+            'task_id': self.task_id,
+            'worker_id': self.worker_id,
+            'datetime': self.datetime,
+            'rating': self.rating
+        }
+
 class Worker(Base):
     __tablename__ = 'workers'
     id = sqlalchemy.Column(sqlalchemy.String, primary_key=True)
@@ -77,7 +86,7 @@ class Task(Base):
     keyword_id = Column(sqlalchemy.Integer, ForeignKey('keywords.id'))
     finishedRating = sqlalchemy.Column(sqlalchemy.Integer)
     answers_posted = Column(Integer)
-    
+
     answers = relationship("Answer")
 
     def __init__(self, project, keyword, paragraph):

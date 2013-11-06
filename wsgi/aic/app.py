@@ -1,80 +1,59 @@
 # encoding: utf-8
-from flask import Flask, request, render_template, json, flash, redirect, url_for, session
-import platform
+from flask import Flask, request, render_template
+from flask.json import jsonify
+
 import db
-import os
 import settings
-import requests
+import utils
 
 from sqlalchemy.orm.exc import NoResultFound
-from requests.exceptions import Timeout
 
 application = Flask(__name__)
 application.secret_key = settings.SECRET_KEY
+
+
+# WEBAPP
+###########################################################
 
 @application.route("/")
 def index():
     #sess = db.Session()
     #pubs = sess.query(db.Publication).all()
-
     return render_template("index.html")
 
-def valid_webhook_json(json):
-    if not json:
-        return None
 
-    if not 'id' in json or\
-       not 'answer' in json or\
-       not 'user' in json:
-       return None
+# API
+###########################################################
 
-    return json
 
-@application.route("/webhook", methods=['POST'])
-def webhook():
-    data = valid_webhook_json(request.get_json(force=True,silent=True))
-    if not data:
-        return "{error:'did not provide valid data!'}", 400
-
-    task_id = int(data['id'].split("_")[0])
-    print("task_id", task_id)
-    answer = data['answer']
-    worker_id = data['user']
-
+@application.route("/api/task/<task_id>/answers", methods=['POST'])
+def post_task_answer(task_id):
     session = db.Session()
-    task = None
-    worker = None
-    try:
-        task = session.query(db.Task).filter(db.Task.id == task_id).limit(1).one()
-    except NoResultFound:
-        return "{'error':'invalid task id'}",400
+    task = session.query(db.Task).filter(db.Task.id == task_id).limit(1).first()
+    if not task:
+        return jsonify(error='Task not found'), 404
 
-    try:
-        worker = session.query(db.Worker).filter(db.Worker.id == worker_id).limit(1).one()
-    except NoResultFound:
+    raw_answer = utils.get_raw_answer(request)
+    if not raw_answer:
+        return jsonify(error='Error parsing json'), 400
+
+    worker_id = raw_answer['user']
+    worker = session.query(db.Worker).filter(db.Worker.id == worker_id).limit(1).first()
+    if not worker:
         worker = db.Worker(worker_id)
         session.add(worker)
         session.commit()
 
-    rating = -1
-    if answer.lower() == "positive":
-        rating = 10
-    elif answer.lower() == "neutral":
-        rating = 5
-    elif answer.lower() == "negative":
-        rating = 0
-
-    if rating == -1:
-        return ("{'error':'answer must be positive,neutral or negative but it is %s'}" % answer),400
+    rating = utils.map_rating(raw_answer['answer'])
 
     answer = db.Answer(task, worker, rating)
     session.add(answer)
     session.commit()
-    
-    # TODO check if project is finished!
 
-    return "{'error':null,'status': 'ok'}", 200
-    
+    return jsonify(answer.as_dict()), 200
+
+
+# TODO: Refactor this ---
 @application.route('/query/<company>', defaults={'timespan': 999999})
 @application.route("/query/<company>/<int:timespan>")
 def query(company, timespan):
