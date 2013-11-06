@@ -22,6 +22,7 @@ class AICTestCase(unittest.TestCase):
         session.commit()
 
         self.task = db.Task(self.project, self.keyword, "")
+        self.task.answers_requested = 1
         session.add(self.task)
         session.commit()
 

@@ -46,17 +46,17 @@ class Project(Base):
 
 class Answer(Base):
     __tablename__ = 'answers'
-    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
-    datetime = sqlalchemy.Column(sqlalchemy.DateTime)
-    rating = sqlalchemy.Column(sqlalchemy.Integer)
+    id = Column(sqlalchemy.Integer, primary_key=True)
+    datetime = Column(sqlalchemy.DateTime)
+    value = Column(sqlalchemy.String)
     task_id = Column(sqlalchemy.Integer, ForeignKey('tasks.id'))
     worker_id = Column(sqlalchemy.String, ForeignKey('workers.id'))
 
-    def __init__(self, task, worker, rating, datetime=dt.datetime.now()):
+    def __init__(self, task, worker, value, datetime=dt.datetime.now()):
         self.task_id = task.id
         self.worker_id = worker.id
         self.datetime = datetime
-        self.rating = rating
+        self.value = value
 
     def as_dict(self):
         return {
@@ -64,7 +64,7 @@ class Answer(Base):
             'task_id': self.task_id,
             'worker_id': self.worker_id,
             'datetime': self.datetime,
-            'rating': self.rating
+            'value': self.value
         }
 
 class Worker(Base):
@@ -94,6 +94,25 @@ class Task(Base):
         self.keyword_id = keyword.id
         self.paragraph = paragraph
         self.finished_rating = None
+
+    def calculate_rating(self):
+        negative = 0
+        positive = 0
+        neutral = 0
+        for answer in self.answers:
+            if answer.value == 'negative':
+                negative += 1
+            elif answer.value == 'positive':
+                positive += 1
+            else:
+                neutral += 1
+        if positive > negative and positive > neutral:
+            self.finished_rating = 10
+        elif negative > positive and negative > neutral:
+            self.finished_rating = 0
+        else:
+            self.finished_rating = 5
+
 
 Base.metadata.create_all(engine)
 

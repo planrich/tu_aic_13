@@ -24,11 +24,10 @@ def index():
 # API
 ###########################################################
 
-
 @application.route("/api/task/<task_id>/answers", methods=['POST'])
 def post_task_answer(task_id):
     session = db.Session()
-    task = session.query(db.Task).filter(db.Task.id == task_id).limit(1).first()
+    task = session.query(db.Task).filter(db.Task.id == task_id).first()
     if not task:
         return jsonify(error='Task not found'), 404
 
@@ -37,17 +36,20 @@ def post_task_answer(task_id):
         return jsonify(error='Error parsing json'), 400
 
     worker_id = raw_answer['user']
-    worker = session.query(db.Worker).filter(db.Worker.id == worker_id).limit(1).first()
+    worker = session.query(db.Worker).filter(db.Worker.id == worker_id).first()
     if not worker:
         worker = db.Worker(worker_id)
         session.add(worker)
         session.commit()
 
-    rating = utils.map_rating(raw_answer['answer'])
-
-    answer = db.Answer(task, worker, rating)
+    answer = db.Answer(task, worker, raw_answer['answer'])
     session.add(answer)
     session.commit()
+
+    if len(task.answers) == task.answers_requested:
+        task.calculate_rating()
+        session.add(task)
+        session.commit()
 
     return jsonify(answer.as_dict()), 200
 
