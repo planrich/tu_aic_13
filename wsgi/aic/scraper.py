@@ -41,7 +41,7 @@ def find_keywords(keywords, paragraph):
         regex = re.compile(keyword.keyword, re.IGNORECASE)
         if regex.search(paragraph.decode('utf-8')):
             found.append(keyword)
-    return found 
+    return found
 
 def process_feed(feed):
     session = db.Session()
@@ -64,7 +64,8 @@ def process_feed(feed):
                     session.add(task)
                     session.commit()
 
-                    posted_count = crowd.post(settings.POST_TASK_LINK, task, keyword.keyword)
+                    crowd_endpoint = settings.CROWD_DOMAIN + '/tasks'
+                    posted_count = crowd.post(crowd_endpoint, task, keyword.keyword)
                     if posted_count > 0:
                         task.posted_count = posted_count
                         session.commit()

@@ -10,7 +10,7 @@ def post(url, task, keyword):
                     ' mentioned in this text positive, neutral or negative?',
             'task_text': task.paragraph,
             'answer_possibilities': ['Positive','Neutral','Negative'],
-            'callback_link': settings.CALLBACK_LINK,
+            'callback_link': settings.DOMAIN + '/api/tasks/' + str(task.id) + '/answers',
             'price': 11
            }
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
