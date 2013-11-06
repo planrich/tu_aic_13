@@ -6,7 +6,6 @@ import db
 import settings
 import utils
 
-from sqlalchemy.orm.exc import NoResultFound
 
 application = Flask(__name__)
 application.secret_key = settings.SECRET_KEY
