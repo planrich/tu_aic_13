@@ -1,16 +1,17 @@
 def get_raw_answer(request):
-    json = request.get_json(force=True,silent=True)
-    if not json or not 'answer' in json or not 'user' in json:
+    raw_answer = request.get_json(force=True,silent=True)
+    if not raw_answer or not 'answer' in raw_answer or not 'user' in raw_answer:
         return None
-    if not json['answer'] in ['positive', 'negative', 'neutral']:
+    raw_answer['answer'] = raw_answer['answer'].lower()
+    if not raw_answer['answer'] in ['positive', 'negative', 'neutral']:
         return None
-    return json
+    return raw_answer
 
 def map_rating(answer):
-    if answer.lower() == "positive":
+    if answer == "positive":
         return 10
-    elif answer.lower() == "neutral":
+    elif answer == "neutral":
         return 5
-    elif answer.lower() == "negative":
+    elif answer == "negative":
         return 0
     return None
