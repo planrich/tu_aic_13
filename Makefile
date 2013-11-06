@@ -3,3 +3,6 @@ run:
 
 test:
 	python test_aic.py
+
+seed:
+	python seed.py
