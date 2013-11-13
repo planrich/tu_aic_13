@@ -5,6 +5,8 @@ from flask.json import jsonify
 import db
 import settings
 import utils
+import json
+import datetime
 
 
 application = Flask(__name__)
@@ -54,27 +56,58 @@ def post_task_answer(task_id):
     return jsonify(answer.as_dict()), 200
 
 
-# TODO: Refactor this ---
-@application.route('/query/<company>', defaults={'timespan': 999999})
-@application.route("/query/<company>/<int:timespan>")
-def query(company, timespan):
-    out=''
-    sess = db.Session()
-    tasks = sess.query(db.Keyword, db.Task, db.Project).filter \
-        (db.Keyword.keyword==company \
-        # and db.Project.finishedRating != None \  does not work
-        and db.projects.datetime > date.today - timespan)
-    cnt=0
-    total=0
+
+@application.route('/keyword/<company>/')
+def keyword_basic_info(company):
+    output_basic_info={"keyword":"", "first_seen":"", "num_rating":0}
+        
+    sess=db.Session()
+    tasks= sess.query(db.Keyword, db.Task, db.Project).filter \
+        (db.Keyword.keyword==company,\
+         db.Task.project_id==db.Project.id, \
+        db.Task.keyword_id==db.Keyword.id\
+        ).order_by(db.Project.datetime)
+    output_basic_info["keyword"] = company
+    output_basic_info["num_rating"] = tasks.count()
     for k,t,p in tasks:
-        if p.finishedRating == None:
+        
+        output_basic_info["first_seen"] = str(p.datetime)
+        break
+    
+    return json.dumps(output_basic_info)
+    
+@application.route("/keyword/<company>/ratings")
+def query(company):
+    begin = datetime.datetime(1970,1,1)
+    end = datetime.datetime.now()
+    page = 0
+    dtformat=settings.DATE_FORMAT_KEYWORD
+    numperpage = settings.PAGE_SIZE_KEYWORD
+    if request.args.get("begin"):
+        begin = datetime.datetime.strptime(request.args.get("begin"), dtformat)
+    if request.args.get("end"):
+        end = datetime.datetime.strptime(request.args.get("end"), dtformat)
+    if request.args.get("page"):
+        page = int(request.args.get("page"))
+    
+    sess = db.Session()
+    tasks= sess.query(db.Task,db.Keyword,db.Project).filter \
+        (db.Keyword.keyword==company, \
+        db.Task.project_id==db.Project.id, \
+        db.Task.keyword_id==db.Keyword.id,\
+        db.Project.datetime.between(begin,end) \
+        ).order_by(db.Project.datetime)[page*numperpage: page*numperpage+numperpage]
+    outdict = {"ratings":[]}
+    for t,k,p in tasks:
+        tempdict = { "date":"", "rating":0}
+        if t.finished_rating == None:
             continue
-        cnt+=1
-        total+=int(p.finishedRating or 0)
-        out += str(total)
-    if cnt == 0:
-        return '{}'
-    return '{"'+company+ '":' + str(1.0*total/cnt) + '}'
+        tempdict["date"] = str(p.datetime)
+        tempdict["rating"] = t.finished_rating
+        outdict["ratings"].append(tempdict);
+        
+            
+    return json.dumps(outdict)
 
 if __name__ == "__main__":
     application.debug = True
