@@ -48,6 +48,7 @@ def process_feed(feed):
     register_feed(feed)
     keywords = session.query(db.Keyword).all()
     for item in feed['items']:
+        print("getting article %s" % item['url'])
         html = requests.get(item['url']).text
         texts = parse_article(html)
 
@@ -80,7 +81,9 @@ def process_feed(feed):
             session.commit()
         else:
             print("project with %d tasks created" % len(project.tasks))
-        session.close()
+
+    print("closing session")
+    session.close()
 
 
 def register_feed(feed):
@@ -94,7 +97,11 @@ def register_feed(feed):
 def parse_article(html):
     parser = etree.HTMLParser()
     tree = etree.parse(StringIO(html), parser)
-    div = tree.xpath("//div[@id='mediaarticlebody' or @itemprop='articleBody']")[0]
+    div_list = tree.xpath("//div[@id='mediaarticlebody' or @itemprop='articleBody']")
+    if len(div_list) == 0:
+        return []
+
+    div = div_list[0]
 
     # some rare articles have an additional wrapping, so unwarp that here
     if div.xpath("count(div/p)") == 0:
@@ -116,5 +123,6 @@ def parse_article(html):
 if __name__ == '__main__':
     rss = fetch_rss(settings.RSS_URL)
     feed = parse_rss(rss)
+    process_feed(feed)
     if not is_feed_processed(feed):
         process_feed(feed)
