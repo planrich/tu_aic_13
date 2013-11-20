@@ -3,6 +3,12 @@ import os
 RSS_URL = 'http://finance.yahoo.com/news/?format=rss'
 SECRET_KEY = "kl12kCF(uL>ASJ123r5b129cfujxzl;kjashb124e12edljcv"
 
+#Settings for application service
+#Date format in keyword queries (eg. 2013-12-31)
+DATE_FORMAT_KEYWORD = '%Y-%m-%d'
+#Number of ratings per page
+PAGE_SIZE_KEYWORD = 20
+
 production = os.environ.get('OPENSHIFT_POSTGRESQL_DB_URL') is not None
 
 if production:
