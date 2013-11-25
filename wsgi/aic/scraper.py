@@ -12,8 +12,11 @@ import re
 TEXT_SIZE = 250
 
 def fetch_rss(url):
-    response = requests.get(url)
-    return ET.fromstring(response.text.encode('utf-8'))
+    try:
+        response = requests.get(url)
+        return ET.fromstring(response.text.encode('utf-8'))
+    except Exception e:
+        return None
 
 def parse_date(date_str):
     date = dateutil.parser.parse(date_str)

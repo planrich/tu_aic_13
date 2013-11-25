@@ -5,6 +5,8 @@ from flask.json import jsonify
 import db
 import settings
 import utils
+import decimal
+import time
 
 
 application = Flask(__name__)
@@ -16,9 +18,16 @@ application.secret_key = settings.SECRET_KEY
 
 @application.route("/")
 def index():
-    #sess = db.Session()
-    #pubs = sess.query(db.Publication).all()
-    return render_template("index.html")
+    sess = db.Session()
+    pubs = sess.query(db.Publication).order_by(db.Publication.datetime).limit(50).all()
+    total_tasks = sess.query(db.Task).count()
+    open_tasks = sess.query(db.Task).filter(db.Task.finished_rating == None).count()
+    resolved_tasks = total_tasks - open_tasks
+    scraping_runs = sess.query(db.Publication).count()
+    return render_template("index.html", publications = pubs, \
+            open_tasks = open_tasks, \
+            resolved_tasks = resolved_tasks, \
+            scraping_runs = scraping_runs)
 
 
 # API
@@ -56,26 +65,63 @@ def post_task_answer(task_id):
 
 
 # TODO: Refactor this ---
-@application.route('/query/<company>', defaults={'timespan': 999999})
-@application.route("/query/<company>/<int:timespan>")
-def query(company, timespan):
-    out=''
+@application.route('/query/<company>', defaults={'days': 20})
+@application.route("/query/<company>/<int:days>")
+def query(company, days):
     sess = db.Session()
-    tasks = sess.query(db.Keyword, db.Task, db.Project).filter \
-        (db.Keyword.keyword==company \
-        # and db.Project.finishedRating != None \  does not work
-        and db.projects.datetime > date.today - timespan)
-    cnt=0
-    total=0
-    for k,t,p in tasks:
-        if p.finishedRating == None:
-            continue
-        cnt+=1
-        total+=int(p.finishedRating or 0)
-        out += str(total)
-    if cnt == 0:
-        return '{}'
-    return '{"'+company+ '":' + str(1.0*total/cnt) + '}'
+    took_me_ms = int(round(time.time() * 1000))
+    results = sess.query("rating").from_statement("""
+        select avg(t.finished_rating) as rating
+        from tasks t, keywords k, projects p
+        where 
+            t.finished_rating is not null and
+            t.keyword_id = k.id and
+            k.keyword like :keyword and
+            t.project_id = p.id and
+            (now() - (cast (p.datetime as timestamp))) < interval ':days days'
+    """).params(keyword=company, days=days).all()
+    took_me_ms = int(round(time.time() * 1000)) - took_me_ms
+
+    if len(results) == 1 and len(results[0]) == 1:
+        rating = results[0][0] # first index access returns tuple -> then first
+        if rating == None:
+            return jsonify(message=\
+                """Sorry. No sentiment information is stored \
+for %s. Either you mistyped the company or yahoo finance does not \
+contain articles about the compnay/product!""" % company)
+        rating = format(rating, '.2f')
+
+        details = {
+                "message": "The average sentiment of {0} is '{1}'.".format(company, rating),
+                "rating":rating,
+                "keyword":company,
+                "interval":"[0..10]. towards 0 corresponds to negative, whereas 10 is positive",
+                "timespan":"the last %d day(s)" % days
+                }
+        if request.args.get('d') is not None:
+            details['ms'] = took_me_ms
+        return jsonify(**details)
+    else:
+        return jsonify(message=\
+                """Sorry. No sentiment information is stored \
+for %s. Either you mistyped the company or yahoo finance does not \
+contain articles about the compnay/product!""" % company)
+
+    #tasks = sess.query(db.Keyword, db.Task).filter \
+    #    (db.Keyword.keyword==company \
+    #    # and db.Project.finishedRating != None \  does not work
+    #    and db.projects.datetime > date.today - timespan)
+    #cnt=0
+    #total=0
+    #for k,t in tasks:
+    #    if k.finishedRating == None:
+    #        continue
+    #    cnt+=1
+    #    total+=int(p.finished_rating or 0)
+    #    #out += str(total)
+    #if cnt == 0:
+    #    return '{}'
+    #return '{"'+company+ '":' + str(1.0*total/cnt) + '}'
 
 if __name__ == "__main__":
     application.debug = True

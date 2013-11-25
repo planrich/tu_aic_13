@@ -1,7 +1,19 @@
 {% extends "layout.html" %}
 {% block title %}AIC 13{% endblock %}
 {% block content %}
-<h1>Index</h1>
+<h1>Yahoo Company and Product sentiment analyser</h1>
+
+<p>
+There are {{open_tasks}} open tasks and {{resolved_tasks}} resolved.
+</p>
+<p>
+There were {{scraping_runs}} scraping runs.
+</p>
+
+
 <ul>
+    {% for p in publications %}
+    <li>{{p.datetime}}</li>
+    {% endfor %}
 </ul>
 {% endblock %}
