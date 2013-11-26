@@ -18,8 +18,8 @@
         XXXXXX XXXXX (XXXXXX)<br>
         XXXXXX XXXXX (XXXXXX)<br>
         XXXXXX XXXXX (XXXXXX)<br>
-        XXXXXX XXXXX (XXXXXX)<br>
-            Richard Plangger (1025637)</p>
+        Diego Barbera (1327823)<br>
+        Richard Plangger (1025637)</p>
         <!--
             To apply styles to the certain slides
             set slide ID to get needed elements
@@ -48,6 +48,82 @@
         <ol>
         </ol>
         <!--p class="note">Shower ['ʃəuə] noun. A person or thing that shows.</p-->
+    </div></section>
+    </div></section>
+    <section class="slide"><div>
+        <h2>Objetives</h2>
+        <ol>
+            <li>Built a knowledge base of company and product mentions</li>
+            <li>Allow our users to query it and obtain meaningful information</li>
+        </ol>
+        <h3><b>Questions</b></h3>
+        <ul>
+            <li>How do we identify this mentions?</li>
+            <li>How do we correctly aggregate aliases?</li>
+        </ul>
+    </div></section>
+    <section class="slide"><div>
+        <h2>First aproach - Use a predefined set of company names</h2>
+        <ul>
+            <li>Crowd sourcing every paragraph looking for mentions is expensive</li>
+            <li>Identifing product names is error prone</li>
+            <li>Collections of relevant companies and products exists</li>
+        </ul>
+        <h3><b>Our solution</b></h3>
+        <ul>
+            <li>Use a predefined list built with other means</li>
+            <li>Crowd source only text fragments that contain mentions</li>
+        </ul>
+    </div></section>
+    <section class="slide"><div>
+        <h2>Tasks - The easier, the cheaper</h2>
+        <ul>
+            <li>Simple task are easier to solve</li>
+            <li>Short task are easier to solve</li>
+            <li>Easy task are cheap</li>
+            <li>Easy task allow better identification of bad workers</li>
+        </ul>
+        <h3><b>Task</b></h3>
+        <h3>Is [KEYWORD] mentioned positive negative or neutral in this text?</h3>
+        <h3>[150/200 CHARACTERS LONG TEXT]</h3>
+    </div></section>
+    <section class="slide"><div>
+        <h2>System Components</h2>
+        (diagram of the system and its components)
+    </div></section>
+    <section class="slide"><div>
+        <h2>Components - Crawler</h2>
+        <ul>
+            <li>Simple single machine, single threaded design</li>
+            <li>Done in python using lxml for parsing</li>
+            <li>Deployed in Openshift</li>
+            <li>Executed several times a day</li>
+            <li>Monitors the RSS feed of yahoo</li>
+            <li>Scraps information from the pages liked in the feed</li>
+            <li>Search for keywords and post tasks in the system</li>
+        </ul>
+    </div></section>
+    <section class="slide"><div>
+        <h2>Components - Web service</h2>
+        <ul>
+            <li>Rest json api</li>
+            <li>Done in python with Flask</li>
+            <li>Deployed in Openshift</li>
+            <li>Uses a Postgresql database</li>
+            <li>Process queries from the users</li>
+            <li>Receive answers from the workers</li>
+        </ul>
+    </div></section>
+    <section class="slide"><div>
+        <h2>Components - Mobileworks mock</h2>
+        <ul>
+            <li>Mock with very minimal functionality</li>
+            <li>Done in python with flask</li>
+            <li>Deployed in Openshift</li>
+            <li>Offers a web interface for solving tasks</li>
+            <li>Process task request</li>
+            <li>Sends answers to our service via callbacks</li>
+        </ul>
     </div></section>
     <section class="slide"><div>
         <h2>Technical Details - The high level view</h2>
@@ -220,7 +296,7 @@
                 height: 100%;
             }
         </style>
-    
+
     <section class="slide full-screen-image"><div>
         <img src="pictures/whole_article.png" />
     </div></section>
