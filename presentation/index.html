@@ -1,176 +1,449 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-	<title>Shower Presentation Engine</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=792, user-scalable=no">
-	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen.css">
+    <title>Shower Presentation Engine</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=792, user-scalable=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="shower/themes/ribbon/styles/screen.css">
 </head>
 <body class="list">
-	<header class="caption">
-		<h1>Shower Presentation Engine</h1>
-		<p>Yours Truly, Famous Inc.</p>
-	</header>
-	<section class="slide cover" id="Cover"><div>
-		<h2>Shower Presentation Engine</h2>
-		<p>Brought to you by <a href="http://pepelsbey.net">Vadim Makeev</a></p>
-		<img src="pictures/cover.jpg" alt="">
-		<!--
-			To apply styles to the certain slides
-			set slide ID to get needed elements
-			-->
-		<style>
-			#Cover h2 {
-				margin:30px 0 0;
-				color:#FFF;
-				text-align:center;
-				font-size:70px;
-				}
-			#Cover p {
-				margin:10px 0 0;
-				text-align:center;
-				color:#FFF;
-				font-style:italic;
-				font-size:20px;
-				}
-				#Cover p a {
-					color:#FFF;
-					}
-		</style>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Shower Key Features</h2>
-		<ol>
-			<li>Built on HTML, CSS and vanilla JavaScript</li>
-			<li>All modern browsers are supported</li>
-			<li>Slide themes are separated from engine</li>
-			<li>Fully keyboard accessible</li>
-			<li>Printable to PDF</li>
-		</ol>
-		<p class="note">Shower ['ʃəuə] noun. A person or thing that shows.</p>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Plain Text on Your Slides</h2>
-		<p>Lorem ipsum dolor sit amet, consectetur <a href="#4">adipisicing</a> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, <em>quis nostrud</em> exercitation ullamco laboris <strong>nisi ut aliquip</strong> ex ea commodo consequat. Duis aute irure <i>dolor</i> in reprehenderit in voluptate velit esse cillum <b>dolore</b> eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in <code>&lt;culpa&gt;</code> qui officia deserunt mollit anim id est laborum.</p>
-	</div></section>
-	<section class="slide"><div>
-		<h2>All Kind of Lists</h2>
-		<ol>
-			<li>Simple lists are marked with bullets</li>
-			<li>Ordered lists begin with a number</li>
-			<li>You can even nest lists one inside another
-				<ul>
-					<li>Or mix their types</li>
-					<li>But do not go too far</li>
-					<li>Otherwise audience will be bored</li>
-				</ul>
-			</li>
-			<li>Look, seven rows exactly!</li>
-		</ol>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Serious Citations</h2>
-		<figure>
-			<blockquote>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
-			</blockquote>
-			<figcaption>Marcus Tullius Cicero</figcaption>
-		</figure>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Code Samples</h2>
-		<pre>
-			<code>&lt;!DOCTYPE html&gt;</code>
-			<code>&lt;html lang="en"&gt;</code>
-			<code><mark>&lt;head&gt;</mark> <mark class="comment">&lt;!--Comment--&gt;</mark></code>
-			<code>    &lt;title&gt;Shower&lt;/title&gt;</code>
-			<code>    &lt;meta charset="<mark class="important">UTF-8</mark>"&gt;</code>
-			<code>    &lt;link rel="stylesheet" href="screen.css"&gt;</code>
-			<code><mark>&lt;/head&gt;</mark></code>
-		</pre>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Even Tables</h2>
-		<table>
-		<tr>
-			<th scope="col">Locavore</th>
-			<th>Umami</th>
-			<th>Helvetica</th>
-			<th>Vegan</th>
-		</tr>
-		<tr>
-			<th scope="row">Fingerstache</th>
-			<td>Kale</td>
-			<td>Chips</td>
-			<td>Keytar</td>
-		</tr>
-		<tr>
-			<th scope="row">Sriracha</th>
-			<td>Gluten-free</td>
-			<td>Ennui</td>
-			<td>Keffiyeh</td>
-		</tr>
-		<tr>
-			<th scope="row">Thundercats</th>
-			<td>Jean</td>
-			<td>Shorts</td>
-			<td>Biodiesel</td>
-		</tr>
-		<tr>
-			<th scope="row">Terry</th>
-			<td>Richardson</td>
-			<td>Swag</td>
-			<td>Blog</td>
-		</tr>
-		</table>
-		<p>It’s good to have information organized.</p>
-	</div></section>
-	<section class="slide cover" id="Picture"><div>
-		<h2>Pictures</h2>
-		<img src="pictures/picture.jpg" alt="">
-		<style>
-			#Picture h2 {
-				color:#FFF;
-				}
-		</style>
-	</div></section>
-	<section class="slide shout"><div>
-		<h2>You can even shout this way</h2>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Inner Navigation</h2>
-		<ol>
-			<li>Lets you reveal list items one by one</li>
-			<li class="next">To keep some key points</li>
-			<li class="next">In secret from audience</li>
-			<li class="next">But it will work only once</li>
-			<li class="next">Nobody wants to see the same joke twice</li>
-		</ol>
-	</div></section>
-	<section class="slide shout" id="SeeMore"><div>
-		<h2><img src="pictures/logo.svg" alt=""> <a href="https://github.com/shower/shower/">See more on GitHub</a></h2>
-		<style>
-			#Picture h2 {
-				color:#FFF;
-				}
-			#SeeMore h2 {
-				font-size:100px
-				}
-			#SeeMore img {
-				width:0.72em;
-				height:0.72em;
-				}
-		</style>
-	</div></section>
-	<p class="badge"><a href="https://github.com/shower/shower">Fork me on Github</a></p>
-	<!--
-		To hide progress bar from entire presentation
-		just remove “progress” element.
-		-->
-	<div class="progress"><div></div></div>
-	<script src="shower/shower.min.js"></script>
-	<!-- Copyright © 2013 Yours Truly, Famous Inc. -->
-	<!-- Photos by John Carey, fiftyfootshadows.net -->
+    <header class="caption">
+        <h1></h1>
+        <p></p>
+    </header>
+    <section class="slide cover" id="Cover"><div>
+        <h2>Crowd sourced sentiment analysis</h2>
+        <p>
+        XXXXXX XXXXX (XXXXXX)<br>
+        XXXXXX XXXXX (XXXXXX)<br>
+        XXXXXX XXXXX (XXXXXX)<br>
+        XXXXXX XXXXX (XXXXXX)<br>
+            Richard Plangger (1025637)</p>
+        <!--
+            To apply styles to the certain slides
+            set slide ID to get needed elements
+            -->
+        <style>
+            #Cover h2 {
+                margin:30px 0 0;
+                color:#FFF;
+                text-align:center;
+                font-size:70px;
+                }
+            #Cover p {
+                margin: 0 0 0;
+                text-align:center;
+                color:#FFF;
+                font-style:italic;
+                font-size:20px;
+                }
+                #Cover p a {
+                    color:#FFF;
+                    }
+        </style>
+    </div></section>
+    <section class="slide"><div>
+        <h2>TITLE</h2>
+        <ol>
+        </ol>
+        <!--p class="note">Shower ['ʃəuə] noun. A person or thing that shows.</p-->
+    </div></section>
+    <section class="slide"><div>
+        <h2>Technical Details - The high level view</h2>
+        <svg width=1024 height= 768 class="model">
+            <g>
+            <rect x=0 y=0 width=310 height=180 style="fill:white;stroke:gray;" />
+            <text x=20 y=30>Crowd source app.</text>
+
+            <g transform="translate(10,60)">
+                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                <text x=10 y=20 class="small-font">Open</text>
+                <text x=12 y=40 class="small-font">Task</text>
+            </g>
+            <g transform="translate(70,60)">
+                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                <text x=10 y=20 class="small-font">Open</text>
+                <text x=12 y=40 class="small-font">Task</text>
+            </g>
+            <g transform="translate(130,60)">
+                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                <text x=10 y=20 class="small-font">Open</text>
+                <text x=12 y=40 class="small-font">Task</text>
+            </g>
+            <g transform="translate(190,60)">
+                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                <text x=10 y=20 class="small-font">Open</text>
+                <text x=12 y=40 class="small-font">Task</text>
+            </g>
+            <g transform="translate(250,60)">
+                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                <text x=10 y=20 class="small-font">Open</text>
+                <text x=12 y=40 class="small-font">Task</text>
+            </g>
+            <g transform="translate(10,120)">
+                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                <text x=20 y=20 class="small-font">...</text>
+            </g>
+            </g>
+            <g transform="translate(550,0)">
+                <rect x=0 y=0 width=300 height=180 style="fill:white;stroke:gray;" />
+                <text x=20 y=30>Sentiment analysis app.</text>
+
+                <g transform="translate(10,50)">
+                    <rect x=0 y=0 width=270 height=30 style="fill:white;stroke:gray;" />
+                    <text x=10 y=20 class="small-font">Cron, fetch Articles from HTML page</text>
+                </g>
+
+                <g transform="translate(0,35)">
+                <g transform="translate(10,60)">
+                    <rect x=0 y=0 width=130 height=30 style="fill:white;stroke:gray;" />
+                    <text x=10 y=20 class="small-font">Apple: 6.9</text>
+                </g>
+                <g transform="translate(150,60)">
+                    <rect x=0 y=0 width=130 height=30 style="fill:white;stroke:gray;" />
+                    <text x=10 y=20 class="small-font">Wal-Mart: 8.9</text>
+                </g>
+                <g transform="translate(150,100)">
+                    <rect x=0 y=0 width=130 height=30 style="fill:white;stroke:gray;" />
+                    <text x=10 y=20 class="small-font">...</text>
+                </g>
+                <g transform="translate(10,100)">
+                    <rect x=0 y=0 width=130 height=30 style="fill:white;stroke:gray;" />
+                    <text x=10 y=20 class="small-font">Xbox: 6.25</text>
+                </g>
+                </g>
+            </g>
+
+            <g transform="translate(320,0)">
+                <line x1=0 x2=220 y1=20 y2=20 style="stroke:black;stroke-width:2px;" />
+                <polygon points="-5,20 10,15 10,25" style="fill:black" />
+                <text x=30 y=15 class="small-font">POST Tasks to the crowd (1)</text>
+            </g>
+
+            <g transform="translate(320,70)">
+                <line x1=0 x2=220 y1=20 y2=20 style="stroke:black;stroke-width:2px;" />
+                <g transform="translate(200,0)">
+                    <polygon points="25,20 10,15 10,25" style="fill:black" />
+                </g>
+                <text x=0 y=15 class="small-font">POST Callback, Task 1 neutral (3)</text>
+            </g>
+            <g transform="translate(320,100)">
+                <line x1=0 x2=220 y1=20 y2=20 style="stroke:black;stroke-width:2px;" />
+                <g transform="translate(200,0)">
+                    <polygon points="25,20 10,15 10,25" style="fill:black" />
+                </g>
+                <text x=0 y=15 class="small-font">POST Callback, Task 1 neutral (4)</text>
+            </g>
+            <g transform="translate(320,130)">
+                <line x1=0 x2=220 y1=20 y2=20 style="stroke:black;stroke-width:2px;" />
+                <g transform="translate(200,0)">
+                    <polygon points="25,20 10,15 10,25" style="fill:black" />
+                </g>
+                <text x=0 y=15 class="small-font">POST Callback, Task 1 negative (5)</text>
+            </g>
+
+            <g transform="translate(150,190)">
+                <line x1=0 x2=0 y1=0 y2=60 style="stroke:black;stroke-width:2px;" />
+                <polygon points="-5,10 5,10 0,-5" style="fill:black" />
+                <g transform="translate(0,50)">
+                    <polygon points="-5,0 5,0 0,15" style="fill:black" />
+                </g>
+                <text x=10 y=30 class="small-font">Solve Tasks (2)</text>
+            </g>
+
+            <g transform="translate(120,240)">
+                <text x=0 y=100>Crowd</text>
+                <g transform="translate(20,20)">
+                    <rect x=-8 y=6 width=16 height=20 rx=5 ry=5 style="fill: black" />
+                    <circle x=0 y=0 r=8 style="fill: white; stroke: black;"/>
+                </g>
+                <g transform="translate(30,25)">
+                    <rect x=-8 y=6 width=16 height=20 rx=5 ry=5 style="fill: black" />
+                    <circle x=0 y=0 r=8 style="fill: white; stroke: black;"/>
+                </g>
+                <g transform="translate(40,30)">
+                    <rect x=-8 y=6 width=16 height=20 rx=5 ry=5 style="fill: black" />
+                    <circle x=0 y=0 r=8 style="fill: white; stroke: black;"/>
+                </g>
+                <g transform="translate(20,40)">
+                    <rect x=-8 y=6 width=16 height=20 rx=5 ry=5 style="fill: black" />
+                    <circle x=0 y=0 r=8 style="fill: white; stroke: black;"/>
+                </g>
+                <g transform="translate(30,45)">
+                    <rect x=-8 y=6 width=16 height=20 rx=5 ry=5 style="fill: black" />
+                    <circle x=0 y=0 r=8 style="fill: white; stroke: black;"/>
+                </g>
+                <g transform="translate(40,50)">
+                    <rect x=-8 y=6 width=16 height=20 rx=5 ry=5 style="fill: black" />
+                    <circle x=0 y=0 r=8 style="fill: white; stroke: black;"/>
+                </g>
+            </g>
+
+            <g transform="translate(700,200)">
+                <line x1=0 x2=0 y1=0 y2=60 style="stroke:black;stroke-width:2px;" />
+                <polygon points="-5,10 5,10 0,-5" style="fill:black" />
+                <g transform="translate(0,50)">
+                    <polygon points="-5,0 5,0 0,15" style="fill:black" />
+                </g>
+                <text x=10 y=30 class="small-font">Sentiment (6)</text>
+            </g>
+            <g transform="translate(670,240)">
+                <text x=0 y=100>Query</text>
+                <g transform="translate(30,50)">
+                    <rect x=-8 y=6 width=16 height=20 rx=5 ry=5 style="fill: black" />
+                    <circle x=0 y=0 r=8 style="fill: white; stroke: black;"/>
+                </g>
+            </g>
+        </svg>
+        <ol>
+        </ol>
+        <style>
+            .model .small-font {
+                font-size: 15px;
+
+            }
+            .model {
+                margin-left: -45px;
+            }
+        </style>
+
+        <!--p class="note">Shower ['ʃəuə] noun. A person or thing that shows.</p-->
+    </div></section>
+        <style>
+            .full-screen-image {
+                margin: 0px;
+            }
+            .full-screen-image img {
+                margin: 0px;
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    
+    <section class="slide full-screen-image"><div>
+        <img src="pictures/whole_article.png" />
+    </div></section>
+    <section class="slide full-screen-image"><div>
+        <img src="pictures/whole_article_p.png" />
+    </div></section>
+    <section class="slide full-screen-image"><div>
+        <img src="pictures/whole_article_keywords.png" />
+    </div></section>
+    <section class="slide"><div>
+        <h2>Demo - Live Crowd Source</h2>
+        <svg width=320 height= 200 class="model2">
+            <g>
+            <rect x=0 y=0 width=310 height=180 style="fill:white;stroke:gray;" />
+            <text x=20 y=30>Crowd source app.</text>
+
+            <g class="strokered" transform="translate(10,60)">
+                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                <text x=10 y=20 class="small-font">Open</text>
+                <text x=12 y=40 class="small-font">Task</text>
+            </g>
+            <g class="strokered" transform="translate(70,60)">
+                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                <text x=10 y=20 class="small-font">Open</text>
+                <text x=12 y=40 class="small-font">Task</text>
+            </g>
+            <g class="strokered" transform="translate(130,60)">
+                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                <text x=10 y=20 class="small-font">Open</text>
+                <text x=12 y=40 class="small-font">Task</text>
+            </g>
+            <g class="strokered" transform="translate(190,60)">
+                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                <text x=10 y=20 class="small-font">Open</text>
+                <text x=12 y=40 class="small-font">Task</text>
+            </g>
+            <g  class="strokered"transform="translate(250,60)">
+                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                <text x=10 y=20 class="small-font">Open</text>
+                <text x=12 y=40 class="small-font">Task</text>
+            </g>
+            <g class="strokered" transform="translate(10,120)">
+                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                <text x=20 y=20 class="small-font">...</text>
+            </g>
+            </g>
+        </svg>
+        <ul>
+            <li>Task stored on crowd source application</li>
+            <li>Human worker solves task</li>
+        </ul>
+        <style>
+            .model2 {
+                float: right;
+
+            }
+            .model2 .strokered {
+
+            }
+
+            .model2 .small-font {
+                font-size: 15px;
+
+            }
+            .model2 {
+                margin-left: -45px;
+            }
+        </style>
+
+        <!--p class="note">Shower ['ʃəuə] noun. A person or thing that shows.</p-->
+    </div></section>
+    <section class="slide"><div>
+        <h2>Demo - Query the sentiment data</h2>
+        <svg width=80 height= 400 class="model2">
+            <g transform="translate(0,0)">
+                <text x=0 y=100>Query</text>
+                <g transform="translate(30,50)">
+                    <rect x=-8 y=6 width=16 height=20 rx=5 ry=5 style="fill: black" />
+                    <circle x=0 y=0 r=8 style="fill: white; stroke: black;"/>
+                </g>
+            </g>
+        </svg>
+        <ul>
+            <li>Query the sentiment data</li>
+        </ul>
+        <pre><code style="font-size: 10px; line-height: 15px;" class="small-font">
+GET <a href="http://main-tuaic13.rhcloud.com/query/Yahoo/20?d=1">http://main-tuaic13.rhcloud.com/query/Yahoo/20?d=1</a>
+{
+  "interval": "[0..10]. towards 0 corresponds to negative, whereas 10 is positive",
+  "keyword": "Yahoo",
+  "message": "The average sentiment of Yahoo is '10.00'.",
+  "ms": 165,
+  "rating": "10.00",
+  "timespan": "the last 20 day(s)"
+}
+        </code></pre>
+
+        <style>
+        </style>
+
+        <!--p class="note">Shower ['ʃəuə] noun. A person or thing that shows.</p-->
+    </div></section>
+
+    <!--section class="slide"><div>
+        <h2>Plain Text on Your Slides</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur <a href="#4">adipisicing</a> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, <em>quis nostrud</em> exercitation ullamco laboris <strong>nisi ut aliquip</strong> ex ea commodo consequat. Duis aute irure <i>dolor</i> in reprehenderit in voluptate velit esse cillum <b>dolore</b> eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in <code>&lt;culpa&gt;</code> qui officia deserunt mollit anim id est laborum.</p>
+    </div></section>
+    <section class="slide"><div>
+        <h2>All Kind of Lists</h2>
+        <ol>
+            <li>Simple lists are marked with bullets</li>
+            <li>Ordered lists begin with a number</li>
+            <li>You can even nest lists one inside another
+                <ul>
+                    <li>Or mix their types</li>
+                    <li>But do not go too far</li>
+                    <li>Otherwise audience will be bored</li>
+                </ul>
+            </li>
+            <li>Look, seven rows exactly!</li>
+        </ol>
+    </div></section>
+    <section class="slide"><div>
+        <h2>Serious Citations</h2>
+        <figure>
+            <blockquote>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
+            </blockquote>
+            <figcaption>Marcus Tullius Cicero</figcaption>
+        </figure>
+    </div></section>
+    <section class="slide"><div>
+        <h2>Code Samples</h2>
+        <pre>
+            <code>&lt;!DOCTYPE html&gt;</code>
+            <code>&lt;html lang="en"&gt;</code>
+            <code><mark>&lt;head&gt;</mark> <mark class="comment">&lt;!--Comment--&gt;</mark></code>
+            <code>    &lt;title&gt;Shower&lt;/title&gt;</code>
+            <code>    &lt;meta charset="<mark class="important">UTF-8</mark>"&gt;</code>
+            <code>    &lt;link rel="stylesheet" href="screen.css"&gt;</code>
+            <code><mark>&lt;/head&gt;</mark></code>
+        </pre>
+    </div></section>
+    <section class="slide"><div>
+        <h2>Even Tables</h2>
+        <table>
+        <tr>
+            <th scope="col">Locavore</th>
+            <th>Umami</th>
+            <th>Helvetica</th>
+            <th>Vegan</th>
+        </tr>
+        <tr>
+            <th scope="row">Fingerstache</th>
+            <td>Kale</td>
+            <td>Chips</td>
+            <td>Keytar</td>
+        </tr>
+        <tr>
+            <th scope="row">Sriracha</th>
+            <td>Gluten-free</td>
+            <td>Ennui</td>
+            <td>Keffiyeh</td>
+        </tr>
+        <tr>
+            <th scope="row">Thundercats</th>
+            <td>Jean</td>
+            <td>Shorts</td>
+            <td>Biodiesel</td>
+        </tr>
+        <tr>
+            <th scope="row">Terry</th>
+            <td>Richardson</td>
+            <td>Swag</td>
+            <td>Blog</td>
+        </tr>
+        </table>
+        <p>It’s good to have information organized.</p>
+    </div></section>
+    <section class="slide cover" id="Picture"><div>
+        <h2>Pictures</h2>
+        <img src="pictures/picture.jpg" alt="">
+        <style>
+            #Picture h2 {
+                color:#FFF;
+                }
+        </style>
+    </div></section>
+    <section class="slide shout"><div>
+        <h2>You can even shout this way</h2>
+    </div></section>
+    <section class="slide"><div>
+        <h2>Inner Navigation</h2>
+        <ol>
+            <li>Lets you reveal list items one by one</li>
+            <li class="next">To keep some key points</li>
+            <li class="next">In secret from audience</li>
+            <li class="next">But it will work only once</li>
+            <li class="next">Nobody wants to see the same joke twice</li>
+        </ol>
+    </div></section>
+    <section class="slide shout" id="SeeMore"><div>
+        <h2><img src="pictures/logo.svg" alt=""> <a href="https://github.com/shower/shower/">See more on GitHub</a></h2>
+        <style>
+            #Picture h2 {
+                color:#FFF;
+                }
+            #SeeMore h2 {
+                font-size:100px
+                }
+            #SeeMore img {
+                width:0.72em;
+                height:0.72em;
+                }
+        </style>
+    </div></section-->
+    <!--
+        To hide progress bar from entire presentation
+        just remove “progress” element.
+        -->
+    <!--div class="progress"><div></div></div-->
+    <script src="shower/shower.min.js"></script>
+    <!-- Copyright © 2013 Yours Truly, Famous Inc. -->
+    <!-- Photos by John Carey, fiftyfootshadows.net -->
 </body>
 </html>
