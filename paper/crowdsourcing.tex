@@ -10,21 +10,24 @@
 \usepackage{doi}
 \usepackage{hyperref}
 \usepackage[]{color}
+\usepackage[shortlabels]{enumitem}
 
 \definecolor{grey}{rgb}{0.5,0.5,0.5}
 \definecolor{darkgreen}{cmyk}{0.7, 0, 1, 0.5}
 \definecolor{LinkColor}{rgb}{0,0,0.5}
 
+\setlist{noitemsep}
+
 \hypersetup{%%Hyperref stuff
 	pageanchor=false,
 	pdfpagelabels=false,
 	final,
-    colorlinks=true, 
-    linkcolor=LinkColor,
-    citecolor=LinkColor,
-    filecolor=LinkColor,
-    menucolor=LinkColor,
-    urlcolor=LinkColor,
+	colorlinks=true, 
+	linkcolor=LinkColor,
+	citecolor=LinkColor,
+	filecolor=LinkColor,
+	menucolor=LinkColor,
+	urlcolor=LinkColor,
 	pdftitle={Crowdsourcing}
 }
 
@@ -36,41 +39,80 @@
 \numberofauthors{6}
 
 \author{%% Authors start here
-\alignauthor
-Diego Barbera\\ 
-\affaddr{1327823}
+	\alignauthor
+	Diego Barbera\\ 
+	\affaddr{1327823}
 %
-\alignauthor
-Viktor Kvaternjak\\
-\affaddr{1328111}
+	\alignauthor
+	Viktor Kvaternjak\\
+	\affaddr{1328111}
 %
-\alignauthor
-Andreas Ntaflos\\
-\affaddr{0326302}
+	\alignauthor
+	Andreas Ntaflos\\
+	\affaddr{0326302}
 %
-\and
+	\and
 %
-\alignauthor
-Richard Plangger\\ 
-\affaddr{1025637}
+	\alignauthor
+	Richard Plangger\\ 
+	\affaddr{1025637}
 %
-\alignauthor
-Christian Schnitzer\\ 
-\affaddr{0828380}
+	\alignauthor
+	Christian Schnitzer\\ 
+	\affaddr{0828380}
 %
-\alignauthor
-Konrad Steiner\\ 
-\affaddr{0927159}
-\and
+	\alignauthor
+	Konrad Steiner\\ 
+	\affaddr{0927159}
+	\and
 %% Authors end here
 }
 
 \maketitle
 
 \begin{abstract}
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam congue
+	lorem ut lorem lacinia, at pharetra dui tincidunt. Curabitur blandit enim
+	nulla, vitae varius risus aliquam ut. Etiam at leo felis. Suspendisse
+	potenti. Sed malesuada lacus vestibulum cursus ornare. Sed eu purus
+	hendrerit, consequat ante sagittis, auctor quam. Donec elit massa,
+	pellentesque ac gravida vitae, pellentesque a nulla. In molestie dolor
+	tristique luctus adipiscing. Nunc iaculis aliquet leo vel vestibulum.
+	Integer eu lacus vehicula, vestibulum mi at, tincidunt leo. Sed ornare
+	nunc vel lectus sagittis, auctor ultricies massa porttitor. Nullam sit
+	amet condimentum lacus, sed vehicula enim. Aliquam in sem elit. Duis
+	pretium mi at dignissim placerat.
 \end{abstract}
 
 \section{Introduction}
+
+The term \emph{crowdsourcing} has been coined by Jeff Howe in
+2006~\cite{howe2006rise} as a portmanteau of \emph{crowd} and
+\emph{outsourcing}. He describes it generally as outsourcing work to an
+``undefined, generally large group of people in the form of an open
+call''~\cite{howe2009crowdsourcing}. The term and the underlying practice are
+still quite young and the theoretical backgrounds---What is a crowd? What
+motivates the crowd? Why do some crowdsourcing systems and initiatives thrive
+while others fail miserably?---are still being researched, for example in the
+works of Daren Brabham~\cite{brabham2008crowdsourcing, brabham2008moving,
+brabham2010moving}. This is why in scientific literature we find various,
+often directly conflicting definitions of
+crowdsourcing~\cite{estelles2012towards}, as well as conflicting
+classifications of existing systems and initiatives; some authors see
+Wikipedia or Youtube as crowdsourcing examples while others claim the exact
+opposite~\cite{estelles2012towards}.
+
+In this paper we give an overview of crowdsourcing by discussing an integrated
+definition of the term and practice as put forth by Estell{\'e}s-Arolas and
+Gonz{\'a}lez-Ladr{\'o}n-de-Guevara in~\cite{estelles2012towards} and examining
+current crowdsourcing systems and platforms based on that definition. We also
+compare the motivations and composition of different kinds of crowds for
+different kinds of problems and how these crowds often differ widely in these
+regards. Next we describe broadly how to design a crowdsourcing initiative to be
+successful and which steps can be taken to control reliability and quality of
+work. Finally we discuss some critical aspects of and problems with
+crowdsourcing which are often overlooked or ignored in current literature. 
+
 % What? Term coined by Howe in Wired article howe2006rise
 % Various, conflicting definitions: Wikipedia? Youtube? vs InnoCentive, iStockphoto, Amazon Mechanical Turk
 % Proper definition by Estell{\'e}s-Arolas and Gonz{\'a}lez-Ladr{\'o}n-de-Guevara
@@ -83,6 +125,45 @@ Konrad Steiner\\
 %  - criticisms of CS
 
 \section{Crowdsourcing defined}
+
+The most comprehensive definition of crowdsourcing has been compiled by
+Estell{\'e}s-Arolas and Gonz{\'a}lez-Ladr{\'o}n-de-Guevara. In their
+work~\cite{estelles2012towards} the authors analysed a large number of
+existing definitions and extracted various characteristics that apply to a
+crowdsourcing system, resulting in the following: 
+\begin{quotation}
+	Crowdsourcing is a type of participative online activity in which an
+	individual, an institution, a non-profit organization, or company proposes to
+	a group of individuals of varying knowledge, heterogeneity, and number, via a
+	flexible open call, the voluntary undertaking of a task. The undertaking of
+	the task, of variable complexity and modularity, and in which the crowd should
+	participate bringing their work, money, knowledge and/or experience, always
+	entails mutual benefit. The user will receive the satisfaction of a given type
+	of need, be it economic, social recognition, self-esteem, or the development
+	of individual skills, while the crowdsourcer will obtain and utilize to their
+	advantage that what the user has brought to the venture, whose form will
+	depend on the type of activity undertaken.
+\end{quotation}
+
+Based on that definition all of the following characteristics, as identified
+in~\cite{estelles2012towards} apply to a crowdsourcing system:
+
+\begin{enumerate}[(a)]
+	\item There is a clearly defined crowd\label{a}
+	\item There exists a task with a clear goal\label{b}
+	\item The recompense received by the crowd is clear\label{c}
+	\item The crowdsourcer is clearly identified\label{d}
+	\item The compensation received by the crowdsourcer is clearly defined\label{e}
+	\item It is an online assigned process of participative type\label{f}
+	\item It uses an open call of variable extent\label{g}
+	\item It uses the internet\label{h}
+\end{enumerate}
+
+Having identified the characteristics that describe a crowdsourcing system it
+is now easy to see that neither Wikipedia, nor Youtube qualify as such. For
+Wikipedia the missing characteristics are~\ref{d},~\ref{e} and~\ref{g},
+while for Youtube only~\ref{a} and~\ref{h} even apply; all others do not.
+
 % mostly based on estelles2012towards and brabham2008crowdsourcing
 % define what ``crowdsourcing'' really is, based on definition and
 %   characteristics by Estelles at al
