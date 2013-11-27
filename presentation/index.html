@@ -62,7 +62,7 @@
             <li>At the same time any human can solve it easily</li>
             <li>Combine the power of computers with power of human brain</li>
         </ul>
-        
+
         <!--p class="note">Shower ['ʃəuə] noun. A person or thing that shows.</p-->
     </div></section>
     <section class="slide"><div>
@@ -81,7 +81,7 @@
                 </ul>
             </li>
         </ul>
-        
+
     </div></section>
     <section class="slide"><div>
         <h2>Use cases</h2>
@@ -107,7 +107,12 @@
         </ol>
     </div></section>
     <section class="slide"><div>
-        <h2>Data example</h2>
+        <h2>Data example 1</h2>
+        <h3><b>Title:</b> Hewlett-Packard Climbs</h3>
+        <p><b>Content:</b> Hewlett-Packard (HPQ) is up 7% in early trading on its earnings. The company made $1.01 a share for the quarter, a penny better than expected. Revenues also topped forecasts coming in above $29-billion. Taking a look beyond the headline numbers, revenues were down year-over-year, but sales of corporate computers did in fact rise ...</p>
+    </div></section>
+    <section class="slide"><div>
+        <h2>Data example 2</h2>
         <h3><b>Title:</b> Surfing central banks in a benign 'QE trap'</h3>
         <p><b>Content:</b> Despite rumblings of dissent about the financial bubbles and iniquities associated with zero interest rates and money printing, 2013 is ending with a remarkable certainty among global investors that cheap money is around for the long haul ...</p>
     </div></section>
@@ -133,7 +138,7 @@
         </ul>
     </div></section>
     <section class="slide"><div>
-        <h2>Tasks - The easier, the cheaper</h2>
+        <h2>Tasks</h2>
         <ul>
             <li>Short</li>
             <li>Simple</li>
@@ -141,45 +146,11 @@
         </ul>
         <h3><b>Task</b></h3>
         <h3>Is [KEYWORD] mentioned positive negative or neutral in this text?</h3>
-        <h3>[150/200 CHARACTERS LONG TEXT]</h3>
+        <h3>[APROX 150/200 CHARACTERS LONG TEXT]</h3>
     </div></section>
     <section class="slide"><div>
         <h2>System Components</h2>
-        (diagram of the system and its components)
-    </div></section>
-    <section class="slide"><div>
-        <h2>Components - Crawler</h2>
-        <ul>
-            <li>Simple single machine, single threaded design</li>
-            <li>Done in python using lxml for parsing</li>
-            <li>Deployed in Openshift</li>
-            <li>Executed several times a day</li>
-            <li>Monitors the RSS feed of yahoo</li>
-            <li>Scraps information from the pages liked in the feed</li>
-            <li>Search for keywords and post tasks in the system</li>
-        </ul>
-    </div></section>
-    <section class="slide"><div>
-        <h2>Components - Web service</h2>
-        <ul>
-            <li>Rest json api</li>
-            <li>Done in python with Flask</li>
-            <li>Deployed in Openshift</li>
-            <li>Uses a Postgresql database</li>
-            <li>Process queries from the users</li>
-            <li>Receive answers from the workers</li>
-        </ul>
-    </div></section>
-    <section class="slide"><div>
-        <h2>Components - Mobileworks mock</h2>
-        <ul>
-            <li>Mock with very minimal functionality</li>
-            <li>Done in python with flask</li>
-            <li>Deployed in Openshift</li>
-            <li>Offers a web interface for solving tasks</li>
-            <li>Process task request</li>
-            <li>Sends answers to our service via callbacks</li>
-        </ul>
+        <p style="text-align:center; margin: 80px;"><img src="pictures/overview.jpeg"/></p>
     </div></section>
     <section class="slide"><div>
         <h2>Technical Details - The high level view</h2>
