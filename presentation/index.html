@@ -14,26 +14,33 @@
     </header>
     <section class="slide cover" id="Cover"><div>
         <h2>Crowd sourced sentiment analysis</h2>
+        <h3>Topic 2 - Group 2</h3>
         <p>
-        Christian Schnitzer (0828380)<br>
-        Konrad Steiner (0927159)<br>
-        Andreas Ntaflos (0326302)<br>
         Diego Barbera (1327823)<br>
         Viktor Kvaternjak (1328111)<br>
-        Richard Plangger (1025637)</p>
-        <!--
+        Andreas Ntaflos (0326302)<br>
+        Richard Plangger (1025637)<br>
+        Christian Schnitzer (0828380)<br>
+        Konrad Steiner (0927159)<br>
+        </p>        <!--
             To apply styles to the certain slides
             set slide ID to get needed elements
             -->
         <style>
-            #Cover h2 {
+            .cover h2 {
                 margin:30px 0 0;
                 color:#FFF;
                 text-align:center;
-                font-size:70px;
+                font-size:60px;
+                }
+            #Cover h3 {
+                margin:10px 0 0;
+                color:#FFF;
+                text-align:center;
+                font-size:40px;
                 }
             #Cover p {
-                margin: 0 0 0;
+                margin: 10px 0 0;
                 text-align:center;
                 color:#FFF;
                 font-style:italic;
@@ -105,11 +112,11 @@
         <p><b>Content:</b> Despite rumblings of dissent about the financial bubbles and iniquities associated with zero interest rates and money printing, 2013 is ending with a remarkable certainty among global investors that cheap money is around for the long haul ...</p>
     </div></section>
     <section class="slide"><div>
-        <h2>Questions</h2>
+        <h2>Challenges</h2>
         <ul>
             <li>How do we identify which paragraphs have mentions?</li>
             <li>How do we correctly aggregate aliases? (i.e. Hewlett-Packard & HP)</li>
-            <li>How do we correctly aggregate product lines? (i.e. IPhone & IPhone 5s)</li>
+            <li>How do we correctly aggregate product lines? (i.e. iPhone & iPhone 5s, iPad & new iPad)</li>
         </ul>
     </div></section>
     <section class="slide"><div>
@@ -431,7 +438,7 @@
         <ul>
             <li>Query the sentiment data</li>
         </ul>
-        <pre><code style="font-size: 10px; line-height: 15px;" class="small-font">
+        <pre><code style="font-size: 15px; line-height: 20px;" class="small-font">
 GET <a href="http://main-tuaic13.rhcloud.com/query/Yahoo/20?d=1">http://main-tuaic13.rhcloud.com/query/Yahoo/20?d=1</a>
 {
   "interval": "[0..10]. towards 0 corresponds to negative, whereas 10 is positive",
@@ -447,6 +454,9 @@ GET <a href="http://main-tuaic13.rhcloud.com/query/Yahoo/20?d=1">http://main-tua
         </style>
 
         <!--p class="note">Shower ['ʃəuə] noun. A person or thing that shows.</p-->
+    </div></section>
+    <section class="slide cover"><div>
+    <h2>Questions?</h2>
     </div></section>
 
     <!--section class="slide"><div>
