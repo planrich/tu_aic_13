@@ -53,35 +53,43 @@
     <section class="slide"><div>
         <h2>Objetives</h2>
         <ol>
-            <li>Built a knowledge base of company and product mentions</li>
+            <li>Extract data form Yahoo Finances</li>
+            <li>Build a knowledge base of company and product mentions</li>
             <li>Allow our users to query it and obtain meaningful information</li>
         </ol>
-        <h3><b>Questions</b></h3>
+    </div></section>
+    <section class="slide"><div>
+        <h2>Data example</h2>
+        <h3><b>Title:</b> Surfing central banks in a benign 'QE trap'</h3>
+        <p><b>Content:</b> Despite rumblings of dissent about the financial bubbles and iniquities associated with zero interest rates and money printing, 2013 is ending with a remarkable certainty among global investors that cheap money is around for the long haul ...</p>
+    </div></section>
+    <section class="slide"><div>
+        <h2>Questions</h2>
         <ul>
-            <li>How do we identify this mentions?</li>
-            <li>How do we correctly aggregate aliases?</li>
+            <li>How do we identify wich paragraphs have mentions?</li>
+            <li>How do we correctly aggregate aliases? (i.e. Hewlett-Packard & HP)</li>
+            <li>How do we correctly aggregate product lines? (i.e. IPhone & IPhone 5s)</li>
         </ul>
     </div></section>
     <section class="slide"><div>
         <h2>First aproach - Use a predefined set of company names</h2>
         <ul>
-            <li>Crowd sourcing every paragraph looking for mentions is expensive</li>
-            <li>Identifing product names is error prone</li>
-            <li>Collections of relevant companies and products exists</li>
+            <li>Use a predefined list of companies and products</li>
+            <li>Crowd source analysis only for text fragments that contain mentions</li>
         </ul>
-        <h3><b>Our solution</b></h3>
+        <h3><b>Rationale</b></h3>
         <ul>
-            <li>Use a predefined list built with other means</li>
-            <li>Crowd source only text fragments that contain mentions</li>
+            <li>Crowd sourcing every paragraph looking for mentions is expensive</li>
+            <li>Indentifing company and products aliases is hard</li>
+            <li>Collections of relevant companies and products exists</li>
         </ul>
     </div></section>
     <section class="slide"><div>
         <h2>Tasks - The easier, the cheaper</h2>
         <ul>
-            <li>Simple task are easier to solve</li>
-            <li>Short task are easier to solve</li>
-            <li>Easy task are cheap</li>
-            <li>Easy task allow better identification of bad workers</li>
+            <li>Short</li>
+            <li>Simple</li>
+            <li>Easy</li>
         </ul>
         <h3><b>Task</b></h3>
         <h3>Is [KEYWORD] mentioned positive negative or neutral in this text?</h3>
