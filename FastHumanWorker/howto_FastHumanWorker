@@ -1,0 +1,7 @@
+1. Get the Selenium IDE Extension(Version 2.4.0 is fine) for Firefox
+2. Add "sideflows.js" as core extension to Selenium IDE
+    2.1 Open Selenium
+    2.2 Click on Options/Options
+    2.3 Select "sideflows.js" in the Selenium Core extensions
+3. Open the file "testcase" with Selenium (File/open)
+4. Click on run
