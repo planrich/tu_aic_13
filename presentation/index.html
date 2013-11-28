@@ -130,41 +130,41 @@
     <section class="slide"><div>
         <h2>Technical details: the high level view</h2>
         <svg width=1024 height= 768 class="model">
-            <g>
-            <rect x=0 y=0 width=310 height=180 style="fill:white;stroke:gray;" />
-            <text x=20 y=30>Crowd source app.</text>
-
-            <g transform="translate(10,60)">
-                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
-                <text x=10 y=20 class="small-font">Open</text>
-                <text x=12 y=40 class="small-font">Task</text>
-            </g>
-            <g transform="translate(70,60)">
-                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
-                <text x=10 y=20 class="small-font">Open</text>
-                <text x=12 y=40 class="small-font">Task</text>
-            </g>
-            <g transform="translate(130,60)">
-                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
-                <text x=10 y=20 class="small-font">Open</text>
-                <text x=12 y=40 class="small-font">Task</text>
-            </g>
-            <g transform="translate(190,60)">
-                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
-                <text x=10 y=20 class="small-font">Open</text>
-                <text x=12 y=40 class="small-font">Task</text>
-            </g>
-            <g transform="translate(250,60)">
-                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
-                <text x=10 y=20 class="small-font">Open</text>
-                <text x=12 y=40 class="small-font">Task</text>
-            </g>
-            <g transform="translate(10,120)">
-                <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
-                <text x=20 y=20 class="small-font">...</text>
-            </g>
-            </g>
             <g transform="translate(550,0)">
+                <rect x=0 y=0 width=310 height=180 style="fill:white;stroke:gray;" />
+                <text x=20 y=30>Crowd source app.</text>
+
+                <g transform="translate(10,60)">
+                    <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                    <text x=10 y=20 class="small-font">Open</text>
+                    <text x=12 y=40 class="small-font">Task</text>
+                </g>
+                <g transform="translate(70,60)">
+                    <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                    <text x=10 y=20 class="small-font">Open</text>
+                    <text x=12 y=40 class="small-font">Task</text>
+                </g>
+                <g transform="translate(130,60)">
+                    <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                    <text x=10 y=20 class="small-font">Open</text>
+                    <text x=12 y=40 class="small-font">Task</text>
+                </g>
+                <g transform="translate(190,60)">
+                    <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                    <text x=10 y=20 class="small-font">Open</text>
+                    <text x=12 y=40 class="small-font">Task</text>
+                </g>
+                <g transform="translate(250,60)">
+                    <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                    <text x=10 y=20 class="small-font">Open</text>
+                    <text x=12 y=40 class="small-font">Task</text>
+                </g>
+                <g transform="translate(10,120)">
+                    <rect x=0 y=0 width=50 height=50 style="fill:white;stroke:gray;" />
+                    <text x=20 y=20 class="small-font">...</text>
+                </g>
+            </g>
+            <g transform="translate(0,0)">
                 <rect x=0 y=0 width=300 height=180 style="fill:white;stroke:gray;" />
                 <text x=20 y=30>Sentiment analysis app.</text>
 
@@ -195,33 +195,32 @@
 
             <g transform="translate(320,0)">
                 <line x1=0 x2=220 y1=20 y2=20 style="stroke:black;stroke-width:2px;" />
-                <polygon points="-5,20 10,15 10,25" style="fill:black" />
+                <g transform="translate(200,0)">
+                    <polygon points="25,20 10,15 10,25" style="fill:black" />
+                </g>
                 <text x=30 y=15 class="small-font">POST Tasks to the crowd (1)</text>
             </g>
 
             <g transform="translate(320,70)">
                 <line x1=0 x2=220 y1=20 y2=20 style="stroke:black;stroke-width:2px;" />
-                <g transform="translate(200,0)">
-                    <polygon points="25,20 10,15 10,25" style="fill:black" />
-                </g>
-                <text x=0 y=15 class="small-font">POST Callback, Task 1 neutral (3)</text>
+                <polygon points="-5,20 10,15 10,25" style="fill:black" />
+                <text x=20 y=15 class="small-font">POST Callback, Task 1 neutral</text>
             </g>
             <g transform="translate(320,100)">
                 <line x1=0 x2=220 y1=20 y2=20 style="stroke:black;stroke-width:2px;" />
-                <g transform="translate(200,0)">
-                    <polygon points="25,20 10,15 10,25" style="fill:black" />
-                </g>
-                <text x=0 y=15 class="small-font">POST Callback, Task 1 neutral (4)</text>
+                <polygon points="-5,20 10,15 10,25" style="fill:black" />
+                <text x=20 y=15 class="small-font">POST Callback, Task 1 neutral</text>
             </g>
             <g transform="translate(320,130)">
                 <line x1=0 x2=220 y1=20 y2=20 style="stroke:black;stroke-width:2px;" />
-                <g transform="translate(200,0)">
-                    <polygon points="25,20 10,15 10,25" style="fill:black" />
-                </g>
-                <text x=0 y=15 class="small-font">POST Callback, Task 1 negative (5)</text>
+                <polygon points="-5,20 10,15 10,25" style="fill:black" />
+                <text x=20 y=15 class="small-font">POST Callback, Task 1 negative</text>
+            </g>
+            <g transform="translate(400,160)">
+                <text x=20 y=15 class="small-font">(3)</text>
             </g>
 
-            <g transform="translate(150,190)">
+            <g transform="translate(700,190)">
                 <line x1=0 x2=0 y1=0 y2=60 style="stroke:black;stroke-width:2px;" />
                 <polygon points="-5,10 5,10 0,-5" style="fill:black" />
                 <g transform="translate(0,50)">
@@ -230,7 +229,7 @@
                 <text x=10 y=30 class="small-font">Solve Tasks (2)</text>
             </g>
 
-            <g transform="translate(120,240)">
+            <g transform="translate(700,240)">
                 <text x=0 y=100>Crowd</text>
                 <g transform="translate(20,20)">
                     <rect x=-8 y=6 width=16 height=20 rx=5 ry=5 style="fill: black" />
@@ -258,15 +257,15 @@
                 </g>
             </g>
 
-            <g transform="translate(700,200)">
+            <g transform="translate(150,200)">
                 <line x1=0 x2=0 y1=0 y2=60 style="stroke:black;stroke-width:2px;" />
                 <polygon points="-5,10 5,10 0,-5" style="fill:black" />
                 <g transform="translate(0,50)">
                     <polygon points="-5,0 5,0 0,15" style="fill:black" />
                 </g>
-                <text x=10 y=30 class="small-font">Sentiment (6)</text>
+                <text x=10 y=30 class="small-font">Sentiment (4)</text>
             </g>
-            <g transform="translate(670,240)">
+            <g transform="translate(120,240)">
                 <text x=0 y=100>Query</text>
                 <g transform="translate(30,50)">
                     <rect x=-8 y=6 width=16 height=20 rx=5 ry=5 style="fill: black" />
