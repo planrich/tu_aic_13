@@ -12,7 +12,7 @@ def post_task(task, keyword):
             'task_text': task.paragraph,
             'answer_possibilities': ['Positive','Neutral','Negative'],
             'callback_link': settings.DOMAIN + '/api/tasks/' + str(task.id) + '/answers',
-            'price': 11
+            'price': task.price
            }
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     for i in range(1,4):
