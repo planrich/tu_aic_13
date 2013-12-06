@@ -96,6 +96,8 @@ class Task(Base):
         self.keyword_id = keyword.id
         self.paragraph = paragraph
         self.finished_rating = None
+        self.price = 2
+        self.price_factor = 1
 
     def calculate_rating(self):
         negative = 0

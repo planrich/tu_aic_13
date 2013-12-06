@@ -15,7 +15,7 @@ def fetch_rss(url):
     try:
         response = requests.get(url)
         return ET.fromstring(response.text.encode('utf-8'))
-    except Exception e:
+    except Exception as e:
         return None
 
 def parse_date(date_str):
