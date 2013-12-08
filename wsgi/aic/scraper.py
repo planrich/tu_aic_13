@@ -8,6 +8,7 @@ import db
 import json
 import crowd
 import re
+import math
 
 TEXT_SIZE = 250
 
@@ -67,6 +68,8 @@ def process_feed(feed):
             if len(kws) > 0:
                 for keyword in kws:
                     task = db.Task(project,keyword,text)
+                    # 1 cent per 100 chars (roundet up to next 100 chars)
+                    task.price = math.ceil(len(text)/ 100)/100
                     session.add(task)
                     session.commit()
 
