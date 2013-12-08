@@ -15,7 +15,7 @@ def fetch_rss(url):
     try:
         response = requests.get(url)
         return ET.fromstring(response.text.encode('utf-8'))
-    except Exception e:
+    except Exception as e:
         return None
 
 def parse_date(date_str):
@@ -38,11 +38,10 @@ def is_feed_processed(feed):
     session.close()
     return len(results) != 0
 
-def find_keywords(keywords, paragraph):
+def find_keywords(patterns, paragraph):
     found = []
-    for keyword in keywords:
-        regex = re.compile(keyword.keyword, re.IGNORECASE)
-        if regex.search(paragraph.decode('utf-8')):
+    for keyword, pattern in patterns:
+        if pattern.search(paragraph.decode('utf-8')):
             found.append(keyword)
     return found
 
@@ -51,17 +50,20 @@ def process_feed(feed):
     register_feed(feed)
     keywords = session.query(db.Keyword).all()
     for item in feed['items']:
+        print("---")
         print("getting article %s" % item['url'])
         html = requests.get(item['url']).text
         texts = parse_article(html)
 
-        print("---")
         project = db.Project("yahoo finance", item['url'])
         session.add(project)
         session.commit()
 
+        patterns = [ (keyword, re.compile(r"\b({0})\b".format(keyword.keyword), flags=re.IGNORECASE|re.LOCALE)) for keyword in keywords ]
+
+        print("searching %d paragraphs" % (len(texts),))
         for text in texts:
-            kws = find_keywords(keywords, text)
+            kws = find_keywords(patterns, text)
             if len(kws) > 0:
                 for keyword in kws:
                     task = db.Task(project,keyword,text)
@@ -100,19 +102,14 @@ def register_feed(feed):
 def parse_article(html):
     parser = etree.HTMLParser()
     tree = etree.parse(StringIO(html), parser)
-    div_list = tree.xpath("//div[@id='mediaarticlebody' or @itemprop='articleBody']")
-    if len(div_list) == 0:
-        return []
-
-    div = div_list[0]
-
-    # some rare articles have an additional wrapping, so unwarp that here
-    if div.xpath("count(div/p)") == 0:
-        div = div.xpath("div[@class='bd']")[0]
-
+    ps = tree.xpath("//div[@id='mediablogbody' or @itemprop='articleBody']/div/p")
+    if len(ps) == 0:
+        # i believe that they build their pages against anti scraping ^^
+        ps = tree.xpath("//div[@class='body yom-art-content clearfix']/p")
+        
     texts = []
     text = ''
-    for p in div.xpath("div/p"):
+    for p in ps:
         p_text = etree.tostring(p, encoding="utf-8", method="text")
         # they include some related articles which are not very interesting for us
         if not p_text.startswith("Related:"):
@@ -120,12 +117,15 @@ def parse_article(html):
             if len(text) > TEXT_SIZE:
                 texts.append(text)
                 text = ''
+    print texts
     return texts
 
 
 if __name__ == '__main__':
     rss = fetch_rss(settings.RSS_URL)
     feed = parse_rss(rss)
-    process_feed(feed)
-    if not is_feed_processed(feed):
-        process_feed(feed)
+    try:
+        if not is_feed_processed(feed):
+            process_feed(feed)
+    except requests.exceptions.ConnectionError as e:
+        print("failed to process feed due to " + str(e))
