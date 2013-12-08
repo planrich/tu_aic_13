@@ -88,16 +88,18 @@ class Task(Base):
     answers_requested = Column(Integer)
     price = Column(sqlalchemy.Float)
     price_bonus = Column(sqlalchemy.Float)
+    datetime = Column(sqlalchemy.DateTime)
 
     answers = relationship("Answer")
 
-    def __init__(self, project, keyword, paragraph):
+    def __init__(self, project, keyword, paragraph, datetime=dt.datetime.now()):
         self.project_id = project.id
         self.keyword_id = keyword.id
         self.paragraph = paragraph
         self.finished_rating = None
         self.price = 0.02
         self.price_bonus = 0
+        self.datetime = datetime
 
     def calculate_rating(self):
         negative = 0

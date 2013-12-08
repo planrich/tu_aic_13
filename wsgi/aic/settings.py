@@ -9,6 +9,9 @@ DATE_FORMAT_KEYWORD = '%Y-%m-%d'
 #Number of ratings per page
 PAGE_SIZE_KEYWORD = 20
 
+bonus1_time = 5
+bonus1_value = 0.25
+
 production = os.environ.get('OPENSHIFT_POSTGRESQL_DB_URL') is not None
 
 if production:
