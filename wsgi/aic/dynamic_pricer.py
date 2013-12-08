@@ -17,4 +17,7 @@ if __name__ == '__main__':
 			task.price_bonus = new_bonus
 			crowd.set_bonus(task)
 			print("-set bonus of task " +str(task.id) + " to " + str(task.price_bonus))
+			session.commit()
 	session.commit()
+
+	print("Finished updating bonus")
