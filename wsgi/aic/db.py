@@ -87,7 +87,7 @@ class Task(Base):
     finished_rating = sqlalchemy.Column(sqlalchemy.Integer)
     answers_requested = Column(Integer)
     price = Column(sqlalchemy.Float)
-    price_factor = Column(sqlalchemy.Float)
+    price_bonus = Column(sqlalchemy.Float)
 
     answers = relationship("Answer")
 
@@ -97,7 +97,7 @@ class Task(Base):
         self.paragraph = paragraph
         self.finished_rating = None
         self.price = 0.02
-        self.price_factor = 1
+        self.price_bonus = 0
 
     def calculate_rating(self):
         negative = 0
