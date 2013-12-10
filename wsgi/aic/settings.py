@@ -12,6 +12,9 @@ PAGE_SIZE_KEYWORD = 20
 bonus1_time = 5
 bonus1_value = 0.25
 
+# after this number of days a unsolved task gets deleted
+delete_time = 10
+
 production = os.environ.get('OPENSHIFT_POSTGRESQL_DB_URL') is not None
 
 if production:

@@ -89,6 +89,7 @@ class Task(Base):
     price = Column(sqlalchemy.Float)
     price_bonus = Column(sqlalchemy.Float)
     datetime = Column(sqlalchemy.DateTime)
+    garbage_flag = Column(sqlalchemy.Boolean)
 
     answers = relationship("Answer")
 
@@ -100,6 +101,7 @@ class Task(Base):
         self.price = 0.02
         self.price_bonus = 0
         self.datetime = datetime
+        self.garbage_flag = False
 
     def calculate_rating(self):
         negative = 0

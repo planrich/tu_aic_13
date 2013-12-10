@@ -33,3 +33,17 @@ def set_bonus(task):
         response = requests.post(url, data=json.dumps(data), headers=headers)
     return 0
 
+def set_garbage(task):
+    url = settings.CROWD_DOMAIN + '/set_garbage'
+    data = {'id': None}
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+    for i in range(1,task.answers_requested+1):
+        data['id'] =  str(task.id) + "_" + str(i)
+        response = requests.post(url, data=json.dumps(data), headers=headers)
+        if response.status_code != requests.codes.ok:
+            print("__" + str(i))
+            return response.status_code
+    return requests.codes.ok
+
+
+
