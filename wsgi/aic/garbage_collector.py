@@ -18,7 +18,7 @@ if __name__ == '__main__':
 		if status == requests.codes.ok:
 			task.garbage_flag = True
 			session.commit()
-			print("task " + str(task.id) + " is now garbage")
+			#print("task " + str(task.id) + " is now garbage")
 		else:
 			print("Error: Can not set task " + str(task.id) + " to garbage (Error " + str(status) + ")")
 	print("Finished garbage collector")
