@@ -3,23 +3,21 @@
     <head>
         {% block head %}
         <title>{% block title %}{% endblock %}</title>
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
-        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/static/style.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
         {% endblock %}
     </head>
     <body>
-        <div class='container'>
-            {% with messages = get_flashed_messages(with_categories=True) %}
-            {% if messages %}
-              <p>
-              {% for category,message in messages %}
-              <span class="alert alert-{{category}}">{{message}}</span>
-              {% endfor %}
-              </p>
-            {% endif %}
-            {% endwith %}
-            {% block content %}{% endblock %}
-        </div>
+        <nav class="navbar navbar-default navbar-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                  <a class="navbar-brand" href="/">Sentiment Analyzer</a>
+                </div>
+            </div>
+        </nav>
+        {% block content %}{% endblock %}
     </body>
 </html>

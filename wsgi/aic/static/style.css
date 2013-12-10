@@ -1,0 +1,73 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+  background: #056b57;
+}
+
+.navbar-top {
+  background: #14a085;
+  border-radius: 0;
+  margin-bottom: 0;
+  border: 0;
+  border-bottom: 4px solid #0d9378;
+}
+
+.navbar-top .navbar-brand {
+  color: white;
+  font-weight: bold;
+  font-size: 28px;
+  text-shadow: 0 2px #0d9378;
+}
+
+.navbar-top .navbar-brand:hover {
+  color: white;
+}
+
+.index-title {
+  margin: 0;
+  color: white;
+  font-size: 42px;
+  margin-top: 150px;
+  text-align: center;
+}
+
+.index-search {
+  width: 60%;
+  margin: 27px auto;
+}
+
+.index-search .form-group{
+  width: 100%;
+}
+
+.index-search .form-control{
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border: none;
+  border: 2px solid #ebebeb;
+  box-shadow: inset 0 -2px #ebebeb;
+}
+
+.index-search .form-control:focus{
+  box-shadow: none;
+  border: 2px solid #d1d1d1;
+  box-shadow: inset 0 -2px #d1d1d1;
+}
+
+.index-search .btn{
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border: 1px solid #f0776c;
+  text-shadow: 0 2px #d76b60;
+  color: white;
+  font-weight: bold;
+  background: #f0776c;
+  box-shadow: inset 0 -3px #d76b60;
+}
+
+.index-caption {
+  text-align: center;
+  color: white;
+  font-size: 18px;
+}

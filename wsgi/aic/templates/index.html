@@ -1,19 +1,16 @@
 {% extends "layout.html" %}
-{% block title %}AIC 13{% endblock %}
+{% block title %}Sentiment Analyzer{% endblock %}
 {% block content %}
-<h1>Yahoo Company and Product sentiment analyser</h1>
-
-<p>
-There are {{open_tasks}} open tasks and {{resolved_tasks}} resolved.
-</p>
-<p>
-There were {{scraping_runs}} scraping runs.
-</p>
-
-
-<ul>
-    {% for p in publications %}
-    <li>{{p.datetime}}</li>
-    {% endfor %}
-</ul>
+<div class="container">
+  <h1 class="index-title">Explore our sentiment database</h1>
+  <p class="index-caption">{{ num_resolved_tasks }} mentions from {{ num_keywords }} brands and products have been analyzed</p>
+  <form class="form-inline index-search">
+    <div class="input-group">
+      <input type="text" class="form-control input-lg" placeholder="search for a brand or product">
+      <span class="input-group-btn">
+        <button class="btn btn-default btn-lg" type="button">Search</button>
+      </span>
+    </div>
+  </form>
+</div>
 {% endblock %}

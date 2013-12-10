@@ -19,15 +19,10 @@ application.secret_key = settings.SECRET_KEY
 @application.route("/")
 def index():
     sess = db.Session()
-    pubs = sess.query(db.Publication).order_by(db.Publication.datetime).limit(50).all()
-    total_tasks = sess.query(db.Task).count()
-    open_tasks = sess.query(db.Task).filter(db.Task.finished_rating == None).count()
-    resolved_tasks = total_tasks - open_tasks
-    scraping_runs = sess.query(db.Publication).count()
-    return render_template("index.html", publications = pubs, \
-            open_tasks = open_tasks, \
-            resolved_tasks = resolved_tasks, \
-            scraping_runs = scraping_runs)
+    num_keywords = sess.query(db.Keyword).count()
+    num_resolved_tasks = sess.query(db.Task).filter(db.Task.finished_rating != None).count()
+    return render_template("index.html", num_keywords = num_keywords,
+        num_resolved_tasks = num_resolved_tasks)
 
 
 # API
@@ -73,7 +68,7 @@ def query(company, days):
     results = sess.query("rating").from_statement("""
         select avg(t.finished_rating) as rating
         from tasks t, keywords k, projects p
-        where 
+        where
             t.finished_rating is not null and
             t.keyword_id = k.id and
             k.keyword like :keyword and
