@@ -1,16 +1,15 @@
 {% extends "layout.html" %}
 {% block title %}Sentiment Analyzer{% endblock %}
+{% block bg_style %}class="index-bg"{% endblock %}
 {% block content %}
-<div class="container">
-  <h1 class="index-title">Explore our sentiment database</h1>
-  <p class="index-caption">{{ num_resolved_tasks }} mentions from {{ num_keywords }} brands and products have been analyzed</p>
-  <form class="form-inline index-search">
-    <div class="input-group">
-      <input type="text" class="form-control input-lg" placeholder="search for a brand or product">
-      <span class="input-group-btn">
-        <button class="btn btn-default btn-lg" type="button">Search</button>
-      </span>
-    </div>
-  </form>
-</div>
+<h1 class="index-title">Explore our sentiment database</h1>
+<p class="index-caption">{{ num_resolved_tasks }} mentions from {{ num_keywords }} brands and products have been analyzed</p>
+<form class="form-inline index-search" action="/search" method="get">
+  <div class="input-group">
+    <input type="text" name="q" class="form-control input-lg" placeholder="search for a brand or product">
+    <span class="input-group-btn">
+      <button class="btn btn-default btn-lg" type="submit">Search</button>
+    </span>
+  </div>
+</form>
 {% endblock %}

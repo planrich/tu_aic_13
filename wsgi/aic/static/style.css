@@ -2,6 +2,10 @@ html, body {
   height: 100%;
   width: 100%;
   font-family: 'Roboto', sans-serif;
+  background: #f6f6f6;
+}
+
+.index-bg {
   background: #056b57;
 }
 
@@ -69,5 +73,9 @@ html, body {
 .index-caption {
   text-align: center;
   color: white;
+  font-size: 18px;
+}
+
+.search-noresults {
   font-size: 18px;
 }

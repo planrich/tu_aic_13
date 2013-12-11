@@ -1,11 +1,11 @@
 # encoding: utf-8
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 from flask.json import jsonify
+from sqlalchemy import func
 
 import db
 import settings
 import utils
-import decimal
 import time
 
 
@@ -16,14 +16,26 @@ application.secret_key = settings.SECRET_KEY
 # WEBAPP
 ###########################################################
 
-@application.route("/")
-def index():
-    sess = db.Session()
-    num_keywords = sess.query(db.Keyword).count()
-    num_resolved_tasks = sess.query(db.Task).filter(db.Task.finished_rating != None).count()
-    return render_template("index.html", num_keywords = num_keywords,
-        num_resolved_tasks = num_resolved_tasks)
+@application.route('/', methods=['GET'])
+def get_index():
+    session = db.Session()
+    num_keywords = session.query(db.Keyword).count()
+    num_resolved_tasks = session.query(db.Task).filter(db.Task.finished_rating != None).count()
+    return render_template('index.html', num_keywords=num_keywords, num_resolved_tasks=num_resolved_tasks)
 
+@application.route('/search', methods=['GET'])
+def get_search():
+    session = db.Session()
+    q = request.args.get('q', '')
+    result = session.query(db.Keyword).filter(func.lower(db.Keyword.keyword) == func.lower(q)).first()
+    if not result:
+        return render_template('search.html', q=q)
+    return redirect(url_for('get_keyword', k=result.keyword))
+
+@application.route('/keyword/<k>', methods=['GET'])
+def get_keyword(k):
+    keyword = []
+    return render_template('keyword.html', keyword=keyword)
 
 # API
 ###########################################################
