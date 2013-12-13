@@ -1,5 +1,0 @@
-#!/bin/bash
-source $OPENSHIFT_PYTHON_DIR/virtenv/bin/activate
-cd $OPENSHIFT_REPO_DIR
-echo "garbage collection: `date`" >> $OPENSHIFT_PYTHON_LOG_DIR/garbage.log
-python wsgi/aic/garbage_collector.py >> $OPENSHIFT_PYTHON_LOG_DIR/garbage.log
