@@ -1,4 +1,5 @@
 import os
+import numpy as np
 
 RSS_URL = 'http://finance.yahoo.com/news/?format=rss'
 SECRET_KEY = "kl12kCF(uL>ASJ123r5b129cfujxzl;kjashb124e12edljcv"
@@ -9,8 +10,16 @@ DATE_FORMAT_KEYWORD = '%Y-%m-%d'
 #Number of ratings per page
 PAGE_SIZE_KEYWORD = 20
 
-bonus1_time = 5
-bonus1_value = 0.25
+
+
+# bonus_matrix: each row is a bonus step
+# bonus_matrix: in column 0 is the time when the bonus is active (5 means the bonus is set after 5 days)
+# bonus_matrix: in column 1 is the bonus value (0.25 means the bonus is 25 per cent of the normal price)
+bonus_matrix = np.array([[4, 0.25],[8, 0.5]])
+#bonus_matrix[0][0] = 4
+#bonus_matrix[0][1] = 0.25
+#bonus_matrix[1][0] = 8
+#bonus_matrix[1][1] = 0.5
 
 # after this number of days a unsolved task gets deleted
 delete_time = 10
