@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}{{keyword.keyword}} analysis{% endblock %}
+{% block head %}
+<script src="/static/keyword.js"></script>
+{% endblock %}
+{% block content %}
+<h1 class="keyword-title">{{ keyword.keyword }}</h1>
+<h2 class="keyword-subtitle">Stats</h2>
+<ul class="keyword-stats">
+  <li><span class="glyphicon glyphicon-globe"></span>Ranking: 1</li>
+  <li><span class="glyphicon glyphicon-flash"></span>Score: 7.98</li>
+  <li><span class="glyphicon glyphicon-time"></span>Since: 10 Dec 2013</li>
+</ul>
+<div class="row">
+  <div class="col-md-3">
+    <h2 class="keyword-subtitle">Mentions</h2>
+    <div id="keyword-pie" class="keyword-pie"></div>
+  </div>
+  <div class="col-md-9">
+    <h2 class="keyword-subtitle">1 Year History</h2>
+    <div id="keyword-stack" class="keyword-stack"></div>
+  </div>
+</div>
+{% endblock %}
