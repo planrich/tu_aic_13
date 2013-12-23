@@ -169,3 +169,8 @@ html, body {
 .panel {
   box-shadow: 0 2px 0 #ddd;
 }
+
+.panel input:focus {
+  border: 1px solid #d1d1d1;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+};

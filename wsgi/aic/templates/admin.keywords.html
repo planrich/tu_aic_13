@@ -6,14 +6,23 @@
 {% endblock %}
 
 {% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
 <div class="panel panel-default">
   <div class="panel-heading"><h2 class="page-subtitle">Create keyword</h2></div>
   <div class="panel-body">
-    <form class="form-inline" role="form">
+    <form class="form-inline" role="form" method="post">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="enter a new keyword">
+        <input type="text" name="keyword" class="form-control" placeholder="enter a new keyword">
         <span class="input-group-btn">
-          <button class="btn btn-default" type="button"> Create</button>
+          <button class="btn btn-default" type="submit"> Create</button>
         </span>
       </div>
     </form>

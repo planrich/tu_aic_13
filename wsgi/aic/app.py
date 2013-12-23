@@ -1,5 +1,5 @@
 # encoding: utf-8
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, flash, redirect, url_for
 from flask.json import jsonify
 from sqlalchemy import func
 
@@ -32,7 +32,7 @@ def get_search():
         return render_template('search.html', q=q)
     return redirect(url_for('get_keyword', k=result.keyword))
 
-@application.route('/keyword/<k>', methods=['GET'])
+@application.route('/keywords/<k>', methods=['GET'])
 def get_keyword(k):
     session = db.Session()
     keyword = session.query(db.Keyword).filter(func.lower(db.Keyword.keyword) == func.lower(k)).first()
@@ -57,6 +57,18 @@ def get_admin_keywords():
     session = db.Session()
     keywords = session.query(db.Keyword).all()
     return render_template('admin.keywords.html', keywords=keywords)
+
+@application.route('/admin/keywords', methods=['POST'])
+def post_admin_keywords():
+    session = db.Session()
+    if request.form['keyword']:
+        keyword = db.Keyword(request.form['keyword'])
+        session.add(keyword)
+        session.commit()
+        flash("Keyword created correctly", "success")
+    else:
+        flash("The keyword can not be empty", "danger")
+    return redirect(url_for('get_admin_keywords'))
 
 # API
 ###########################################################
