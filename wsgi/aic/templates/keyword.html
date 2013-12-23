@@ -1,24 +1,43 @@
 {% extends "layout.html" %}
 {% block title %}{{keyword.keyword}} analysis{% endblock %}
+
 {% block head %}
 <script src="/static/keyword.js"></script>
 {% endblock %}
+
+{% block pagebar %}
+<h1 class="pagebar-title">{{ keyword.keyword }}</h1>
+{% endblock %}
+
 {% block content %}
-<h1 class="keyword-title">{{ keyword.keyword }}</h1>
-<h2 class="keyword-subtitle">Stats</h2>
-<ul class="keyword-stats">
-  <li><span class="glyphicon glyphicon-globe"></span>Ranking: 1</li>
-  <li><span class="glyphicon glyphicon-flash"></span>Score: 7.98</li>
-  <li><span class="glyphicon glyphicon-time"></span>Since: 10 Dec 2013</li>
-</ul>
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h2>Stats</h2></div>
+  <div class="panel-body">
+    <ul class="keyword-stats">
+      <li><span class="glyphicon glyphicon-globe"></span>Ranking: 1</li>
+      <li><span class="glyphicon glyphicon-flash"></span>Score: 7.98</li>
+      <li><span class="glyphicon glyphicon-time"></span>Since: 10 Dec 2013</li>
+    </ul>
+  </div>
+</div>
+
 <div class="row">
   <div class="col-md-3">
-    <h2 class="keyword-subtitle">Mentions</h2>
-    <div id="keyword-pie" class="keyword-pie"></div>
+    <div class="panel panel-default">
+      <div class="panel-heading"><h2>Mentions</h2></div>
+      <div class="panel-body">
+       <div id="keyword-pie" class="keyword-pie"></div>
+      </div>
+    </div>
   </div>
   <div class="col-md-9">
-    <h2 class="keyword-subtitle">1 Year History</h2>
-    <div id="keyword-stack" class="keyword-stack"></div>
+    <div class="panel panel-default">
+      <div class="panel-heading"><h2>1 Year History</h2></div>
+      <div class="panel-body">
+        <div id="keyword-stack" class="keyword-stack"></div>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

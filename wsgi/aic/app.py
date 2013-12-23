@@ -23,10 +23,6 @@ def get_index():
     num_resolved_tasks = session.query(db.Task).filter(db.Task.finished_rating != None).count()
     return render_template('index.html', num_keywords=num_keywords, num_resolved_tasks=num_resolved_tasks)
 
-@application.route('/explore', methods=['GET'])
-def get_explore():
-    return render_template('explore.html')
-
 @application.route('/search', methods=['GET'])
 def get_search():
     session = db.Session()
@@ -43,6 +39,24 @@ def get_keyword(k):
     if not keyword:
         return redirect(url_for('get_index'))
     return render_template('keyword.html', keyword=keyword)
+
+@application.route('/admin', methods=['GET'])
+def get_admin():
+    return redirect(url_for('get_admin_tasks'))
+
+@application.route('/admin/tasks', methods=['GET'])
+def get_admin_tasks():
+    return render_template('admin.tasks.html')
+
+@application.route('/admin/workers', methods=['GET'])
+def get_admin_workers():
+    return render_template('admin.workers.html')
+
+@application.route('/admin/keywords', methods=['GET'])
+def get_admin_keywords():
+    session = db.Session()
+    keywords = session.query(db.Keyword).all()
+    return render_template('admin.keywords.html', keywords=keywords)
 
 # API
 ###########################################################

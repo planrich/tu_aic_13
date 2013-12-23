@@ -38,7 +38,6 @@ class Project(Base):
 
     tasks = relationship("Task")
 
-
     def __init__(self, paragraph, link, datetime=dt.datetime.now()):
         self.link = link
         self.paragraph = paragraph

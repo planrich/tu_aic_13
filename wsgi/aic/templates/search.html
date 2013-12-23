@@ -1,6 +1,10 @@
 {% extends "layout.html" %}
 {% block title %}Search results for "{{q}}"{% endblock %}
+
+{% block pagebar %}
+<h1 class="pagebar-title">Search results</h1>
+{% endblock %}
+
 {% block content %}
-<h2>Search results</h2>
 <p class="search-noresults">No results found for "{{q}}".</p>
 {% endblock %}

@@ -11,8 +11,8 @@ html, body {
 
 .navbar-top {
   background: #14a085;
+  margin: 0;
   border-radius: 0;
-  margin-bottom: 0;
   border: 0;
   border-bottom: 4px solid #0d9378;
 }
@@ -90,14 +90,6 @@ html, body {
   font-size: 18px;
 }
 
-.keyword-title {
-  font-size: 40px;
-}
-
-.keyword-subtitle {
-  font-size: 25px;
-}
-
 .keyword-pie {
   height: 300px;
 }
@@ -122,4 +114,58 @@ html, body {
 
 .keyword-stats span {
   margin-right: 9px;
+}
+
+.pagebar {
+  padding-top: 15px;
+  background: white;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 0 #ddd;
+}
+
+.pagebar-title {
+  margin: 0;
+  margin-bottom: 15px;
+  font-size: 32px;
+  display: inline-block;
+  font-family: 'Roboto', sans-serif;
+}
+
+.pagebar-nav {
+  margin: 0;
+  display: inline-block;
+}
+
+.pagebar-nav li {
+  margin-right: 20px;
+}
+
+.pagebar-nav li a {
+  color: #333;
+  border-radius: 5px;
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.pagebar-nav li.active a, .pagebar-nav li.active a:hover {
+  background: none;
+  font-weight: bold;
+  color: #14a085;
+  border-radius: 0;
+  border-bottom: 4px solid #14a085;
+}
+
+.pagebar-nav li a:hover {
+  color: #333;
+  background: none;
+}
+
+.panel-heading h2 {
+  margin: 5px 0;
+  font-size: 25px;
+}
+
+.panel {
+  box-shadow: 0 2px 0 #ddd;
 }

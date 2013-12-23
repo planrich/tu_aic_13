@@ -45,7 +45,7 @@ function plotStack(mentions) {
       tickLength: 0,
       mode: "categories"
     },
-    colors: ['#C44D58', '#A8A890', '#14a085']
+    colors: ['#14a085', '#A8A890', '#f0776c']
   };
 
   $.plot("#keyword-stack", data, options);
@@ -64,13 +64,13 @@ function plotPie(mentions) {
 
   data = [{
     data: positive,
-    color: '#C44D58'
+    color: '#14a085'
   }, {
     data: neutral,
     color: '#A8A890'
   }, {
     data: negative,
-    color: '#14a085'
+    color: '#f0776c'
   }];
 
   var options = {

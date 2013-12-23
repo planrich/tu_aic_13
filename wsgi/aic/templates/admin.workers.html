@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block title %}Administration panel{% endblock %}
+
+{% block pagebar %}
+{% include "admin.nav.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-default">
+  <div class="panel-heading"><h2>Workers</h2></div>
+  <table class="table table-striped">
+   <thead>
+    <th>ID</th>
+    <th>Registered</th>
+    <th>Total Answers</th>
+    <th>Failed Answers</th>
+    <th>Blocked</th>
+   </thead>
+   <tbody>
+    <tr>
+      <td>1</td>
+      <td>1 month ago</td>
+      <td>22</td>
+      <td>0</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>17 days ago</td>
+      <td>10</td>
+      <td>2</td>
+      <td>No</td>
+    </tr>
+    <tr class="danger">
+      <td>2</td>
+      <td>3 days ago</td>
+      <td>7</td>
+      <td>5</td>
+      <td>Yes</td>
+    </tr>
+   </tbody>
+  </table>
+</div>
+{% endblock %}

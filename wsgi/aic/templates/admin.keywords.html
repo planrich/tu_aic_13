@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block title %}Administration panel{% endblock %}
+
+{% block pagebar %}
+{% include "admin.nav.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-default">
+  <div class="panel-heading"><h2 class="page-subtitle">Create keyword</h2></div>
+  <div class="panel-body">
+    <form class="form-inline" role="form">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="enter a new keyword">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button"> Create</button>
+        </span>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading"><h2>Keywords</h2></div>
+  <table class="table table-striped">
+   <thead>
+    <th>Keyword</th>
+    <th>Since</th>
+    <th>Mentions</th>
+    <th>Rating</th>
+    <th>Rank</th>
+   </thead>
+   <tbody>
+    {% for keyword in keywords %}
+    <tr>
+      <td>{{ keyword.keyword }}</td>
+      <td>3 months ago</td>
+      <td>{{ keyword.tasks | length }}</td>
+      <td>7.8</td>
+      <td>1</td>
+    </tr>
+    {% endfor %}
+   </tbody>
+  </table>
+</div>
+
+{% endblock %}
