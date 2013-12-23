@@ -2,6 +2,9 @@
 {% block title %}{{keyword.keyword}} analysis{% endblock %}
 
 {% block head %}
+<script>
+ var mentions = {{ mentions | safe }}
+</script>
 <script src="/static/keyword.js"></script>
 {% endblock %}
 

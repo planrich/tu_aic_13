@@ -3,10 +3,14 @@ from flask import Flask, request, render_template, flash, redirect, url_for
 from flask.json import jsonify
 from sqlalchemy import func
 
+from random import randint
+import json
+
 import db
 import settings
 import utils
 import time
+
 
 
 application = Flask(__name__)
@@ -38,7 +42,16 @@ def get_keyword(k):
     keyword = session.query(db.Keyword).filter(func.lower(db.Keyword.keyword) == func.lower(k)).first()
     if not keyword:
         return redirect(url_for('get_index'))
-    return render_template('keyword.html', keyword=keyword)
+
+    # TEST DATA
+    mentions = {"positive": [], "neutral": [], "negative": []};
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    for month in months:
+        mentions["positive"].append([month, randint(0, 30)])
+        mentions["negative"].append([month, randint(0, 30)])
+        mentions["neutral"].append([month, randint(0, 30)])
+
+    return render_template('keyword.html', keyword=keyword, mentions=json.dumps(mentions))
 
 @application.route('/admin', methods=['GET'])
 def get_admin():
@@ -104,7 +117,6 @@ def post_task_answer(task_id):
     return jsonify(answer.as_dict()), 200
 
 
-# TODO: Refactor this ---
 @application.route('/query/<company>', defaults={'days': 20})
 @application.route("/query/<company>/<int:days>")
 def query(company, days):

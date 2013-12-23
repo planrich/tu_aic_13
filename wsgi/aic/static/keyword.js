@@ -1,24 +1,7 @@
 $(function(){
-  mentions = getKeywordMentions();
   plotStack(mentions);
   plotPie(mentions);
 });
-
-// mockdata
-function getKeywordMentions() {
-  var mentions = {positive: [], neutral: [], negative: []};
-
-  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
-                'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-  for (var i = 0; i <= months.length; i += 1) {
-    mentions.positive.push([months[i], parseInt(Math.random() * 30)]);
-    mentions.negative.push([months[i], parseInt(Math.random() * 30)]);
-    mentions.neutral.push([months[i], parseInt(Math.random() * 30)]);
-  }
-
-  return mentions;
-}
 
 function plotStack(mentions) {
   var data = [mentions.positive, mentions.neutral, mentions.negative];
