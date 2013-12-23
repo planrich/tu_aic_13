@@ -20,9 +20,9 @@
           <a class="navbar-brand" href="/">Sentiment Analyzer</a>
         </div>
         {% if request.path != '/' %}
-        <form class="navbar-form navbar-left navbar-search" role="search">
+        <form class="navbar-form navbar-left navbar-search" role="search" action="/search" method="get">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="search for a brand or product">
+            <input type="text" name="q" class="form-control" placeholder="search for a brand or product">
             <span class="input-group-btn">
               <button class="btn btn-default" type="button">Search</button>
             </span>
