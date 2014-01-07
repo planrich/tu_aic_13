@@ -128,7 +128,7 @@ def query(company, days):
         where
             t.finished_rating is not null and
             t.keyword_id = k.id and
-            k.keyword like :keyword and
+            k.keyword ilike :keyword and
             t.project_id = p.id and
             (now() - (cast (p.datetime as timestamp))) < interval ':days days'
     """).params(keyword=company, days=days).all()
