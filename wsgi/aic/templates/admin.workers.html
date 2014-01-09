@@ -5,6 +5,14 @@
 {% include "admin.nav.html" %}
 {% endblock %}
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
 {% block content %}
 <div class="panel panel-default">
   <div class="panel-heading"><h2>Workers</h2></div>
@@ -13,18 +21,37 @@
     <th>ID</th>
     <th>Registered</th>
     <th>Total Answers</th>
-    <th>Failed Answers</th>
+    <!--<th>Failed Answers</th>-->
+    <th>Rating</th>
     <th>Blocked</th>
    </thead>
    <tbody>
-    <tr>
-      <td>1</td>
-      <td>1 month ago</td>
-      <td>22</td>
-      <td>0</td>
-      <td>No</td>
+    {% for worker in workers %}
+    <tr {%if worker.blocked == 1 %} class="danger" {% endif %} >
+      <td>{{ worker.id }}</td>
+      <td>{{ worker.first_seen }} </td>
+      <td> {{ worker.answers|length }} </td>
+      <td>{{ worker.worker_rating }}</td>
+      <td>
+        <form class="form-inline" role="form" method="post">
+          <div class="input-group">
+            <input type="hidden" name ="worker_id" value="{{worker.id}}">
+            <span class="input-group-btn">
+                {% if worker.blocked == 1 %}
+                Yes
+                {% else %}
+                No
+                {% endif %}
+        
+              <button class="btn btn-default" type="submit"> Toggle</button>
+            </span>
+          </div>
+        </form>  
+        </td>
+    
     </tr>
-    <tr>
+    {% endfor %}
+    <!-- <tr>
       <td>2</td>
       <td>17 days ago</td>
       <td>10</td>
@@ -37,7 +64,7 @@
       <td>7</td>
       <td>5</td>
       <td>Yes</td>
-    </tr>
+    </tr>-->
    </tbody>
   </table>
 </div>

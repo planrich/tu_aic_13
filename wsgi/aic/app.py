@@ -63,7 +63,9 @@ def get_admin_tasks():
 
 @application.route('/admin/workers', methods=['GET'])
 def get_admin_workers():
-    return render_template('admin.workers.html')
+    session = db.Session()
+    workers = session.query(db.Worker).order_by(db.Worker.worker_rating, db.Worker.id).all()
+    return render_template('admin.workers.html', workers = workers)
 
 @application.route('/admin/keywords', methods=['GET'])
 def get_admin_keywords():
@@ -101,7 +103,7 @@ def post_task_answer(task_id):
     worker_id = raw_answer['user']
     worker = session.query(db.Worker).filter(db.Worker.id == worker_id).first()
     if not worker:
-        worker = db.Worker(worker_id)
+        worker = db.Worker(worker_id, 0, 0)
         session.add(worker)
         session.commit()
 
@@ -111,11 +113,34 @@ def post_task_answer(task_id):
 
     if len(task.answers) == task.answers_requested:
         task.calculate_rating()
+        
         session.add(task)
+        session.commit()
+        task.rate_workers()
         session.commit()
 
     return jsonify(answer.as_dict()), 200
 
+@application.route("/admin/workers", methods=['POST'])
+def post_worker_toggle():
+    session = db.Session()
+    if not request.form["worker_id"]:
+         flash("Worker not found", "fail")
+         return redirect(url_for('get_admin_workers'))
+    else:
+        worker_id = request.form["worker_id"]
+    worker = session.query(db.Worker).filter(db.Worker.id==worker_id).first()
+    if not worker:
+        flash("Worker not found", "fail")
+        
+    else:
+        if worker.blocked==1:
+            worker.blocked=0
+        else:
+            worker.blocked=1
+        session.commit()
+        flash("Worker state toggled", "success")
+    return redirect(url_for('get_admin_workers'))
 
 @application.route('/query/<company>', defaults={'days': 20})
 @application.route("/query/<company>/<int:days>")
@@ -178,3 +203,12 @@ contain articles about the compnay/product!""" % company)
 if __name__ == "__main__":
     application.debug = True
     application.run()
+
+# jinja2 template filters
+
+@application.template_filter('strftime')
+def _jinja2_filter_datetime(date, fmt=None):
+    date = dateutil.parser.parse(date)
+    native = date.replace(tzinfo=None)
+    format='%b %d, %Y'
+    return native.strftime(format) 

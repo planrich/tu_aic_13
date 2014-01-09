@@ -69,13 +69,21 @@ class Answer(Base):
 class Worker(Base):
     __tablename__ = 'workers'
     id = sqlalchemy.Column(sqlalchemy.String, primary_key=True)
+    # added for storing rating of workers 
+    worker_rating = sqlalchemy.Column(sqlalchemy.Integer)
+    blocked = sqlalchemy.Column(sqlalchemy.Integer)
+    first_seen = sqlalchemy.Column(sqlalchemy.DateTime)
+    #
     answers = relationship("Answer")
-
-    def __init__(self, worker_id):
+    
+    
+    def __init__(self, worker_id, w_rating, w_blocked):
         """ provide the workerid from the mobile works system.
             it is assumed it is a string """
         self.id = worker_id
-
+        self.worker_rating = w_rating
+        self.blocked = w_blocked
+        self.first_seen = dt.today()
 
 class Task(Base):
     __tablename__ = 'tasks'
@@ -119,7 +127,45 @@ class Task(Base):
             self.finished_rating = 0
         else:
             self.finished_rating = 5
-
-
+       
+    def rate_workers(self):
+        negative = 0
+        positive = 0
+        neutral = 0
+        for answer in self.answers:
+            if answer.value == 'negative':
+                negative += 1
+            elif answer.value == 'positive':
+                positive += 1
+            else:
+                neutral += 1
+        if positive > negative:
+            m = positive
+            ml = 'positive'
+        else:
+            m = negative
+            ml = 'negative'
+        if neutral > m :
+            m = neutral
+            ml ='neutral'
+        session = Session()
+        percentage = float(m)/(positive+neutral+negative)
+        for answer in self.answers:
+            worker = session.query(Worker).filter(Worker.id==answer.worker_id).first()
+            if percentage >= 0.8:
+                if answer.value == ml:
+                    worker.worker_rating += 3
+                else:
+                    worker.worker_rating -= 2
+            elif 0.5 < percentage < 0.8:
+                if answer.value == ml:
+                    worker.worker_rating += 1
+                else:
+                    worker.worker_rating -= 1
+            else:
+                worker.worker_rating -= 1
+            if worker.worker_rating > 0:
+                worker.worker_rating = 0
+        session.commit()
 Base.metadata.create_all(engine)
 
