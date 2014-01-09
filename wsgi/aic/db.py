@@ -83,7 +83,7 @@ class Worker(Base):
         self.id = worker_id
         self.worker_rating = w_rating
         self.blocked = w_blocked
-        self.first_seen = dt.today()
+        self.first_seen = dt.datetime.today()
 
 class Task(Base):
     __tablename__ = 'tasks'
@@ -166,6 +166,9 @@ class Task(Base):
                 worker.worker_rating -= 1
             if worker.worker_rating > 0:
                 worker.worker_rating = 0
+            #automatic blocking of bad workers
+            if worker.worker_rating<-20:
+                worker.blocked = 1
         session.commit()
 Base.metadata.create_all(engine)
 

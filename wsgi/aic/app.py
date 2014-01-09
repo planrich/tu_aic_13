@@ -16,6 +16,9 @@ import time
 application = Flask(__name__)
 application.secret_key = settings.SECRET_KEY
 
+# Filters for templates
+application.jinja_env.filters['humanize_date'] = utils.humanize_date
+
 
 # WEBAPP
 ###########################################################
@@ -66,6 +69,26 @@ def get_admin_workers():
     session = db.Session()
     workers = session.query(db.Worker).order_by(db.Worker.worker_rating, db.Worker.id).all()
     return render_template('admin.workers.html', workers = workers)
+    
+@application.route("/admin/workers", methods=['POST'])
+def post_worker_toggle():
+    session = db.Session()
+    if not request.form["worker_id"]:
+         flash("Worker not found", "fail")
+         return redirect(url_for('get_admin_workers'))
+    else:
+        worker_id = request.form["worker_id"]
+    worker = session.query(db.Worker).filter(db.Worker.id==worker_id).first()
+    if not worker:
+        flash("Worker not found", "fail")
+        
+    else:
+        if worker.blocked==1:
+            worker.blocked=0
+        else:
+            worker.blocked=1
+        session.commit()
+    return redirect(url_for('get_admin_workers'))
 
 @application.route('/admin/keywords', methods=['GET'])
 def get_admin_keywords():
@@ -121,27 +144,6 @@ def post_task_answer(task_id):
 
     return jsonify(answer.as_dict()), 200
 
-@application.route("/admin/workers", methods=['POST'])
-def post_worker_toggle():
-    session = db.Session()
-    if not request.form["worker_id"]:
-         flash("Worker not found", "fail")
-         return redirect(url_for('get_admin_workers'))
-    else:
-        worker_id = request.form["worker_id"]
-    worker = session.query(db.Worker).filter(db.Worker.id==worker_id).first()
-    if not worker:
-        flash("Worker not found", "fail")
-        
-    else:
-        if worker.blocked==1:
-            worker.blocked=0
-        else:
-            worker.blocked=1
-        session.commit()
-        flash("Worker state toggled", "success")
-    return redirect(url_for('get_admin_workers'))
-
 @application.route('/query/<company>', defaults={'days': 20})
 @application.route("/query/<company>/<int:days>")
 def query(company, days):
@@ -184,31 +186,8 @@ contain articles about the compnay/product!""" % company)
 for %s. Either you mistyped the company or yahoo finance does not \
 contain articles about the compnay/product!""" % company)
 
-    #tasks = sess.query(db.Keyword, db.Task).filter \
-    #    (db.Keyword.keyword==company \
-    #    # and db.Project.finishedRating != None \  does not work
-    #    and db.projects.datetime > date.today - timespan)
-    #cnt=0
-    #total=0
-    #for k,t in tasks:
-    #    if k.finishedRating == None:
-    #        continue
-    #    cnt+=1
-    #    total+=int(p.finished_rating or 0)
-    #    #out += str(total)
-    #if cnt == 0:
-    #    return '{}'
-    #return '{"'+company+ '":' + str(1.0*total/cnt) + '}'
-
 if __name__ == "__main__":
     application.debug = True
     application.run()
 
-# jinja2 template filters
 
-@application.template_filter('strftime')
-def _jinja2_filter_datetime(date, fmt=None):
-    date = dateutil.parser.parse(date)
-    native = date.replace(tzinfo=None)
-    format='%b %d, %Y'
-    return native.strftime(format) 
