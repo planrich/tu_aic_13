@@ -23,48 +23,31 @@
     <th>Total Answers</th>
     <!--<th>Failed Answers</th>-->
     <th>Rating</th>
-    <th>Blocked</th>
+    <th>Status</th>
    </thead>
    <tbody>
     {% for worker in workers %}
     <tr {%if worker.blocked == 1 %} class="danger" {% endif %} >
       <td>{{ worker.id }}</td>
-      <td>{{ worker.first_seen }} </td>
-      <td> {{ worker.answers|length }} </td>
+      <td>{{ worker.first_seen | humanize_date }} </td>
+      <td>{{ worker.answers|length }} </td>
       <td>{{ worker.worker_rating }}</td>
       <td>
         <form class="form-inline" role="form" method="post">
-          <div class="input-group">
             <input type="hidden" name ="worker_id" value="{{worker.id}}">
-            <span class="input-group-btn">
+              <button class="btn {% if worker.blocked == 1 %} btn-danger active
+                {% else %} btn-default {% endif %}" type="submit"> 
                 {% if worker.blocked == 1 %}
-                Yes
+                    Blocked
                 {% else %}
-                No
+                    Block
                 {% endif %}
-        
-              <button class="btn btn-default" type="submit"> Toggle</button>
-            </span>
-          </div>
+            </button>
         </form>  
         </td>
-    
     </tr>
     {% endfor %}
-    <!-- <tr>
-      <td>2</td>
-      <td>17 days ago</td>
-      <td>10</td>
-      <td>2</td>
-      <td>No</td>
-    </tr>
-    <tr class="danger">
-      <td>2</td>
-      <td>3 days ago</td>
-      <td>7</td>
-      <td>5</td>
-      <td>Yes</td>
-    </tr>-->
+
    </tbody>
   </table>
 </div>
