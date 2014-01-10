@@ -129,7 +129,10 @@ def post_task_answer(task_id):
         worker = db.Worker(worker_id, 0, 0)
         session.add(worker)
         session.commit()
-
+    
+    if worker.blocked == 1:
+        return jsonify(error='Unfortunately, your account has been blocked'), 401
+    
     answer = db.Answer(task, worker, raw_answer['answer'])
     session.add(answer)
     session.commit()
