@@ -44,8 +44,8 @@
       <td>{{ keyword.keyword }}</td>
       <td>3 months ago</td>
       <td>{{ keyword.tasks | length }}</td>
-      <td>7.8</td>
-      <td>1</td>
+      <td>{{ ratings.get(keyword.keyword) }}</td>
+      <td>{{ ranks.get(keyword.keyword) }}</td>
     </tr>
     {% endfor %}
    </tbody>

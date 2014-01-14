@@ -6,11 +6,24 @@ from sqlalchemy import Table, Column, Integer, ForeignKey, String, DateTime, Boo
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 import datetime as dt
+from contextlib import contextmanager
 
 engine = sqlalchemy.create_engine(settings.DB_URL)
 
 Session = sqlalchemy.orm.sessionmaker(bind=engine)
 Base = sqlalchemy.ext.declarative.declarative_base()
+
+@contextmanager
+def session_scope():
+    session = Session()
+    try:
+        yield session
+        session.commit()
+    except:
+        session.rollback()
+        raise
+    finally:
+        session.close()
 
 class Publication(Base):
     __tablename__ = 'publications'
