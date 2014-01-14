@@ -38,6 +38,7 @@ class Keyword(Base):
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
     keyword = sqlalchemy.Column(sqlalchemy.String)
     tasks = relationship("Task")
+    added = sqlalchemy.Column(sqlalchemy.DateTime)
 
     def __init__(self, keyword):
         self.keyword = keyword

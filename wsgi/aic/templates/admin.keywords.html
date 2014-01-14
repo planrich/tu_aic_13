@@ -42,7 +42,7 @@
     {% for keyword in keywords %}
     <tr>
       <td>{{ keyword.keyword }}</td>
-      <td>3 months ago</td>
+      <td>{{ keyword.added | ago(1) }}</td>
       <td>{{ keyword.tasks | length }}</td>
       <td>{{ ratings.get(keyword.keyword) }}</td>
       <td>{{ ranks.get(keyword.keyword) }}</td>

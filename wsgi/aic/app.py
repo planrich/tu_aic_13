@@ -11,6 +11,7 @@ import db
 import settings
 import utils
 import time
+import ago
 
 
 
@@ -19,6 +20,7 @@ application.secret_key = settings.SECRET_KEY
 
 # Filters for templates
 application.jinja_env.filters['humanize_date'] = utils.humanize_date
+application.jinja_env.filters['ago'] = ago.human
 
 
 # WEBAPP
