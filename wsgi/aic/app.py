@@ -6,6 +6,7 @@ from sqlalchemy import func
 from random import randint
 import json
 import operator
+import datetime as dt
 
 import db
 import settings
@@ -127,6 +128,7 @@ def post_admin_keywords():
     with db.session_scope() as session:
         if request.form['keyword']:
             keyword = db.Keyword(request.form['keyword'])
+            keyword.added = dt.datetime.now()
             session.add(keyword)
             session.commit()
             flash("Keyword created correctly", "success")
