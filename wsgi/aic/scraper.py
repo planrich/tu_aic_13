@@ -68,8 +68,8 @@ def process_feed(feed):
             if len(kws) > 0:
                 for keyword in kws:
                     task = db.Task(project,keyword,text)
-                    # 1 cent per 100 chars (roundet up to next 100 chars)
-                    task.price = math.ceil(len(text)/ 100)/100
+                    # 1 cent per 100 chars (rounded up to next 100 chars)
+                    task.price = math.ceil(float(len(text)) / 100.0) / 100.0
                     session.add(task)
                     session.commit()
 
