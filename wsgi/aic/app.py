@@ -52,10 +52,7 @@ def get_keyword(k):
         if not keyword:
             return redirect(url_for('get_index'))
 
-        score = session.query(func.avg(db.Task.finished_rating))\
-            .filter(db.Task.keyword_id==keyword.id and db.Task.finished_rating!=None)\
-            .scalar()
-        score = score or 0
+        score = calc_avg_sentiment(session, keyword.keyword)
 
         # TEST DATA
         mentions = {"positive": [], "neutral": [], "negative": []};
