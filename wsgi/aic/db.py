@@ -184,5 +184,7 @@ class Task(Base):
             if worker.worker_rating<-20:
                 worker.blocked = 1
         session.commit()
+        session.close()
+
 Base.metadata.create_all(engine)
 

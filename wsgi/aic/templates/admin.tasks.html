@@ -10,25 +10,31 @@
   <div class="panel-heading"><h2>Open Tasks</h2></div>
   <table class="table table-striped">
    <thead>
-    <th>ID</th>
-    <th>Keyword</th>
-    <th>Paragraph</th>
-    <th>Created</th>
-    <th>Price</th>
-    <th>Price bonus</th>
-    <th>Answers</th>
+        <th>ID</th>
+        <th>Keyword</th>
+        <th>Paragraph</th>
+        <th>Created</th>
+        <th>Price</th>
+        <th>Price bonus</th>
+        <th>Answers</th>
    </thead>
    <tbody>
-    <tr>
-      <td>1</td>
-      <td>Apple</td>
-      <td>Lorem ipsum dolor...</td>
-      <td>3 days ago</td>
-      <td>17</td>
-      <td>x2</td>
-      <td>2/6</td>
-    </tr>
+     {% for task in tasks %}
+        <tr>
+          <td>{{task.id}}</td>
+          <td>{{task.keyword | safe }}</td>
+          <td>{{task.paragraph | truncate(90,True) | safe }}</td>
+          <td>{{task.datetime | ago }}</td>
+          <td>{{task.price}}</td>
+          <td>{{task.price_bonus}}</td>
+          <td>{{task.answered}}/{{task.answers_requested or 3}}</td>
+        </tr>
+     {% endfor %}
    </tbody>
   </table>
+</div>
+<div class="pull-right text-right">
+  {{ pagination.info|safe }}
+  {{ pagination.links|safe }}
 </div>
 {% endblock %}

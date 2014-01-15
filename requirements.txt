@@ -7,3 +7,4 @@ sqlalchemy
 pytz
 numpy
 ago
+flask-paginate

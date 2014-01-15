@@ -1,6 +1,7 @@
 # encoding: utf-8
 from flask import Flask, request, render_template, flash, redirect, url_for
 from flask.json import jsonify
+from flask.ext.paginate import Pagination
 from sqlalchemy import func
 
 from random import randint
@@ -13,8 +14,6 @@ import settings
 import utils
 import time
 import ago
-
-
 
 application = Flask(__name__)
 application.secret_key = settings.SECRET_KEY
@@ -68,7 +67,30 @@ def get_admin():
 
 @application.route('/admin/tasks', methods=['GET'])
 def get_admin_tasks():
-    return render_template('admin.tasks.html')
+    with db.session_scope() as session:
+        try:
+            page = int(request.args.get('page', 1))
+        except ValueError:
+            page = 1
+        per_page = 10
+        task_count = session.query(db.Task)\
+                .filter(db.Task.finished_rating == None).count()
+        tasks = session.query(db.Task)\
+                .filter(db.Task.finished_rating == None)\
+                .order_by(db.Task.datetime)\
+                .limit(per_page)\
+                .offset((page-1)*per_page).all()
+        for task in tasks:
+            task.keyword = session.query(db.Keyword).filter(db.Keyword.id == task.keyword_id).first().keyword
+            task.answered = session.query(db.Answer).filter(db.Answer.task_id == task.id).count()
+        pagination = Pagination(page=page, 
+                total=task_count,
+                search=False,
+                per_page=per_page,
+                bs_version=3)
+        return render_template('admin.tasks.html',
+                tasks=tasks,
+                pagination=pagination)
 
 @application.route('/admin/workers', methods=['GET'])
 def get_admin_workers():
