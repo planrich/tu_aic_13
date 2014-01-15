@@ -20,6 +20,7 @@ application.secret_key = settings.SECRET_KEY
 
 # Filters for templates
 application.jinja_env.filters['humanize_date'] = utils.humanize_date
+application.jinja_env.filters['rate_score'] = utils.rate_score
 application.jinja_env.filters['ago'] = ago.human
 
 
