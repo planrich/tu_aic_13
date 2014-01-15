@@ -83,14 +83,14 @@ class Answer(Base):
 class Worker(Base):
     __tablename__ = 'workers'
     id = sqlalchemy.Column(sqlalchemy.String, primary_key=True)
-    # added for storing rating of workers 
+    # added for storing rating of workers
     worker_rating = sqlalchemy.Column(sqlalchemy.Integer)
     blocked = sqlalchemy.Column(sqlalchemy.Integer)
     first_seen = sqlalchemy.Column(sqlalchemy.DateTime)
     #
     answers = relationship("Answer")
-    
-    
+
+
     def __init__(self, worker_id, w_rating, w_blocked):
         """ provide the workerid from the mobile works system.
             it is assumed it is a string """
@@ -141,7 +141,7 @@ class Task(Base):
             self.finished_rating = 0
         else:
             self.finished_rating = 5
-       
+
     def rate_workers(self):
         negative = 0
         positive = 0

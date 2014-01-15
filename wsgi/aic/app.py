@@ -31,8 +31,8 @@ def get_index():
     with db.session_scope() as session:
         num_keywords = session.query(db.Keyword).count()
         num_resolved_tasks = session.query(db.Task).filter(db.Task.finished_rating != None).count()
-        return render_template('index.html', 
-                    num_keywords=num_keywords, 
+        return render_template('index.html',
+                    num_keywords=num_keywords,
                     num_resolved_tasks=num_resolved_tasks)
 
 @application.route('/search', methods=['GET'])
@@ -51,6 +51,11 @@ def get_keyword(k):
         if not keyword:
             return redirect(url_for('get_index'))
 
+        score = session.query(func.avg(db.Task.finished_rating))\
+            .filter(db.Task.keyword_id==keyword.id and db.Task.finished_rating!=None)\
+            .scalar()
+        score = score or 0
+
         # TEST DATA
         mentions = {"positive": [], "neutral": [], "negative": []};
         months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -59,7 +64,8 @@ def get_keyword(k):
             mentions["negative"].append([month, randint(0, 30)])
             mentions["neutral"].append([month, randint(0, 30)])
 
-        return render_template('keyword.html', keyword=keyword, mentions=json.dumps(mentions))
+        return render_template('keyword.html', keyword=keyword,
+                               score=score, mentions=json.dumps(mentions))
 
 @application.route('/admin', methods=['GET'])
 def get_admin():
@@ -83,7 +89,7 @@ def get_admin_tasks():
         for task in tasks:
             task.keyword = session.query(db.Keyword).filter(db.Keyword.id == task.keyword_id).first().keyword
             task.answered = session.query(db.Answer).filter(db.Answer.task_id == task.id).count()
-        pagination = Pagination(page=page, 
+        pagination = Pagination(page=page,
                 total=task_count,
                 search=False,
                 per_page=per_page,
@@ -97,7 +103,7 @@ def get_admin_workers():
     with db.session_scope() as session:
         workers = session.query(db.Worker).order_by(db.Worker.worker_rating, db.Worker.id).all()
         return render_template('admin.workers.html', workers = workers)
-    
+
 @application.route("/admin/workers", methods=['POST'])
 def post_worker_toggle():
     with db.session_scope() as session:
@@ -140,7 +146,7 @@ def get_admin_keywords():
             ranks[keyword] = rank
             rank += 1
 
-        return render_template('admin.keywords.html', 
+        return render_template('admin.keywords.html',
                 keywords=keywords,
                 ratings=ratings,
                 ranks=ranks)
@@ -179,17 +185,17 @@ def post_task_answer(task_id):
             worker = db.Worker(worker_id, 0, 0)
             session.add(worker)
             session.commit()
-        
+
         if worker.blocked == 1:
             return jsonify(error='Unfortunately, your account has been blocked'), 401
-        
+
         answer = db.Answer(task, worker, raw_answer['answer'])
         session.add(answer)
         session.commit()
 
         if len(task.answers) == task.answers_requested:
             task.calculate_rating()
-            
+
             session.add(task)
             session.commit()
             task.rate_workers()
