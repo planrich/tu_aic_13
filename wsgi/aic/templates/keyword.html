@@ -18,9 +18,10 @@
   <div class="panel-heading"><h2>Stats</h2></div>
   <div class="panel-body">
     <ul class="keyword-stats">
-      <li><span class="glyphicon glyphicon-globe"></span>Ranking: 1</li>
-      <li><span class="glyphicon glyphicon-flash"></span>Score: 7.98</li>
-      <li><span class="glyphicon glyphicon-time"></span>Since: 10 Dec 2013</li>
+      <li><span class="glyphicon glyphicon-time"></span>Since: {{ keyword.added|ago(1) }}</li>
+      <li><span class="glyphicon glyphicon-comment"></span>Total mentions: {{ num_mentions}}</li>
+      <li><span class="glyphicon glyphicon-star"></span>Rating: {{ average|rate_average}}</li>
+      <li><span class="glyphicon glyphicon-flash"></span>Score: {{ '%0.2f' % average|float }}</li>
     </ul>
   </div>
 </div>
@@ -36,7 +37,7 @@
   </div>
   <div class="col-md-9">
     <div class="panel panel-default">
-      <div class="panel-heading"><h2>1 Year History</h2></div>
+      <div class="panel-heading"><h2>History</h2></div>
       <div class="panel-body">
         <div id="keyword-stack" class="keyword-stack"></div>
       </div>

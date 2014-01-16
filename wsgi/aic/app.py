@@ -20,6 +20,7 @@ application.secret_key = settings.SECRET_KEY
 
 # Filters for templates
 application.jinja_env.filters['humanize_date'] = utils.humanize_date
+application.jinja_env.filters['rate_average'] = utils.rate_average
 application.jinja_env.filters['ago'] = ago.human
 
 
@@ -31,18 +32,20 @@ def get_index():
     with db.session_scope() as session:
         num_keywords = session.query(db.Keyword).count()
         num_resolved_tasks = session.query(db.Task).filter(db.Task.finished_rating != None).count()
-        return render_template('index.html', 
-                    num_keywords=num_keywords, 
+        return render_template('index.html',
+                    num_keywords=num_keywords,
                     num_resolved_tasks=num_resolved_tasks)
 
 @application.route('/search', methods=['GET'])
 def get_search():
     with db.session_scope() as session:
         q = request.args.get('q', '')
-        result = session.query(db.Keyword).filter(func.lower(db.Keyword.keyword) == func.lower(q)).first()
-        if not result:
+        keyword = session.query(db.Keyword).filter(func.lower(db.Keyword.keyword) == func.lower(q)).first()
+        if not keyword:
             return render_template('search.html', q=q)
-        return redirect(url_for('get_keyword', k=result.keyword))
+        if keyword.num_mentions(session) == 0:
+            return render_template('search.html', q=q)
+        return redirect(url_for('get_keyword', k=keyword.keyword))
 
 @application.route('/keywords/<k>', methods=['GET'])
 def get_keyword(k):
@@ -51,15 +54,16 @@ def get_keyword(k):
         if not keyword:
             return redirect(url_for('get_index'))
 
-        # TEST DATA
-        mentions = {"positive": [], "neutral": [], "negative": []};
-        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        for month in months:
-            mentions["positive"].append([month, randint(0, 30)])
-            mentions["negative"].append([month, randint(0, 30)])
-            mentions["neutral"].append([month, randint(0, 30)])
+        num_mentions = keyword.num_mentions(session)
+        if num_mentions == 0:
+            return render_template('search.html', q=q)
 
-        return render_template('keyword.html', keyword=keyword, mentions=json.dumps(mentions))
+        average = keyword.average_rating(session)
+        mentions = keyword.last_year_mentions(session)
+
+        return render_template('keyword.html', keyword=keyword,
+                               average=average, mentions=json.dumps(mentions),
+                               num_mentions=num_mentions)
 
 @application.route('/admin', methods=['GET'])
 def get_admin():
@@ -83,7 +87,7 @@ def get_admin_tasks():
         for task in tasks:
             task.keyword = session.query(db.Keyword).filter(db.Keyword.id == task.keyword_id).first().keyword
             task.answered = session.query(db.Answer).filter(db.Answer.task_id == task.id).count()
-        pagination = Pagination(page=page, 
+        pagination = Pagination(page=page,
                 total=task_count,
                 search=False,
                 per_page=per_page,
@@ -97,7 +101,7 @@ def get_admin_workers():
     with db.session_scope() as session:
         workers = session.query(db.Worker).order_by(db.Worker.worker_rating, db.Worker.id).all()
         return render_template('admin.workers.html', workers = workers)
-    
+
 @application.route("/admin/workers", methods=['POST'])
 def post_worker_toggle():
     with db.session_scope() as session:
@@ -140,7 +144,7 @@ def get_admin_keywords():
             ranks[keyword] = rank
             rank += 1
 
-        return render_template('admin.keywords.html', 
+        return render_template('admin.keywords.html',
                 keywords=keywords,
                 ratings=ratings,
                 ranks=ranks)
@@ -179,17 +183,17 @@ def post_task_answer(task_id):
             worker = db.Worker(worker_id, 0, 0)
             session.add(worker)
             session.commit()
-        
+
         if worker.blocked == 1:
             return jsonify(error='Unfortunately, your account has been blocked'), 401
-        
+
         answer = db.Answer(task, worker, raw_answer['answer'])
         session.add(answer)
         session.commit()
 
         if len(task.answers) == task.answers_requested:
             task.calculate_rating()
-            
+
             session.add(task)
             session.commit()
             task.rate_workers()

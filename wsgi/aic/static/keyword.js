@@ -4,7 +4,7 @@ $(function(){
 });
 
 function plotStack(mentions) {
-  var data = [mentions.positive, mentions.neutral, mentions.negative];
+  var data = [mentions.positive.data, mentions.neutral.data, mentions.negative.data]
 
   var options = {
     grid: {
@@ -28,6 +28,10 @@ function plotStack(mentions) {
       tickLength: 0,
       mode: "categories"
     },
+    yaxis: {
+      tickSize:1,
+      tickDecimals:0
+    },
     colors: ['#14a085', '#A8A890', '#f0776c']
   };
 
@@ -35,24 +39,14 @@ function plotStack(mentions) {
 }
 
 function plotPie(mentions) {
-  var positive = 0;
-  var negative = 0;
-  var neutral = 0;
-
-  for (i = 0; i < 12; i++) {
-    positive += mentions.positive[i][1];
-    negative += mentions.negative[i][1];
-    neutral += mentions.neutral[i][1];
-  }
-
   data = [{
-    data: positive,
+    data: mentions.positive.count,
     color: '#14a085'
   }, {
-    data: neutral,
+    data: mentions.neutral.count,
     color: '#A8A890'
   }, {
-    data: negative,
+    data: mentions.negative.count,
     color: '#f0776c'
   }];
 
