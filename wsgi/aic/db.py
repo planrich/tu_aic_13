@@ -73,7 +73,6 @@ class Keyword(Base):
                 t.finished_rating = :rating and
                 t.keyword_id = :id
             group by mon, year
-            order by mon, year asc
         """).params(id=self.id, rating=rating).all()
 
         now = datetime.datetime.now()
