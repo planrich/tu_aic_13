@@ -41,8 +41,9 @@ class Keyword(Base):
     tasks = relationship("Task")
     added = sqlalchemy.Column(sqlalchemy.DateTime)
 
-    def __init__(self, keyword):
+    def __init__(self, keyword, added=dt.datetime.now()):
         self.keyword = keyword
+        self.added = added
 
     def average_rating(self, session):
         return session.query(func.avg(Task.finished_rating))\
