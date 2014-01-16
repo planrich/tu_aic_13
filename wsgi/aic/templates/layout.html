@@ -4,13 +4,13 @@
     <title>{% block title %}{% endblock %}</title>
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{url_for('static',filename='style.css'}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
-    <script src="{{ url_for('static','jquery.flot.min.js') }}"></script>
-    <script src="{{ url_for('static','jquery.flot.categories.min.js') }}"></script>
-    <script src="{{ url_for('static','jquery.flot.stack.min.js') }}"></script>
-    <script src="{{ url_for('static','jquery.flot.pie.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='jquery.flot.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='jquery.flot.categories.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='jquery.flot.stack.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='jquery.flot.pie.min.js') }}"></script>
     {% block head %}{% endblock %}
   </head>
   <body {% block bg_style %}{% endblock %}>
