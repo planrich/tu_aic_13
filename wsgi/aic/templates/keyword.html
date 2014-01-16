@@ -18,7 +18,7 @@
   <div class="panel-heading"><h2>Stats</h2></div>
   <div class="panel-body">
     <ul class="keyword-stats">
-      <li><span class="glyphicon glyphicon-clock"></span>Since: {{ keyword.added|ago(1) }}</li>
+      <li><span class="glyphicon glyphicon-time"></span>Since: {{ keyword.added|ago(1) }}</li>
       <li><span class="glyphicon glyphicon-comment"></span>Total mentions: {{ num_mentions}}</li>
       <li><span class="glyphicon glyphicon-star"></span>Rating: {{ average|rate_average}}</li>
       <li><span class="glyphicon glyphicon-flash"></span>Score: {{ '%0.2f' % average|float }}</li>
