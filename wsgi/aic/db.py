@@ -71,7 +71,8 @@ class Keyword(Base):
             from tasks t
             where
                 t.finished_rating = :rating and
-                t.keyword_id = :id
+                t.keyword_id = :id and
+                t.datetime > CURRENT_DATE - INTERVAL '1 year'
             group by mon, year
         """).params(id=self.id, rating=rating).all()
 
