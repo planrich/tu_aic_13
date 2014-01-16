@@ -28,6 +28,10 @@ function plotStack(mentions) {
       tickLength: 0,
       mode: "categories"
     },
+    yaxis: {
+      tickSize:1,
+      tickDecimals:0
+    },
     colors: ['#14a085', '#A8A890', '#f0776c']
   };
 
