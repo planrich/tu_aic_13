@@ -20,7 +20,7 @@ application.secret_key = settings.SECRET_KEY
 
 # Filters for templates
 application.jinja_env.filters['humanize_date'] = utils.humanize_date
-application.jinja_env.filters['rate_score'] = utils.rate_score
+application.jinja_env.filters['rate_average'] = utils.rate_average
 application.jinja_env.filters['ago'] = ago.human
 
 
@@ -40,10 +40,12 @@ def get_index():
 def get_search():
     with db.session_scope() as session:
         q = request.args.get('q', '')
-        result = session.query(db.Keyword).filter(func.lower(db.Keyword.keyword) == func.lower(q)).first()
-        if not result:
+        keyword = session.query(db.Keyword).filter(func.lower(db.Keyword.keyword) == func.lower(q)).first()
+        if not keyword:
             return render_template('search.html', q=q)
-        return redirect(url_for('get_keyword', k=result.keyword))
+        if keyword.num_mentions(session) == 0:
+            return render_template('search.html', q=q)
+        return redirect(url_for('get_keyword', k=keyword.keyword))
 
 @application.route('/keywords/<k>', methods=['GET'])
 def get_keyword(k):
@@ -52,18 +54,16 @@ def get_keyword(k):
         if not keyword:
             return redirect(url_for('get_index'))
 
-        score = calc_avg_sentiment(session, keyword.keyword)
+        num_mentions = keyword.num_mentions(session)
+        if num_mentions == 0:
+            return render_template('search.html', q=q)
 
-        # TEST DATA
-        mentions = {"positive": [], "neutral": [], "negative": []};
-        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        for month in months:
-            mentions["positive"].append([month, randint(0, 30)])
-            mentions["negative"].append([month, randint(0, 30)])
-            mentions["neutral"].append([month, randint(0, 30)])
+        average = keyword.average_rating(session)
+        mentions = keyword.last_year_mentions(session)
 
         return render_template('keyword.html', keyword=keyword,
-                               score=score, mentions=json.dumps(mentions))
+                               average=average, mentions=json.dumps(mentions),
+                               num_mentions=num_mentions)
 
 @application.route('/admin', methods=['GET'])
 def get_admin():

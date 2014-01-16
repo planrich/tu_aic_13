@@ -2,7 +2,8 @@ import sqlalchemy
 import sqlalchemy.ext.declarative
 import sqlalchemy.orm
 import settings
-from sqlalchemy import Table, Column, Integer, ForeignKey, String, DateTime, Boolean
+import datetime
+from sqlalchemy import Table, Column, Integer, ForeignKey, String, DateTime, Boolean, func
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 import datetime as dt
@@ -42,6 +43,64 @@ class Keyword(Base):
 
     def __init__(self, keyword):
         self.keyword = keyword
+
+    def average_rating(self, session):
+        return session.query(func.avg(Task.finished_rating))\
+            .filter(Task.keyword_id == self.id)\
+            .filter(Task.finished_rating != None)\
+            .scalar()
+
+    def num_mentions(self, session):
+        return session.query(Task)\
+            .filter(Task.keyword_id == self.id)\
+            .filter(Task.finished_rating != None)\
+            .count()
+
+    def last_year_mentions(self, session):
+        positive = self.last_year_mentions_by_rating(session, 10)
+        neutral = self.last_year_mentions_by_rating(session, 5)
+        negative = self.last_year_mentions_by_rating(session, 0)
+        return {"positive": positive, "negative": negative, "neutral": neutral}
+
+    def last_year_mentions_by_rating(self, session, rating):
+        results = session.query("mon", "year","mentions").from_statement("""
+            select extract(month from t.datetime) as mon,
+                   extract(year from t.datetime) as year,
+                   count(t) as mentions
+            from tasks t
+            where
+                t.finished_rating = :rating and
+                t.keyword_id = :id
+            group by mon, year
+            order by mon, year asc
+        """).params(id=self.id, rating=rating).all()
+
+        now = datetime.datetime.now()
+        current_month = now.month
+        current_year = now.year
+
+        years = [current_year-1, current_year]
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        mentions = []
+        count = 0
+
+        # zeroing the months that have no data
+        for year in years:
+            for month in months:
+                mentions.append(["%s %d" % (month, year), 0])
+
+        # filling the months that have data
+        for result in results:
+            month, year, num_mentions = result
+            year = int(year)
+            month = int(month)
+            year_index = years.index(year)
+            count += num_mentions
+            mentions[year_index*12+month-1][1] = num_mentions
+
+        current_month_index = years.index(current_year)*12 + current_month
+        return {"count": count, "data": mentions[current_month_index-12:current_month_index]}
 
 class Project(Base):
     __tablename__ = 'projects'

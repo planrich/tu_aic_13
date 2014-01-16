@@ -50,14 +50,14 @@ def humanize_date(time=False):
         return str(day_diff/30) + " months ago"
     return str(day_diff/365) + " years ago"
 
-def rate_score(score):
-    if score > 9:
+def rate_average(average):
+    if average > 9:
         return 'Very good'
-    elif score > 6:
+    elif average > 6:
         return 'Good'
-    elif score > 4:
+    elif average > 4:
         return 'Neutral'
-    elif score > 1:
+    elif average > 1:
         return 'bad'
     else:
         return 'Very bad'
