@@ -42,7 +42,7 @@ function plotPie(mentions) {
     data: mentions.neutral.count,
     color: '#A8A890'
   }, {
-    data: mentions.negative.cout,
+    data: mentions.negative.count,
     color: '#f0776c'
   }];
 
