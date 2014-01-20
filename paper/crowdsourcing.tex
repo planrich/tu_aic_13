@@ -10,6 +10,7 @@
 \usepackage{doi}
 \usepackage{hyperref}
 \usepackage[]{color}
+\usepackage{siunitx}
 \usepackage[shortlabels]{enumitem}
 
 \definecolor{grey}{rgb}{0.5,0.5,0.5}
@@ -95,11 +96,10 @@ still quite young and the theoretical backgrounds---What is a crowd? What
 motivates the crowd? Why do some crowdsourcing systems and initiatives thrive
 while others fail miserably?---are still being researched, for example in the
 works of Daren Brabham~\cite{brabham2008crowdsourcing, brabham2008moving,
-brabham2010moving}. This is why in scientific literature we find various,
-often directly conflicting definitions of
-crowdsourcing~\cite{estelles2012towards}, as well as conflicting
-classifications of existing systems and initiatives; some authors see
-Wikipedia or Youtube as crowdsourcing examples while others claim the exact
+	brabham2010moving}. This is why in scientific literature we find various,
+often directly conflicting definitions of crowdsourcing, as well as conflicting
+classifications of existing systems and initiatives; some authors see Wikipedia
+or Youtube as crowdsourcing examples while others argue the exact
 opposite~\cite{estelles2012towards}.
 
 In this paper we give an overview of crowdsourcing by discussing an integrated
@@ -124,7 +124,7 @@ crowdsourcing which are often overlooked or ignored in current literature.
 %  - examination of different types of crowd, incentives, etc and how they apply to different CS initiatives
 %  - criticisms of CS
 
-\section{Crowdsourcing defined}
+\section{Crowdsourcing defined}\label{csdef}
 
 The most comprehensive definition of crowdsourcing has been compiled by
 Estell{\'e}s-Arolas and Gonz{\'a}lez-Ladr{\'o}n-de-Guevara. In their
@@ -161,8 +161,18 @@ in~\cite{estelles2012towards} apply to a crowdsourcing system:
 
 Having identified the characteristics that describe a crowdsourcing system it
 is now easy to see that neither Wikipedia, nor Youtube qualify as such. For
-Wikipedia the missing characteristics are~\ref{d},~\ref{e} and~\ref{g},
-while for Youtube only~\ref{a} and~\ref{h} even apply; all others do not.
+Wikipedia the missing characteristics are~\ref{d},~\ref{e} and~\ref{g}, while
+for Youtube none except~\ref{a} and~\ref{h} even apply.
+
+The reason crowdsourcing can and often does work is based on the concept of a
+``wisdom of crowds'', as defined and discussed by James Surowiecki
+in~\cite{surowiecki2004wisdom}.  Based on various case studies Surowiecki
+argues that under the right circumstances ``groups can be smarter than the
+smartest person in them'' and that the ``wisdom of crowds'' is derived from
+aggregating solutions, not by averaging them. Touching upon these insights
+Brabham confirms that the internet provides ``the perfect technology'' to
+aggregate independent and disparate solutions~\cite{brabham2008crowdsourcing}
+conceived by the crowd.
 
 % mostly based on estelles2012towards and brabham2008crowdsourcing
 % define what ``crowdsourcing'' really is, based on definition and
@@ -173,7 +183,7 @@ while for Youtube only~\ref{a} and~\ref{h} even apply; all others do not.
 % examples of CS vs examples of Not-CS
 
 \section{Overview of Crowdsourcing systems and platforms}
-% mostly based on estelles2012towards
+% mostly based on estelles2012towards and hossfeld2013crowdsourcing
 % exemplary overview of crowdsourcing platforms and systems based on definition
 % what is a CS platform, what isn't?
 % CS initiatives run on CS platforms
@@ -181,7 +191,175 @@ while for Youtube only~\ref{a} and~\ref{h} even apply; all others do not.
 % hint at topic of different types of crowds for different types of problems
 % and tasks
 
-\section{Different crowds for different problems}
+Modern crowdsourcing systems in general can be divided into three different
+types, as discussed in~\cite{hossfeld2013crowdtesting}: aggregator platforms,
+specialised platforms and crowd provider platforms. 
+
+\emph{Aggregator platforms} such as
+Crowdflower\footnote{\url{http://crowdflower.com}} and
+Crowdsource\footnote{\url{http://www.crowdsource.com}} primarily focus on
+developing crowd-based solutions for businesses that have existing workflows in
+need of crowdsourcing. Such platforms do not maintain their own crowd or
+workforce but recruit workers from specialised or crowd provider platforms and
+thus provide a high level of abstraction from crowdsourcing issues like quality
+control and recruiting. 
+
+\emph{Specialised platforms} such as
+Threadless\footnote{\url{http://www.threadless.com}},
+InnoCentive\footnote{\url{http://www.innocentive.com}} or
+Microtask\footnote{\url{http://www.microtask.com}} manage and maintain their
+own workforce and focus on very specific tasks, such as t-shirt design, solving
+R\&D problems or document processing and data entry. As such the workforce is
+usually limited in variety, location, expertise and other aspects.
+
+\emph{Crowd provider platforms} such as Amazon Mechanical
+Turk\footnote{\url{http://www.mturk.com}},
+Clickworker\footnote{\url{http://www.clickworker.com}} or
+Microworkers\footnote{\url{http://www.microworkers.com}} are the most flexible
+of the three crowdsourcing system types, as they have the largest and most diverse
+crowd of workers that can be directly accessed, and allow platform employers to
+design and implement a large variety of tasks via web interface or API with
+almost no restrictions. Typical tasks solved on crowd provider platforms are
+image tagging, reviewing and correcting OCR results or transcribing audio to
+text.
+
+Of these three types of platforms we focus on the \emph{specialised} and on the
+\emph{crowd provider} platforms. The aggregator platform can be seen as a
+sort of ``meta'' platform, simply making good use of the latter two and
+shielding the platform employer from the more intricate details of designing
+and running a crowdsourcing initiative.
+
+As discussed in secion~\ref{csdef} there must exist a clearly defined task for
+a clearly defined crowd to solve. Tasks on specialised platforms can differ
+greatly from tasks on crowd provider platforms. The former almost invariably
+require creativity, expertise and time to solve, while the latter are mostly
+repetitive and easily solved in mere seconds or minutes without much cognitive
+effort.  These are called \emph{micro tasks}.
+
+The crowd's recompense for solving creative or R\&D tasks is usually vastly
+greater than that for solving micro tasks. In the case of InnoCentive the prize
+for accepted solutions can be as high as \SI{100000}[\$]{} or in special cases
+even \SI{1}[\$]{M}. In contrast the reward for solving a single micro
+task is usually notably less than \SI{1}[\$]{}.
+
+From the above it can be concluded that not every crowdsourcing initiative,
+workflow or campaign can and will work on every platform, and that different
+initiatives require different kinds of tasks, solved by different kinds of
+crowds. 
+
+\section{Motivating different crowds for different problems}
+
+As discussed in the previous section it is obvious that different kinds of
+problems attract different kinds of crowds. Thus the motivation and make-up of
+crowds that solve creative or intellectual tasks is very different from crowds
+that work on non-demanding micro tasks. Questions about motivation and
+composition of crowds are subject of ongoing
+research~\cite{antikainen2010motivating, brabham2008moving, brabham2010moving,
+	chandler2013breaking, horton2010labor, kaufmann2011more,
+	mason2010financial}.
+
+In the following paragraphs we discuss Brabham's analysis of motivation and
+make-up of the crowds at
+iStockphoto\footnote{\url{http://www.istockphoto.com}}~\cite{brabham2008moving}
+and Threadless~\cite{brabham2010moving}, as two examples of crowdsourcing
+initiatives involving highly creative tasks. 
+
+As explained in~\cite{brabham2008moving} at iStockphoto the crowd, whose
+members are called ``iStockers'', creates and uploads stock photographs,
+animations or videos.  Clients find and download the stock they want, and
+individual photographers make a small profit for each download, with
+iStockphoto taking a portion of each profit. In accordance with the integrated
+definition~\cite{estelles2012towards} discussed in section~\ref{csdef}
+iStockphoto is indeed a crowdsourcing initiative: the clearly defined problem is
+producing stock photography which is put into the form of an open call on the
+internet, with solutions provided by a crowd of (amateur) photographers. Both
+the crowd and the crowdsourcer profit from clients purchasing the created
+stocks.
+
+Brabham finds that the crowd at iStockphoto is elite and relatively homogenous,
+and even though many nationalities are represented the dominant group consists
+of middle- to upper-class, higher educated whites that are heavy internet users
+with high-speed internet connections at home. Regarding their motivation he
+finds that making money is the most important factor for members of the
+iStockphoto crowd. Peer recognition, learning new skills and the joy of
+participation are only secondary motivators. He notes that interestingly crowd
+participants at iStockphoto are generally not interested in the online
+community aspect and do not find their motivation in building a network of
+friends and creative professionals through the site.
+
+Analysing the crowd at Threadless in~\cite{brabham2010moving} Brabham comes to
+similar, yet different conclusions. Threadless is ``an online t-shirt company
+that crowdsources the design process for its shirts through an ongoing online
+competition where registered members on the site can rate the design
+submissions of fellow members on a five-point scale.''~\cite{brabham2010moving}
+The highest-rated shirts are then produced and sold on the site, and the
+winning designers are rewarded with \SI{2000}[\$]{} in cash and \SI{500}[\$] in
+Threadless gift certificates. From this we can see that the integrated
+definition of crowdsourcing applies to Threadless as well.
+
+The biggest motivator at Threadless, Brabham finds, is the opportunity to make
+money, much like at iStockphoto, with developing and honing creative skills and
+leveraging freelance design work being secondary motivators. But at Threadless
+the love of community is an important motivator that is missing at iStockphoto.
+Another aspect unique to Threadless is that of crowd participants being
+``addicted'' to the site and the community, meaning they see themselves as more
+as meaningful actors in the company's business process than mere customers. It
+is this kind of ``obsessive'' and vibrant community that makes Threadless such
+an exemplary and successful crowdsourcing initiative.
+
+In contrast to these creative crowdsourcing types stand micro task-oriented
+initiatives found at Amazon Mechanical Turk (AMT) and other crowd provider
+platforms. In the following paragraphs we discuss research on crowd motivation
+based on studies using AMT.
+
+At AMT the crowd consists of over \num{100000} workers from over \num{100}
+countries~\cite{buhrmester2011amazon} and is thus much larger and more diverse
+than crowds at specialised platforms like discussed above. These workers solve
+micro tasks (so-called \emph{Human Intelligence Tasks}, or HITs) as posted by
+requesters, for which they are paid upon completion.  The reward for each task
+is set by the requester upon creation and is usually no more than a few cents.
+Requesters may refuse to pay workers who submit low-quality work, which may
+make workers with high refusal rates ineligible for participation in other
+tasks. Amazon as crowd provider charges \num{10}\percent. Again the integrated
+crowdsourcing definition applies.
+
+Research by Horton~\cite{horton2010labor}, Kaufmann~\cite{kaufmann2011more} and
+Mason~\cite{mason2010financial} focuses mainly on how work output quality and quantity
+vary when varying the financial reward for solving tasks,
+while Chandler~\cite{chandler2013breaking} examines how the perceived
+meaningfulness of a task affects quality and quantity of output.
+
+According to Mason~\cite{mason2010financial} increasing payments for tasks
+leads to increased quantity of work output, but not quality.
+Horton~\cite{horton2010labor} finds complementary that workers work less when
+compensation is lower but do not work less when the task is more time
+consuming. 
+
+The authors of~\cite{mason2010financial} also find that the design of the
+compensation scheme (e.g., quota versus piece rate) can significantly affect
+the quality of work output, to a point where better work can be produced for
+less pay. This may even result in high-quality work for no financial
+compensation, when the task's intrinsic motivation is big enough.
+
+This conclusion is supported by Chandler~\cite{chandler2013breaking}. Here the
+authors experimented with the perceived meaningfulness of tasks: assisting in
+cancer research makes a task more meaningful, while knowing that the work
+output will be discarded makes a task less meaningful. The authors find that
+higher meaning increases quantity of work output (as well as quality, but only
+insignificantly) and requires less compensation, and that, interestingly, tasks
+with lower meaning lead to a decrease in quality of work output, but not in
+quantity. 
+
+From this discussion on the motivation and make-up of different crowds it can
+be seen that the quality of work output is more easily recognized or confirmed
+at crowdsourcing platforms and initiatives that are creative or intellectual in
+nature. They are, by their nature, a meritocracy and it is easy to ``pick out a
+winner'' based on the best-voted t-shirt design or the best-selling stock
+image. On the other hand it is much more difficult to validate the quality of
+solutions of micro tasks. Manually checking every worker's output is not
+feasible, especially in very large crowdsourcing campaigns. We discuss these
+challenges and possible solutions in the next section.
+
 % who makes up the crowd? what are their motivations?
 % creative or intellectual problems vs repetitive and tedious problems
 % community vs anonymity and micro-tasks
@@ -201,13 +379,12 @@ while for Youtube only~\ref{a} and~\ref{h} even apply; all others do not.
 %   middle/upper class, English speaking, young, higher education, high-speed
 %   internet connection
 % the real winners in crowdsourcing are the platform providers, profiting from every problem and every solution
-%
+
 
 \section{Conclusion}
 
-\nocite{*}
+%\nocite{*}
 \bibliographystyle{abbrv}
 \bibliography{crowdsourcing}
-
 
 \end{document}
