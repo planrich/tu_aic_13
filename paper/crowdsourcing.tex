@@ -29,13 +29,13 @@
 	filecolor=LinkColor,
 	menucolor=LinkColor,
 	urlcolor=LinkColor,
-	pdftitle={Crowdsourcing}
+	pdftitle={The scientific state of the art in crowdsourcing}
 }
 
 \begin{document}
 
-\title{The scientific state of the art in Crowdsourcing}
-\subtitle{An overview of Crowdsourcing, its different facets, challenges and criticisms}
+\title{The scientific state of the art in crowdsourcing}
+\subtitle{An overview of crowdsourcing, its different facets, challenges and criticisms}
 
 \numberofauthors{6}
 
@@ -72,17 +72,21 @@
 \maketitle
 
 \begin{abstract}
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam congue
-	lorem ut lorem lacinia, at pharetra dui tincidunt. Curabitur blandit enim
-	nulla, vitae varius risus aliquam ut. Etiam at leo felis. Suspendisse
-	potenti. Sed malesuada lacus vestibulum cursus ornare. Sed eu purus
-	hendrerit, consequat ante sagittis, auctor quam. Donec elit massa,
-	pellentesque ac gravida vitae, pellentesque a nulla. In molestie dolor
-	tristique luctus adipiscing. Nunc iaculis aliquet leo vel vestibulum.
-	Integer eu lacus vehicula, vestibulum mi at, tincidunt leo. Sed ornare
-	nunc vel lectus sagittis, auctor ultricies massa porttitor. Nullam sit
-	amet condimentum lacus, sed vehicula enim. Aliquam in sem elit. Duis
-	pretium mi at dignissim placerat.
+	Crowdsourcing as a practice for outsourcing work to an unidentified public
+	is relatively young. In this paper we review current scientific literature
+	for an overview of crowdsourcing, focusing on a consistent definition of
+	the concept and differentiating between the two main forms of crowdsourcing
+	initiatives: those that are creative or intellectual in nature, rewarding
+	unique ideas and solutions to problems, and those that involve solving
+	so-called micro-tasks that are impossible for a computer but easy for human
+	intelligence. These two forms of crowdsourcing involve very different types
+	of crowds with different motivations and behaviour. Whereas creative or
+	intellectual initiatives involve often rich financial rewards, building of
+	communities, practicing special skills and passion for the activity, the
+	crowds of micro-task initiatives are anonymous, culturally and
+	geographically diverse, and tasks pay only pennies.  These initiatives need
+	to be designed in a way that prevents cheating and manipulation while
+	ensuring quality of work output. 
 \end{abstract}
 
 \section{Introduction}
@@ -221,7 +225,8 @@ crowd of workers that can be directly accessed, and allow platform employers to
 design and implement a large variety of tasks via web interface or API with
 almost no restrictions. Typical tasks solved on crowd provider platforms are
 image tagging, reviewing and correcting OCR results or transcribing audio to
-text.
+text. Such tasks are easily solved using human intelligence but usually
+impossible for a computer.
 
 Of these three types of platforms we focus on the \emph{specialised} and on the
 \emph{crowd provider} platforms. The aggregator platform can be seen as a
@@ -234,10 +239,10 @@ a clearly defined crowd to solve. Tasks on specialised platforms can differ
 greatly from tasks on crowd provider platforms. The former almost invariably
 require creativity, expertise and time to solve, while the latter are mostly
 repetitive and easily solved in mere seconds or minutes without much cognitive
-effort.  These are called \emph{micro tasks}.
+effort.  These are called \emph{micro-tasks}.
 
 The crowd's recompense for solving creative or R\&D tasks is usually vastly
-greater than that for solving micro tasks. In the case of InnoCentive the prize
+greater than that for solving micro-tasks. In the case of InnoCentive the prize
 for accepted solutions can be as high as \SI{100000}[\$]{} or in special cases
 even \SI{1}[\$]{M}. In contrast the reward for solving a single micro
 task is usually notably less than \SI{1}[\$]{}.
@@ -252,7 +257,7 @@ crowds.
 As discussed in the previous section it is obvious that different kinds of
 problems attract different kinds of crowds. Thus the motivation and make-up of
 crowds that solve creative or intellectual tasks is very different from crowds
-that work on non-demanding micro tasks. Questions about motivation and
+that work on non-demanding micro-tasks. Questions about motivation and
 composition of crowds are subject of ongoing
 research~\cite{antikainen2010motivating, brabham2008moving, brabham2010moving,
 	chandler2013breaking, horton2010labor, kaufmann2011more,
@@ -295,7 +300,8 @@ submissions of fellow members on a five-point scale.''~\cite{brabham2010moving}
 The highest-rated shirts are then produced and sold on the site, and the
 winning designers are rewarded with \SI{2000}[\$]{} in cash and \SI{500}[\$] in
 Threadless gift certificates. From this we can see that the integrated
-definition of crowdsourcing applies to Threadless as well.
+definition of crowdsourcing~\cite{estelles2012towards} applies to Threadless as
+well.
 
 The biggest motivator at Threadless, Brabham finds, is the opportunity to make
 money, much like at iStockphoto, with developing and honing creative skills and
@@ -307,7 +313,7 @@ as meaningful actors in the company's business process than mere customers. It
 is this kind of ``obsessive'' and vibrant community that makes Threadless such
 an exemplary and successful crowdsourcing initiative.
 
-In contrast to these creative crowdsourcing types stand micro task-oriented
+In contrast to these creative crowdsourcing types stand micro-task-oriented
 initiatives found at Amazon Mechanical Turk (AMT) and other crowd provider
 platforms. In the following paragraphs we discuss research on crowd motivation
 based on studies using AMT.
@@ -315,13 +321,13 @@ based on studies using AMT.
 At AMT the crowd consists of over \num{100000} workers from over \num{100}
 countries~\cite{buhrmester2011amazon} and is thus much larger and more diverse
 than crowds at specialised platforms like discussed above. These workers solve
-micro tasks (so-called \emph{Human Intelligence Tasks}, or HITs) as posted by
+micro-tasks (so-called \emph{Human Intelligence Tasks}, or HITs) as posted by
 requesters, for which they are paid upon completion.  The reward for each task
 is set by the requester upon creation and is usually no more than a few cents.
 Requesters may refuse to pay workers who submit low-quality work, which may
 make workers with high refusal rates ineligible for participation in other
 tasks. Amazon as crowd provider charges \num{10}\percent. Again the integrated
-crowdsourcing definition applies.
+crowdsourcing definition~\cite{estelles2012towards} applies.
 
 Research by Horton~\cite{horton2010labor}, Kaufmann~\cite{kaufmann2011more} and
 Mason~\cite{mason2010financial} focuses mainly on how work output quality and quantity
@@ -352,13 +358,14 @@ quantity.
 
 From this discussion on the motivation and make-up of different crowds it can
 be seen that the quality of work output is more easily recognized or confirmed
-at crowdsourcing platforms and initiatives that are creative or intellectual in
-nature. They are, by their nature, a meritocracy and it is easy to ``pick out a
-winner'' based on the best-voted t-shirt design or the best-selling stock
-image. On the other hand it is much more difficult to validate the quality of
-solutions of micro tasks. Manually checking every worker's output is not
-feasible, especially in very large crowdsourcing campaigns. We discuss these
-challenges and possible solutions in the next section.
+at crowdsourcing platforms that offer creative or intellectual tasks. They are,
+by their nature, a meritocracy and it is easy to ``pick out a winner'' based on
+the best-voted t-shirt design or the best-selling stock image. On the other
+hand it is much more difficult to validate the quality of solutions of micro
+tasks. Simply manually checking the entirety of every worker's output would
+defeat the purpose of crowdsourcing work and also be infeasible, especially in
+very large crowdsourcing initiatives. We discuss such challenges and possible
+solutions in the next section.
 
 % who makes up the crowd? what are their motivations?
 % creative or intellectual problems vs repetitive and tedious problems
@@ -367,13 +374,86 @@ challenges and possible solutions in the next section.
 % importance or unimportance of heterogeneity of crowd
 % hint at topic of quality control 
 
-\section{Challenges in Crowdsourcing initiatives}
-% kittur2008crowdsourcing, hossfeld2013crowdsourcing
+\section{Reliability in crowdsourcing initiatives}
+
+In micro-task crowdsourcing initiatives it is usually not possible to quickly
+and easily check the crowds work output for quality or correctness. This can
+lead workers to ``game'' the system and solve micro-tasks in a random or
+malicious fashion, with the intent to quickly produce as much work output as
+possible (and getting paid for it) without investing any real effort. Such
+behaviour has been observed in various experiments involving initiatives posted
+to Amazon Mechanical Turk~\cite{hossfeld2013crowdtesting,
+	kittur2008crowdsourcing, redi2013crowdsourcing}. The authors of these
+experiments have devised recommendations on designing a crowdsourcing
+initiative and its tasks in ways that limits cheating or makes it easier to
+spot nonsensical work output.
+
+In~\cite{kittur2008crowdsourcing} the authors crowdsourced the rating of
+Wikipedia articles and found three ways to help eliminating most cheating or
+malicious workers. First, the tasks should have some questions that are
+objectively verifiable, such as how many references a given article cites.
+Second, the tasks should be designed in a way that makes solving it honestly
+require as much as or less effort than cheating. Third, there should be
+multiple ways to spot suspect solutions that work even for subjective tasks,
+such as suspiciously short solving times. The first way especially signalises
+workers that their work output can and will be scrutinised and the third way
+allows filtering obviously bogus work output early on.
+
+Similar campaign design recommendations are found by the authors
+of~\cite{hossfeld2013crowdtesting, redi2013crowdsourcing}, who engaged in user
+studies concerning quality of experience which are highly subjective in
+nature, such as rating images on recognisability and aesthetic appeal. They
+find that a reliable crowd can be created by letting workers complete simple
+and verifiable test tasks first and only allowing those that passed to
+participate in the main task. Additionally the main task should contain
+verification tests, such as captchas, consistency tests, such as ``In which
+country do you live?'' and later ``On which continent do you live'', and content
+questions about the task itself. The authors warn against adding too many such
+tests and questions, lest workers quit the task in frustration. 
+
+% kittur2008crowdsourcing, hossfeld2013crowdtesting
 % what it takes to create a successful CS initiative
 % Designing tasks, spreading tasks to many workers, testing workers, avoiding
 % abuse/scams, ensuring quality work
 
-\section{Critical considerations of Crowdsourcing}
+\section{Critical considerations of crowdsourcing}
+
+Crowdsourcing is viewed in quite a positive light in current literature which
+often ignores potential or real drawbacks, and doesn't contain much in the way
+of critical discussion of the practice. Thus, before concluding we present a
+more critical view of crowdsourcing based on~\cite{simula2013rise}
+and~\cite{brabham2008crowdsourcing}.
+
+An often-cited pro-crowdsourcing argument is the diversity of the crowd and
+that it contains participants from around the world~\cite{howe2006rise,
+	howe2009crowdsourcing}. However, as Brabham finds 
+in~\cite{brabham2008moving} the crowd at iStockphoto consists mostly of upper
+or middle class, English speaking whites with higher education and high-speed
+internet connections. This is probably especially representative of crowds at
+other creative and intellectual crowdsourcing platforms, and Brabham states
+``If solutions are measured against the yardstick of the company sponsoring the
+crowdsourcing application, or measured against the opinions of the homogenous
+crowd, alternatives to the presiding discourse will probably always lose out.''
+Meaning the solutions provided by such a homogenous crowd are less
+``disruptive'' and alternative because they originate from very similar
+socio-economical backgrounds.
+
+Additional problems with crowdsourcing include the discussed possibilities of
+cheating, manipulation and gaming, as well as pranking and companies which
+crowdsource tasks denying responsibility for failures by simply blaming
+everything on ``the crowd.'' Another issue is that of labour exploitation.
+Companies crowdsourcing designs or R\&D problems benefit hugely from clever
+solutions by the crowd while the winning crowd participants are rewarded with
+literally pennies on the dollar. 
+
+It might also be argued that crowdsourcing may drive professionals (such as
+stock photographers or designers) out of business, but that discussion about
+capitalism is best left for economists and sociologists. In the end the real
+winners of crowdsourcing are the companies running the crowd provider
+platforms, such as Amazon or Clickworker, who profit from every problem posted
+and every solution devised.
+
+% simula2013rise, partly brabham2008moving
 % manipulation, pranks, ``not invented here'', labour exploitation
 % the ``crowd'' is not as diverse and heterogeneous as it might seem: white,
 %   middle/upper class, English speaking, young, higher education, high-speed
@@ -382,6 +462,17 @@ challenges and possible solutions in the next section.
 
 
 \section{Conclusion}
+
+In this paper we provided a short overview of the practice of crowdsourcing
+based on current literature and its often inconsistent definitions. We reviewed
+the differences between creative/intellectual crowdsourcing initiatives and
+those based on micro-tasks requiring very little cognitive effort, and
+discussed research on the motivation and make-up of different crowds solving
+different problems. We also examined the recommendations authors of
+crowdsourcing experiments provide for designing a crowdsourcing campaign that
+is not easily cheated or gamed and closed with a short discourse on some
+critical consideration of the crowdsourcing practice which are often ignored in
+the literature.
 
 %\nocite{*}
 \bibliographystyle{abbrv}
