@@ -46,8 +46,12 @@ def createLog(name):
 	console.setFormatter(formatter)
 	logger.addHandler(console)
 	if production:
+<<<<<<< HEAD
 		path = os.environ.get('OPENSHIFT_TMP_DIR/logs/')
 		logFile = logging.FileHandler(filename=path+name+'.log')
+=======
+		logFile = logging.FileHandler(filename='app-root/repo/logs/'+name+'.log')
+>>>>>>> cc823eace74efbea76ef780cce3ddac9ed1b4983
 	else:
 		logFile = logging.FileHandler(filename='logs/'+name+'.log')
 	
