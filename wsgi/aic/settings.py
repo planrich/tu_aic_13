@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import logging
 
 RSS_URL = 'http://finance.yahoo.com/news/?format=rss'
 SECRET_KEY = "kl12kCF(uL>ASJ123r5b129cfujxzl;kjashb124e12edljcv"
@@ -34,3 +35,19 @@ else:
     DB_URL = 'postgresql://aic:aic@localhost/aic'
     DOMAIN = 'http://127.0.0.1:5000'
     CROWD_DOMAIN = 'http://127.0.0.1:5001'
+
+
+def createLog(name):
+	logger = logging.getLogger(name)
+	logger.setLevel(logging.INFO)
+	formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+	console = logging.StreamHandler()
+	console.setLevel(logging.INFO)
+	console.setFormatter(formatter)
+	logger.addHandler(console)
+
+	logFile = logging.FileHandler(filename='logs/'+name+'.log')
+	logFile.setLevel(logging.INFO)
+	logFile.setFormatter(formatter)
+	logger.addHandler(logFile)
+	return logger

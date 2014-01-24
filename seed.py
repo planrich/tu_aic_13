@@ -30,11 +30,5 @@ session.add(keyword)
 keyword = db.Keyword("JP Morgan")
 session.add(keyword)
 
-keyword = db.Keyword("NSA")
-session.add(keyword)
-
-keyword = db.Keyword("ECB")
-session.add(keyword)
-
 session.commit()
 session.close()

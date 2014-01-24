@@ -15,13 +15,27 @@ import utils
 import time
 import ago
 
+import argparse
+
+
 application = Flask(__name__)
 application.secret_key = settings.SECRET_KEY
+
+# schedules jobs
+from apscheduler.scheduler import Scheduler
+from scraper import scrape
+from dynamic_pricer import dynamic_pricing
+from garbage_collector import garbage_collecting
+
 
 # Filters for templates
 application.jinja_env.filters['humanize_date'] = utils.humanize_date
 application.jinja_env.filters['rate_average'] = utils.rate_average
 application.jinja_env.filters['ago'] = ago.human
+
+# Logging
+import logging
+logger = settings.createLog("main_app")
 
 
 # WEBAPP
@@ -251,7 +265,22 @@ def query(company, days):
 for %s. Either you mistyped the company or yahoo finance does not \
 contain articles about the compnay/product!""" % company)
 
+def startScheduledJobs():
+    logger.info("startScheduledJobs")
+    sc = Scheduler()
+    sc.start()
+    # Schedule  to be called every hour
+    sc.add_interval_job(scrape, hours=1)
+    sc.add_interval_job(dynamic_pricing, hours=1)
+    sc.add_interval_job(garbage_collecting, hours=1)
+
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--demo", help="run in demo mode, without scheduled tasks", action="store_true")
+    args = parser.parse_args()
+    if !args.demo:
+        startScheduledJobs()
+
     application.debug = True
     application.run()
 

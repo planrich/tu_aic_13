@@ -9,6 +9,9 @@ import json
 import crowd
 import re
 import math
+import logging
+
+logger = settings.createLog("scraper")
 
 TEXT_SIZE = 250
 
@@ -51,8 +54,8 @@ def process_feed(feed):
     register_feed(feed)
     keywords = session.query(db.Keyword).all()
     for item in feed['items']:
-        print("---")
-        print("getting article %s" % item['url'])
+        logger.info("-----------------------------")
+        logger.info("getting article %s" % item['url'])
         html = requests.get(item['url']).text
         texts = parse_article(html)
 
@@ -62,7 +65,7 @@ def process_feed(feed):
 
         patterns = [ (keyword, re.compile(r"\b({0})\b".format(keyword.keyword), flags=re.IGNORECASE|re.LOCALE)) for keyword in keywords ]
 
-        print("searching %d paragraphs" % (len(texts),))
+        logger.info("searching %d paragraphs" % (len(texts),))
         for text in texts:
             kws = find_keywords(patterns, text)
             if len(kws) > 0:
@@ -77,20 +80,20 @@ def process_feed(feed):
                     if answers_requested > 0:
                         task.answers_requested = answers_requested
                         session.commit()
-                        print('task (id: %d) created, keyword: %s' % (task.id,keyword.keyword))
+                        logger.info('task (id: %d) created, keyword: %s' % (task.id,keyword.keyword))
                     else:
-                        print('task was not created')
+                        logger.info('task was not created')
                         session.delete(task)
                         session.commit()
 
         if len(project.tasks) == 0:
-            print("no task posted. removing project")
+            logger.info("no task posted. removing project")
             session.delete(project)
             session.commit()
         else:
-            print("project with %d tasks created" % len(project.tasks))
+            logger.info("project with %d tasks created" % len(project.tasks))
 
-    print("closing session")
+    logger.info("closing session")
     session.close()
 
 
@@ -120,15 +123,27 @@ def parse_article(html):
             if len(text) > TEXT_SIZE:
                 texts.append(text)
                 text = ''
-    print texts
+    logger.debug(texts)
     return texts
 
-
-if __name__ == '__main__':
+def scrape():
+    logger.info("")
+    logger.info("")
+    logger.info("started scraping ")
     rss = fetch_rss(settings.RSS_URL)
     feed = parse_rss(rss)
     try:
         if not is_feed_processed(feed):
             process_feed(feed)
     except requests.exceptions.ConnectionError as e:
-        print("failed to process feed due to " + str(e))
+        logger.info("failed to process feed due to " + str(e))
+
+#if __name__ == '__main__':
+    #scrape()
+    # rss = fetch_rss(settings.RSS_URL)
+    # feed = parse_rss(rss)
+    # try:
+    #     if not is_feed_processed(feed):
+    #         process_feed(feed)
+    # except requests.exceptions.ConnectionError as e:
+    #     logger.info("failed to process feed due to " + str(e))

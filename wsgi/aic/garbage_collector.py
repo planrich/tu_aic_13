@@ -5,10 +5,11 @@ import requests
 import crowd
 
 
+import logging
+logger = settings.createLog("garbage_collection")
 
-
-if __name__ == '__main__':
-	print("Starting garbage collector")
+def garbage_collecting(self):
+	logger.info("Starting garbage collector")
 
 	session = db.Session()
 	query = session.query(db.Task).filter(db.Task.datetime < (dt.datetime.now() - dt.timedelta(days = settings.delete_time))).filter(db.Task.finished_rating == None).filter(db.Task.garbage_flag == False)
@@ -20,5 +21,9 @@ if __name__ == '__main__':
 			session.commit()
 			#print("task " + str(task.id) + " is now garbage")
 		else:
-			print("Error: Can not set task " + str(task.id) + " to garbage (Error " + str(status) + ")")
-	print("Finished garbage collector")
+			logger.warning("Error: Can not set task " + str(task.id) + " to garbage (Error " + str(status) + ")")
+	logger.info("Finished garbage collector")
+
+if __name__ == '__main__':
+	garbage_collecting()
+	
