@@ -1,6 +1,0 @@
-#!/bin/bash
-
-source $OPENSHIFT_PYTHON_DIR/virtenv/bin/activate
-cd $OPENSHIFT_REPO_DIR
-echo "scaping: `date`" >> $OPENSHIFT_PYTHON_LOG_DIR/scrape.log
-python wsgi/aic/scraper.py >> $OPENSHIFT_PYTHON_LOG_DIR/scrape.log
