@@ -15,9 +15,9 @@ if __name__ == "__main__":
     logger.info("startScheduledJobs file")
     sc = Scheduler(standalone=True)
     # Schedule  to be called every hour
-    sc.add_interval_job(scraper.scrape, minutes=1)
-    sc.add_interval_job(dynamic_pricer.dynamic_pricing, minutes=1)
-    sc.add_interval_job(garbage_collector.garbage_collecting, minutes=1)
+    sc.add_interval_job(scraper.scrape, hours=1)
+    sc.add_interval_job(dynamic_pricer.dynamic_pricing, hours=1)
+    sc.add_interval_job(garbage_collector.garbage_collecting, hours=1)
 
     print('Press Ctrl+C to exit')
     try:
