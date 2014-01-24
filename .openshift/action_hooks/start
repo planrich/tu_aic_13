@@ -1,1 +1,3 @@
-gunicorn --pid /tmp/topic2.pid --python $OPENSHIFT_REPO_DIR/aic/ app:startScheduledJobs && python $OPENSHIFT_REPO_DIR/aic/startScheduler.py
+python $OPENSHIFT_REPO_DIR/aic/startScheduler.py
+
+gunicorn --pid /tmp/topic2.pid --python $OPENSHIFT_REPO_DIR/aic/ app:startScheduledJobs
