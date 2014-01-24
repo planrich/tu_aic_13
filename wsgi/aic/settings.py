@@ -45,11 +45,17 @@ def createLog(name):
 	console.setLevel(logging.INFO)
 	console.setFormatter(formatter)
 	logger.addHandler(console)
+
 	if production:
-		path = os.environ.get('OPENSHIFT_TMP_DIR/logs/')
+		path = os.environ.get('OPENSHIFT_TMP_DIR')+'/logs/'
+		if not os.path.exists(path):
+			os.mkdir(path)
 		logFile = logging.FileHandler(filename=path+name+'.log')
 	else:
-		logFile = logging.FileHandler(filename='logs/'+name+'.log')
+		path = 'logs/'
+		if not os.path.exists(path):
+			os.mkdir(path)
+		logFile = logging.FileHandler(filename=path+name+'.log')	
 	
 	logFile.setLevel(logging.INFO)
 	logFile.setFormatter(formatter)
