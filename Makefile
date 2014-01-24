@@ -13,6 +13,9 @@ run_garbage_collector:
 run_dynamic_pricer:
 	python wsgi/aic/dynamic_pricer.py
 
+run_scheduler:
+	python wsgi/aic/startScheduler.py
+
 test:
 	python test_aic.py
 
