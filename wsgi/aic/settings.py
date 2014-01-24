@@ -45,8 +45,11 @@ def createLog(name):
 	console.setLevel(logging.INFO)
 	console.setFormatter(formatter)
 	logger.addHandler(console)
-
-	logFile = logging.FileHandler(filename='logs/'+name+'.log')
+	if production:
+		logFile = logging.FileHandler(filename='app-root/repo/logs/'+name+'.log')
+	else:
+		logFile = logging.FileHandler(filename='logs/'+name+'.log')
+	
 	logFile.setLevel(logging.INFO)
 	logFile.setFormatter(formatter)
 	logger.addHandler(logFile)
