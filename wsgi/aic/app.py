@@ -274,7 +274,8 @@ def startScheduledJobs():
     sc.add_interval_job(dynamic_pricing, hours=1)
     sc.add_interval_job(garbage_collecting, hours=1)
 
-if __name__ == "__main__":
+if __name__ == "__main__": 
+    logger.info("started application")
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--demo", help="run in demo mode, without scheduled tasks", action="store_true")
     args = parser.parse_args()
