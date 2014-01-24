@@ -270,7 +270,7 @@ def startScheduledJobs():
     sc = Scheduler()
     sc.start()
     # Schedule  to be called every hour
-    sc.add_interval_job(scrape, hours=1)
+    sc.add_interval_job(scrape, minutes=1)
     sc.add_interval_job(dynamic_pricing, hours=1)
     sc.add_interval_job(garbage_collecting, hours=1)
 
