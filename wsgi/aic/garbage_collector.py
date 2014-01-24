@@ -8,7 +8,7 @@ import crowd
 import logging
 logger = settings.createLog("garbage_collection")
 
-def garbage_collecting(self):
+def garbage_collecting():
 	logger.info("Starting garbage collector")
 
 	session = db.Session()
@@ -23,6 +23,9 @@ def garbage_collecting(self):
 		else:
 			logger.warning("Error: Can not set task " + str(task.id) + " to garbage (Error " + str(status) + ")")
 	logger.info("Finished garbage collector")
+	logger.info("")
+	logger.info("")
+
 
 if __name__ == '__main__':
 	garbage_collecting()

@@ -127,8 +127,6 @@ def parse_article(html):
     return texts
 
 def scrape():
-    logger.info("")
-    logger.info("")
     logger.info("started scraping ")
     rss = fetch_rss(settings.RSS_URL)
     feed = parse_rss(rss)
@@ -137,9 +135,12 @@ def scrape():
             process_feed(feed)
     except requests.exceptions.ConnectionError as e:
         logger.info("failed to process feed due to " + str(e))
+        
+    logger.info("")
+    logger.info("")
 
-#if __name__ == '__main__':
-    #scrape()
+if __name__ == '__main__':
+    scrape()
     # rss = fetch_rss(settings.RSS_URL)
     # feed = parse_rss(rss)
     # try:

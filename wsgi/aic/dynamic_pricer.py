@@ -10,7 +10,7 @@ logger = settings.createLog("dynamic_pricer")
 
 
 def dynamic_pricing():
-    logger.INFO("Start updating bonus")
+    logger.info("Start updating bonus")
     logger.debug(len(settings.bonus_matrix))
     
     for x in range(0, len(settings.bonus_matrix)):
@@ -32,7 +32,9 @@ def dynamic_pricing():
                 logger.INFO("-set bonus of task " +str(task.id) + " to " + str(task.price_bonus))
                 session.commit()
 
-    logger.INFO("Finished updating bonus")
+    logger.info("Finished updating bonus")
+    logger.info("")
+    logger.info("")
 
 
 if __name__ == '__main__':
