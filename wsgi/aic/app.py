@@ -278,8 +278,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--demo", help="run in demo mode, without scheduled tasks", action="store_true")
     args = parser.parse_args()
-    if !args.demo:
+    if not args.demo:
         startScheduledJobs()
+    else:
+        logger.info()
 
     application.debug = True
     application.run()
