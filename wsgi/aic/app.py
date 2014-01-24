@@ -24,8 +24,8 @@ application.secret_key = settings.SECRET_KEY
 # schedules jobs
 from apscheduler.scheduler import Scheduler
 import scraper
-from dynamic_pricer import dynamic_pricing
-from garbage_collector import garbage_collecting
+import dynamic_pricer
+import garbage_collector
 
 
 # Filters for templates
@@ -271,8 +271,8 @@ def startScheduledJobs():
     sc.start()
     # Schedule  to be called every hour
     sc.add_interval_job(scraper.scrape, minutes=1)
-    sc.add_interval_job(dynamic_pricing, hours=1)
-    sc.add_interval_job(garbage_collecting, hours=1)
+    sc.add_interval_job(dynamic_pricer.dynamic_pricing, minutes=1)
+    sc.add_interval_job(garbage_collector.garbage_collecting, minutes=1)
 
 if __name__ == "__main__": 
     logger.info("started application")
