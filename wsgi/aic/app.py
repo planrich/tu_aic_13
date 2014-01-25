@@ -95,7 +95,7 @@ def get_admin_tasks():
                 .filter(db.Task.finished_rating == None).count()
         tasks = session.query(db.Task)\
                 .filter(db.Task.finished_rating == None)\
-                .order_by(db.Task.datetime)\
+                .order_by(db.Task.datetime, db.Task.id)\
                 .limit(per_page)\
                 .offset((page-1)*per_page).all()
         for task in tasks:
