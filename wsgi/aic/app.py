@@ -92,9 +92,9 @@ def get_admin_tasks():
             page = 1
         per_page = 10
         task_count = session.query(db.Task)\
-                .filter(db.Task.finished_rating == None).count()
+                .filter(db.Task.finished_rating == None).filter(db.Task.garbage_flag != True).count()
         tasks = session.query(db.Task)\
-                .filter(db.Task.finished_rating == None)\
+                .filter(db.Task.finished_rating == None).filter(db.Task.garbage_flag != True)\
                 .order_by(db.Task.datetime, db.Task.id)\
                 .limit(per_page)\
                 .offset((page-1)*per_page).all()
@@ -282,7 +282,7 @@ if __name__ == "__main__":
     if not args.demo:
         startScheduledJobs()
     else:
-        logger.info()
+        logger.warning("running in demo mode, without scheduled tasks")
 
     application.debug = True
     application.run()

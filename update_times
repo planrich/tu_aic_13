@@ -1,0 +1,19 @@
+UPDATE public.tasks set datetime = NOW() - '1 month'::INTERVAL * ROUND(RANDOM() * 12)
+WHERE finished_rating is not null;
+
+UPDATE public.tasks set datetime = NOW() - '1 day'::INTERVAL * 11
+Where id in (125,126,127,128,129);
+
+UPDATE public.tasks set datetime = NOW() - '1 day'::INTERVAL * 9
+Where id in (130,131,132,133,134);
+
+
+UPDATE public.tasks set datetime = NOW() - '1 day'::INTERVAL * 5
+Where id in (135,136,137,138,139);
+
+UPDATE public.workers set first_seen = NOW() - '1 Year'::INTERVAL; 
+UPDATE public.workers set first_seen = first_seen - '1 day'::INTERVAL * ROUND(RANDOM() * 28);
+
+UPDATE public.keywords set added = NOW() - '1 Year'::INTERVAL;
+UPDATE public.keywords set added = added - '1 day'::INTERVAL * ROUND(RANDOM() * 28);
+

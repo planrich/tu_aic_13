@@ -24,12 +24,11 @@ def dynamic_pricing():
             query = session.query(db.Task).filter(db.Task.datetime < (dt.datetime.now() - dt.timedelta(days=settings.bonus_matrix[x][0]))).filter(db.Task.datetime > (dt.datetime.now() - dt.timedelta(days=settings.bonus_matrix[x+1][0]))).filter(db.Task.finished_rating == None).filter(db.Task.garbage_flag == False)
         tasks = query.all()
         for task in tasks:
-            logger.debug("__"+str(task.id))
             new_bonus = math.ceil(settings.bonus_matrix[x][1] * task.price *100)/ 100
             if new_bonus != task.price_bonus:
                 task.price_bonus = new_bonus
                 crowd.set_bonus(task)
-                logger.INFO("-set bonus of task " +str(task.id) + " to " + str(task.price_bonus))
+                logger.info("-set bonus of task " +str(task.id) + " to " + str(task.price_bonus))
                 session.commit()
 
     logger.info("Finished updating bonus")

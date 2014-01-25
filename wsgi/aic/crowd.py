@@ -41,7 +41,7 @@ def set_garbage(task):
         data['id'] =  str(task.id) + "_" + str(i)
         response = requests.post(url, data=json.dumps(data), headers=headers)
         if response.status_code != requests.codes.ok:
-            print("__" + str(i))
+            #print("__" + str(i))
             return response.status_code
     return requests.codes.ok
 

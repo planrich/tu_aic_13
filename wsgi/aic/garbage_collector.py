@@ -19,7 +19,7 @@ def garbage_collecting():
 		if status == requests.codes.ok:
 			task.garbage_flag = True
 			session.commit()
-			#print("task " + str(task.id) + " is now garbage")
+			logger.info("task " + str(task.id) + " is now garbage")
 		else:
 			logger.warning("Error: Can not set task " + str(task.id) + " to garbage (Error " + str(status) + ")")
 	logger.info("Finished garbage collector")

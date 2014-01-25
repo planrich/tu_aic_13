@@ -1,0 +1,1045 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+ALTER TABLE ONLY public.tasks DROP CONSTRAINT tasks_project_id_fkey;
+ALTER TABLE ONLY public.tasks DROP CONSTRAINT tasks_keyword_id_fkey;
+ALTER TABLE ONLY public.answers DROP CONSTRAINT answers_worker_id_fkey;
+ALTER TABLE ONLY public.answers DROP CONSTRAINT answers_task_id_fkey;
+ALTER TABLE ONLY public.workers DROP CONSTRAINT workers_pkey;
+ALTER TABLE ONLY public.tasks DROP CONSTRAINT tasks_pkey;
+ALTER TABLE ONLY public.publications DROP CONSTRAINT publications_pkey;
+ALTER TABLE ONLY public.projects DROP CONSTRAINT projects_pkey;
+ALTER TABLE ONLY public.keywords DROP CONSTRAINT keywords_pkey;
+ALTER TABLE ONLY public.answers DROP CONSTRAINT answers_pkey;
+ALTER TABLE public.tasks ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.publications ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.projects ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.keywords ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.answers ALTER COLUMN id DROP DEFAULT;
+DROP TABLE public.workers;
+DROP SEQUENCE public.tasks_id_seq;
+DROP TABLE public.tasks;
+DROP SEQUENCE public.publications_id_seq;
+DROP TABLE public.publications;
+DROP SEQUENCE public.projects_id_seq;
+DROP TABLE public.projects;
+DROP SEQUENCE public.keywords_id_seq;
+DROP TABLE public.keywords;
+DROP SEQUENCE public.answers_id_seq;
+DROP TABLE public.answers;
+DROP EXTENSION plpgsql;
+DROP SCHEMA public;
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA public;
+
+
+ALTER SCHEMA public OWNER TO postgres;
+
+--
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON SCHEMA public IS 'standard public schema';
+
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: answers; Type: TABLE; Schema: public; Owner: aic; Tablespace: 
+--
+
+CREATE TABLE answers (
+    id integer NOT NULL,
+    datetime timestamp without time zone,
+    value character varying,
+    task_id integer,
+    worker_id character varying
+);
+
+
+ALTER TABLE public.answers OWNER TO aic;
+
+--
+-- Name: answers_id_seq; Type: SEQUENCE; Schema: public; Owner: aic
+--
+
+CREATE SEQUENCE answers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.answers_id_seq OWNER TO aic;
+
+--
+-- Name: answers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: aic
+--
+
+ALTER SEQUENCE answers_id_seq OWNED BY answers.id;
+
+
+--
+-- Name: keywords; Type: TABLE; Schema: public; Owner: aic; Tablespace: 
+--
+
+CREATE TABLE keywords (
+    id integer NOT NULL,
+    keyword character varying,
+    added timestamp without time zone
+);
+
+
+ALTER TABLE public.keywords OWNER TO aic;
+
+--
+-- Name: keywords_id_seq; Type: SEQUENCE; Schema: public; Owner: aic
+--
+
+CREATE SEQUENCE keywords_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.keywords_id_seq OWNER TO aic;
+
+--
+-- Name: keywords_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: aic
+--
+
+ALTER SEQUENCE keywords_id_seq OWNED BY keywords.id;
+
+
+--
+-- Name: projects; Type: TABLE; Schema: public; Owner: aic; Tablespace: 
+--
+
+CREATE TABLE projects (
+    id integer NOT NULL,
+    link character varying,
+    datetime timestamp without time zone,
+    paragraph character varying
+);
+
+
+ALTER TABLE public.projects OWNER TO aic;
+
+--
+-- Name: projects_id_seq; Type: SEQUENCE; Schema: public; Owner: aic
+--
+
+CREATE SEQUENCE projects_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.projects_id_seq OWNER TO aic;
+
+--
+-- Name: projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: aic
+--
+
+ALTER SEQUENCE projects_id_seq OWNED BY projects.id;
+
+
+--
+-- Name: publications; Type: TABLE; Schema: public; Owner: aic; Tablespace: 
+--
+
+CREATE TABLE publications (
+    id integer NOT NULL,
+    datetime timestamp without time zone
+);
+
+
+ALTER TABLE public.publications OWNER TO aic;
+
+--
+-- Name: publications_id_seq; Type: SEQUENCE; Schema: public; Owner: aic
+--
+
+CREATE SEQUENCE publications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.publications_id_seq OWNER TO aic;
+
+--
+-- Name: publications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: aic
+--
+
+ALTER SEQUENCE publications_id_seq OWNED BY publications.id;
+
+
+--
+-- Name: tasks; Type: TABLE; Schema: public; Owner: aic; Tablespace: 
+--
+
+CREATE TABLE tasks (
+    id integer NOT NULL,
+    paragraph character varying,
+    project_id integer,
+    keyword_id integer,
+    finished_rating integer,
+    answers_requested integer,
+    price double precision,
+    price_bonus double precision,
+    datetime timestamp without time zone,
+    garbage_flag boolean
+);
+
+
+ALTER TABLE public.tasks OWNER TO aic;
+
+--
+-- Name: tasks_id_seq; Type: SEQUENCE; Schema: public; Owner: aic
+--
+
+CREATE SEQUENCE tasks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tasks_id_seq OWNER TO aic;
+
+--
+-- Name: tasks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: aic
+--
+
+ALTER SEQUENCE tasks_id_seq OWNED BY tasks.id;
+
+
+--
+-- Name: workers; Type: TABLE; Schema: public; Owner: aic; Tablespace: 
+--
+
+CREATE TABLE workers (
+    id character varying NOT NULL,
+    worker_rating integer,
+    blocked integer,
+    first_seen timestamp without time zone
+);
+
+
+ALTER TABLE public.workers OWNER TO aic;
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: aic
+--
+
+ALTER TABLE ONLY answers ALTER COLUMN id SET DEFAULT nextval('answers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: aic
+--
+
+ALTER TABLE ONLY keywords ALTER COLUMN id SET DEFAULT nextval('keywords_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: aic
+--
+
+ALTER TABLE ONLY projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: aic
+--
+
+ALTER TABLE ONLY publications ALTER COLUMN id SET DEFAULT nextval('publications_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: aic
+--
+
+ALTER TABLE ONLY tasks ALTER COLUMN id SET DEFAULT nextval('tasks_id_seq'::regclass);
+
+
+--
+-- Data for Name: answers; Type: TABLE DATA; Schema: public; Owner: aic
+--
+
+COPY answers (id, datetime, value, task_id, worker_id) FROM stdin;
+1	2014-01-25 15:13:34.708912	positive	1	Ursula
+2	2014-01-25 15:13:34.708912	negative	1	Ursula
+3	2014-01-25 15:13:34.708912	negative	1	Ursula
+4	2014-01-25 15:13:34.708912	negative	2	Ursula
+5	2014-01-25 15:13:34.708912	negative	2	Ursula
+6	2014-01-25 15:13:34.708912	negative	2	Ursula
+7	2014-01-25 15:13:34.708912	negative	3	Ursula
+8	2014-01-25 15:13:34.708912	negative	3	Ursula
+9	2014-01-25 15:13:34.708912	negative	3	Ursula
+10	2014-01-25 15:13:34.708912	negative	4	Ursula
+11	2014-01-25 15:13:34.708912	negative	4	Ursula
+12	2014-01-25 15:13:34.708912	negative	4	Ursula
+13	2014-01-25 15:13:34.708912	negative	5	Ursula
+14	2014-01-25 15:13:34.708912	negative	5	Ursula
+15	2014-01-25 15:13:34.708912	negative	5	Ursula
+16	2014-01-25 15:13:34.708912	negative	6	Ursula
+17	2014-01-25 15:13:34.708912	negative	6	Ursula
+18	2014-01-25 15:13:34.708912	negative	6	Ursula
+19	2014-01-25 15:13:34.708912	negative	7	Ursula
+20	2014-01-25 15:13:34.708912	negative	7	Ursula
+21	2014-01-25 15:13:34.708912	negative	7	Ursula
+22	2014-01-25 15:13:34.708912	negative	8	Ursula
+23	2014-01-25 15:13:34.708912	negative	8	Ursula
+24	2014-01-25 15:13:34.708912	negative	8	Ursula
+25	2014-01-25 15:13:34.708912	negative	9	Ursula
+26	2014-01-25 15:13:34.708912	negative	9	Ursula
+27	2014-01-25 15:13:34.708912	negative	9	Ursula
+28	2014-01-25 15:13:34.708912	negative	10	Ursula
+29	2014-01-25 15:13:34.708912	negative	10	Ursula
+30	2014-01-25 15:13:34.708912	negative	10	Ursula
+31	2014-01-25 15:13:34.708912	negative	11	Ursula
+32	2014-01-25 15:13:34.708912	negative	11	Ursula
+33	2014-01-25 15:13:34.708912	negative	11	Ursula
+34	2014-01-25 15:13:34.708912	negative	12	Ursula
+35	2014-01-25 15:13:34.708912	negative	12	Ursula
+36	2014-01-25 15:13:34.708912	negative	12	Ursula
+37	2014-01-25 15:13:34.708912	negative	13	Ursula
+38	2014-01-25 15:13:34.708912	negative	13	Ursula
+39	2014-01-25 15:13:34.708912	negative	13	Ursula
+40	2014-01-25 15:13:34.708912	negative	14	Ursula
+41	2014-01-25 15:13:34.708912	negative	14	Ursula
+42	2014-01-25 15:13:34.708912	negative	14	Ursula
+43	2014-01-25 15:13:34.708912	neutral	15	Ursula
+44	2014-01-25 15:13:34.708912	neutral	15	Ursula
+45	2014-01-25 15:13:34.708912	neutral	15	Ursula
+46	2014-01-25 15:13:34.708912	neutral	16	Ursula
+47	2014-01-25 15:13:34.708912	neutral	16	Ursula
+48	2014-01-25 15:13:34.708912	neutral	16	Ursula
+49	2014-01-25 15:13:34.708912	neutral	17	Ursula
+50	2014-01-25 15:13:34.708912	neutral	17	Ursula
+51	2014-01-25 15:13:34.708912	neutral	17	Ursula
+52	2014-01-25 15:13:34.708912	neutral	18	Ursula
+53	2014-01-25 15:13:34.708912	neutral	18	Ursula
+54	2014-01-25 15:13:34.708912	neutral	18	Ursula
+55	2014-01-25 15:13:34.708912	neutral	19	Ursula
+56	2014-01-25 15:13:34.708912	neutral	19	Ursula
+57	2014-01-25 15:13:34.708912	neutral	19	Ursula
+58	2014-01-25 15:13:34.708912	neutral	20	Ursula
+59	2014-01-25 15:13:34.708912	neutral	20	Ursula
+60	2014-01-25 15:13:34.708912	neutral	20	Ursula
+61	2014-01-25 15:13:34.708912	neutral	21	Ursula
+62	2014-01-25 15:13:34.708912	neutral	21	Ursula
+63	2014-01-25 15:13:34.708912	neutral	21	Ursula
+64	2014-01-25 15:13:34.708912	neutral	22	Ursula
+65	2014-01-25 15:13:34.708912	neutral	22	Ursula
+66	2014-01-25 15:13:34.708912	neutral	22	Ursula
+67	2014-01-25 15:13:34.708912	neutral	23	Ursula
+68	2014-01-25 15:13:34.708912	neutral	23	Ursula
+69	2014-01-25 15:13:34.708912	neutral	23	Ursula
+70	2014-01-25 15:13:34.708912	neutral	24	Ursula
+71	2014-01-25 15:13:34.708912	neutral	24	Ursula
+72	2014-01-25 15:13:34.708912	neutral	24	Ursula
+73	2014-01-25 15:13:34.708912	neutral	25	Ursula
+74	2014-01-25 15:13:34.708912	neutral	25	Ursula
+75	2014-01-25 15:13:34.708912	neutral	25	Ursula
+76	2014-01-25 15:13:34.708912	neutral	26	Ursula
+77	2014-01-25 15:13:34.708912	neutral	26	Ursula
+78	2014-01-25 15:13:34.708912	neutral	26	Ursula
+79	2014-01-25 15:13:34.708912	neutral	27	Ursula
+80	2014-01-25 15:13:34.708912	neutral	27	Ursula
+81	2014-01-25 15:13:34.708912	neutral	27	Ursula
+82	2014-01-25 15:13:34.708912	neutral	28	Ursula
+83	2014-01-25 15:13:34.708912	neutral	28	Ursula
+84	2014-01-25 15:13:34.708912	neutral	28	Ursula
+85	2014-01-25 15:13:34.708912	positive	29	Ursula
+86	2014-01-25 15:13:34.708912	positive	29	Ursula
+87	2014-01-25 15:13:34.708912	positive	29	Ursula
+88	2014-01-25 15:13:34.708912	positive	30	Ursula
+89	2014-01-25 15:13:34.708912	positive	30	Ursula
+90	2014-01-25 15:13:34.708912	positive	30	Ursula
+91	2014-01-25 15:13:34.708912	positive	31	Ursula
+92	2014-01-25 15:13:34.708912	positive	31	Ursula
+93	2014-01-25 15:13:34.708912	positive	31	Ursula
+94	2014-01-25 15:13:34.708912	positive	32	Ursula
+95	2014-01-25 15:13:34.708912	positive	32	Ursula
+96	2014-01-25 15:13:34.708912	positive	32	Ursula
+97	2014-01-25 15:13:34.708912	positive	33	Ursula
+98	2014-01-25 15:13:34.708912	positive	33	Ursula
+99	2014-01-25 15:13:34.708912	positive	33	Ursula
+100	2014-01-25 15:13:34.708912	positive	34	Ursula
+101	2014-01-25 15:13:34.708912	positive	34	Ursula
+102	2014-01-25 15:13:34.708912	positive	34	Ursula
+103	2014-01-25 15:13:34.708912	positive	35	Ursula
+104	2014-01-25 15:13:34.708912	positive	35	Ursula
+105	2014-01-25 15:13:34.708912	positive	35	Ursula
+106	2014-01-25 15:13:34.708912	positive	36	Ursula
+107	2014-01-25 15:13:34.708912	positive	36	Ursula
+108	2014-01-25 15:13:34.708912	positive	36	Ursula
+109	2014-01-25 15:13:34.708912	positive	37	Ursula
+110	2014-01-25 15:13:34.708912	positive	37	Ursula
+111	2014-01-25 15:13:34.708912	positive	37	Ursula
+112	2014-01-25 15:13:34.708912	positive	38	Ursula
+113	2014-01-25 15:13:34.708912	positive	38	Ursula
+114	2014-01-25 15:13:34.708912	positive	38	Ursula
+115	2014-01-25 15:13:34.708912	positive	39	Ursula
+116	2014-01-25 15:13:34.708912	positive	39	Ursula
+117	2014-01-25 15:13:34.708912	positive	39	Ursula
+118	2014-01-25 15:13:34.708912	positive	40	Ursula
+119	2014-01-25 15:13:34.708912	positive	40	Ursula
+120	2014-01-25 15:13:34.708912	positive	40	Ursula
+121	2014-01-25 15:13:34.708912	positive	41	Ursula
+122	2014-01-25 15:13:34.708912	positive	41	Ursula
+123	2014-01-25 15:13:34.708912	positive	41	Ursula
+124	2014-01-25 15:13:34.708912	positive	42	Ursula
+125	2014-01-25 15:13:34.708912	positive	42	Ursula
+126	2014-01-25 15:13:34.708912	positive	42	Ursula
+127	2014-01-25 15:13:34.708912	positive	43	Ursula
+128	2014-01-25 15:13:34.708912	positive	43	Ursula
+129	2014-01-25 15:13:34.708912	positive	43	Ursula
+130	2014-01-25 15:13:34.708912	positive	107	Peter
+131	2014-01-25 15:13:34.708912	positive	44	Peter
+132	2014-01-25 15:13:34.708912	positive	44	Peter
+133	2014-01-25 15:13:34.708912	positive	44	Peter
+134	2014-01-25 15:13:34.708912	positive	45	Peter
+135	2014-01-25 15:13:34.708912	positive	45	Peter
+136	2014-01-25 15:13:34.708912	positive	45	Peter
+137	2014-01-25 15:13:34.708912	positive	46	Peter
+138	2014-01-25 15:13:34.708912	positive	46	Peter
+139	2014-01-25 15:13:34.708912	positive	46	Peter
+140	2014-01-25 15:13:34.708912	positive	47	Peter
+141	2014-01-25 15:13:34.708912	positive	47	Peter
+142	2014-01-25 15:13:34.708912	positive	47	Peter
+143	2014-01-25 15:13:34.708912	positive	48	Peter
+144	2014-01-25 15:13:34.708912	positive	48	Peter
+145	2014-01-25 15:13:34.708912	positive	48	Peter
+146	2014-01-25 15:13:34.708912	positive	49	Peter
+147	2014-01-25 15:13:34.708912	positive	49	Peter
+148	2014-01-25 15:13:34.708912	positive	49	Peter
+149	2014-01-25 15:13:34.708912	positive	50	Peter
+150	2014-01-25 15:13:34.708912	positive	50	Peter
+151	2014-01-25 15:13:34.708912	positive	50	Peter
+152	2014-01-25 15:13:34.708912	positive	51	Peter
+153	2014-01-25 15:13:34.708912	positive	51	Peter
+154	2014-01-25 15:13:34.708912	positive	51	Peter
+155	2014-01-25 15:13:34.708912	positive	52	Peter
+156	2014-01-25 15:13:34.708912	positive	52	Peter
+157	2014-01-25 15:13:34.708912	positive	52	Peter
+158	2014-01-25 15:13:34.708912	positive	53	Peter
+159	2014-01-25 15:13:34.708912	positive	53	Peter
+160	2014-01-25 15:13:34.708912	positive	53	Peter
+161	2014-01-25 15:13:34.708912	positive	54	Peter
+162	2014-01-25 15:13:34.708912	positive	54	Peter
+163	2014-01-25 15:13:34.708912	positive	54	Peter
+164	2014-01-25 15:13:34.708912	positive	55	Peter
+165	2014-01-25 15:13:34.708912	positive	55	Peter
+166	2014-01-25 15:13:34.708912	positive	55	Peter
+167	2014-01-25 15:13:34.708912	positive	56	Peter
+168	2014-01-25 15:13:34.708912	positive	56	Peter
+169	2014-01-25 15:13:34.708912	positive	56	Peter
+170	2014-01-25 15:13:34.708912	positive	57	Peter
+171	2014-01-25 15:13:34.708912	positive	57	Peter
+172	2014-01-25 15:13:34.708912	positive	57	Peter
+173	2014-01-25 15:13:34.708912	positive	58	Peter
+174	2014-01-25 15:13:34.708912	positive	58	Peter
+175	2014-01-25 15:13:34.708912	positive	58	Peter
+176	2014-01-25 15:13:34.708912	positive	59	Peter
+177	2014-01-25 15:13:34.708912	positive	59	Peter
+178	2014-01-25 15:13:34.708912	neutral	59	Peter
+179	2014-01-25 15:13:34.708912	neutral	60	Peter
+180	2014-01-25 15:13:34.708912	neutral	60	Peter
+181	2014-01-25 15:13:34.708912	neutral	60	Peter
+182	2014-01-25 15:13:34.708912	neutral	61	Peter
+183	2014-01-25 15:13:34.708912	neutral	61	Peter
+184	2014-01-25 15:13:34.708912	neutral	61	Peter
+185	2014-01-25 15:13:34.708912	neutral	62	Peter
+186	2014-01-25 15:13:34.708912	neutral	62	Peter
+187	2014-01-25 15:13:34.708912	neutral	62	Peter
+188	2014-01-25 15:13:34.708912	neutral	63	Peter
+189	2014-01-25 15:13:34.708912	neutral	63	Peter
+190	2014-01-25 15:13:34.708912	neutral	63	Peter
+191	2014-01-25 15:13:34.708912	neutral	64	Peter
+192	2014-01-25 15:13:34.708912	neutral	64	Peter
+193	2014-01-25 15:13:34.708912	neutral	64	Peter
+194	2014-01-25 15:13:34.708912	neutral	65	Peter
+195	2014-01-25 15:13:34.708912	neutral	65	Peter
+196	2014-01-25 15:13:34.708912	neutral	65	Peter
+197	2014-01-25 15:13:34.708912	neutral	66	Peter
+198	2014-01-25 15:13:34.708912	neutral	66	Peter
+199	2014-01-25 15:13:34.708912	neutral	66	Peter
+200	2014-01-25 15:13:34.708912	neutral	67	Peter
+201	2014-01-25 15:13:34.708912	neutral	67	Peter
+202	2014-01-25 15:13:34.708912	neutral	67	Peter
+203	2014-01-25 15:13:34.708912	neutral	68	Peter
+204	2014-01-25 15:13:34.708912	neutral	68	Peter
+205	2014-01-25 15:13:34.708912	neutral	68	Peter
+206	2014-01-25 15:13:34.708912	neutral	69	Peter
+207	2014-01-25 15:13:34.708912	neutral	69	Peter
+208	2014-01-25 15:13:34.708912	negative	69	Peter
+209	2014-01-25 15:13:34.708912	negative	70	Peter
+210	2014-01-25 15:13:34.708912	negative	70	Peter
+211	2014-01-25 15:13:34.708912	negative	70	Peter
+212	2014-01-25 15:13:34.708912	negative	71	Peter
+213	2014-01-25 15:13:34.708912	negative	71	Peter
+214	2014-01-25 15:13:34.708912	negative	71	Peter
+215	2014-01-25 15:13:34.708912	negative	72	Peter
+216	2014-01-25 15:13:34.708912	negative	72	Peter
+217	2014-01-25 15:13:34.708912	negative	72	Peter
+218	2014-01-25 15:13:34.708912	negative	73	Peter
+219	2014-01-25 15:13:34.708912	negative	73	Peter
+220	2014-01-25 15:13:34.708912	negative	73	Peter
+221	2014-01-25 15:13:34.708912	negative	74	Peter
+222	2014-01-25 15:13:34.708912	negative	74	Peter
+223	2014-01-25 15:13:34.708912	negative	74	Peter
+224	2014-01-25 15:13:34.708912	negative	75	Peter
+225	2014-01-25 15:13:34.708912	negative	75	Peter
+226	2014-01-25 15:13:34.708912	positive	75	Jacob
+227	2014-01-25 15:13:34.708912	negative	76	Jacob
+228	2014-01-25 15:13:34.708912	negative	76	Jacob
+229	2014-01-25 15:13:34.708912	negative	76	Jacob
+230	2014-01-25 15:13:34.708912	negative	77	Jacob
+231	2014-01-25 15:13:34.708912	negative	77	Jacob
+232	2014-01-25 15:13:34.708912	negative	77	Jacob
+233	2014-01-25 15:13:34.708912	negative	78	Jacob
+234	2014-01-25 15:13:34.708912	negative	78	Jacob
+235	2014-01-25 15:13:34.708912	negative	78	Jacob
+236	2014-01-25 15:13:34.708912	negative	79	Jacob
+237	2014-01-25 15:13:34.708912	negative	79	Jacob
+238	2014-01-25 15:13:34.708912	negative	79	Jacob
+239	2014-01-25 15:13:34.708912	negative	80	Jacob
+240	2014-01-25 15:13:34.708912	negative	80	Jacob
+241	2014-01-25 15:13:34.708912	negative	80	Jacob
+242	2014-01-25 15:13:34.708912	negative	81	Jacob
+243	2014-01-25 15:13:34.708912	negative	81	Jacob
+244	2014-01-25 15:13:34.708912	negative	81	Jacob
+245	2014-01-25 15:13:34.708912	negative	82	Jacob
+246	2014-01-25 15:13:34.708912	negative	82	Jacob
+247	2014-01-25 15:13:34.708912	negative	82	Jacob
+248	2014-01-25 15:13:34.708912	negative	83	Jacob
+249	2014-01-25 15:13:34.708912	negative	83	Jacob
+250	2014-01-25 15:13:34.708912	negative	83	Jacob
+251	2014-01-25 15:13:34.708912	negative	84	Jacob
+252	2014-01-25 15:13:34.708912	negative	84	Jacob
+253	2014-01-25 15:13:34.708912	negative	84	Jacob
+254	2014-01-25 15:13:34.708912	negative	85	Jacob
+255	2014-01-25 15:13:34.708912	negative	85	Jacob
+256	2014-01-25 15:13:34.708912	negative	85	Jacob
+257	2014-01-25 15:13:34.708912	negative	86	Jacob
+258	2014-01-25 15:13:34.708912	negative	86	Jacob
+259	2014-01-25 15:13:34.708912	negative	86	Jacob
+260	2014-01-25 15:13:34.708912	negative	87	Jacob
+261	2014-01-25 15:13:34.708912	negative	87	Jacob
+262	2014-01-25 15:13:34.708912	negative	87	Jacob
+263	2014-01-25 15:13:34.708912	negative	88	Jacob
+264	2014-01-25 15:13:34.708912	negative	88	Jacob
+265	2014-01-25 15:13:34.708912	negative	88	Jacob
+266	2014-01-25 15:13:34.708912	negative	89	Jacob
+267	2014-01-25 15:13:34.708912	negative	89	Jacob
+268	2014-01-25 15:13:34.708912	negative	89	Jacob
+269	2014-01-25 15:13:34.708912	negative	90	Jacob
+270	2014-01-25 15:13:34.708912	negative	90	Jacob
+271	2014-01-25 15:13:34.708912	negative	90	Jacob
+272	2014-01-25 15:13:34.708912	negative	91	Jacob
+273	2014-01-25 15:13:34.708912	neutral	91	Jacob
+274	2014-01-25 15:13:34.708912	neutral	91	Jacob
+275	2014-01-25 15:13:34.708912	neutral	92	Jacob
+276	2014-01-25 15:13:34.708912	neutral	92	Jacob
+277	2014-01-25 15:13:34.708912	neutral	92	Jacob
+278	2014-01-25 15:13:34.708912	neutral	93	Jacob
+279	2014-01-25 15:13:34.708912	neutral	93	Jacob
+280	2014-01-25 15:13:34.708912	neutral	93	Jacob
+281	2014-01-25 15:13:34.708912	neutral	94	Jacob
+282	2014-01-25 15:13:34.708912	neutral	94	Jacob
+283	2014-01-25 15:13:34.708912	neutral	94	Jacob
+284	2014-01-25 15:13:34.708912	neutral	95	Jacob
+285	2014-01-25 15:13:34.708912	neutral	95	Jacob
+286	2014-01-25 15:13:34.708912	neutral	95	Jacob
+287	2014-01-25 15:13:34.708912	neutral	96	Jacob
+288	2014-01-25 15:13:34.708912	neutral	96	Jacob
+289	2014-01-25 15:13:34.708912	positive	96	Jacob
+290	2014-01-25 15:13:34.708912	positive	97	Jacob
+291	2014-01-25 15:13:34.708912	positive	97	Jacob
+292	2014-01-25 15:13:34.708912	positive	97	Jacob
+293	2014-01-25 15:13:34.708912	positive	98	Jacob
+294	2014-01-25 15:13:34.708912	positive	98	Jacob
+295	2014-01-25 15:13:34.708912	positive	98	Jacob
+296	2014-01-25 15:13:34.708912	positive	99	Jacob
+297	2014-01-25 15:13:34.708912	positive	99	Jacob
+298	2014-01-25 15:13:34.708912	positive	99	Jacob
+299	2014-01-25 15:13:34.708912	positive	100	Jacob
+300	2014-01-25 15:13:34.708912	positive	100	Sophia
+301	2014-01-25 15:13:34.708912	positive	100	Sophia
+302	2014-01-25 15:13:34.708912	positive	101	Sophia
+303	2014-01-25 15:13:34.708912	positive	101	Sophia
+304	2014-01-25 15:13:34.708912	positive	101	Sophia
+305	2014-01-25 15:13:34.708912	positive	102	Sophia
+306	2014-01-25 15:13:34.708912	positive	102	Sophia
+307	2014-01-25 15:13:34.708912	positive	102	Sophia
+308	2014-01-25 15:13:34.708912	positive	103	Sophia
+309	2014-01-25 15:13:34.708912	positive	103	Sophia
+310	2014-01-25 15:13:34.708912	positive	103	Sophia
+311	2014-01-25 15:13:34.708912	positive	104	Sophia
+312	2014-01-25 15:13:34.708912	positive	104	Sophia
+313	2014-01-25 15:13:34.708912	positive	104	Sophia
+314	2014-01-25 15:13:34.708912	positive	105	Sophia
+315	2014-01-25 15:13:34.708912	positive	105	Sophia
+316	2014-01-25 15:13:34.708912	positive	105	Sophia
+317	2014-01-25 15:13:34.708912	positive	106	Sophia
+318	2014-01-25 15:13:34.708912	positive	106	Sophia
+319	2014-01-25 15:13:34.708912	positive	106	Sophia
+320	2014-01-25 15:13:34.708912	positive	107	Sophia
+321	2014-01-25 15:13:34.708912	positive	107	Sophia
+322	2014-01-25 15:13:34.708912	positive	108	Sophia
+323	2014-01-25 15:13:34.708912	positive	108	Sophia
+324	2014-01-25 15:13:34.708912	positive	108	Sophia
+325	2014-01-25 15:13:34.708912	neutral	109	Sophia
+326	2014-01-25 15:13:34.708912	neutral	109	Sophia
+327	2014-01-25 15:13:34.708912	neutral	109	Sophia
+328	2014-01-25 15:13:34.708912	neutral	110	Sophia
+329	2014-01-25 15:13:34.708912	neutral	110	Sophia
+330	2014-01-25 15:13:34.708912	neutral	110	Sophia
+331	2014-01-25 15:13:34.708912	neutral	111	Sophia
+332	2014-01-25 15:13:34.708912	neutral	111	Sophia
+333	2014-01-25 15:13:34.708912	neutral	111	Sophia
+334	2014-01-25 15:13:34.708912	neutral	112	Sophia
+335	2014-01-25 15:13:34.708912	neutral	112	Sophia
+336	2014-01-25 15:13:34.708912	neutral	112	Sophia
+337	2014-01-25 15:13:34.708912	neutral	113	Sophia
+338	2014-01-25 15:13:34.708912	neutral	113	Sophia
+339	2014-01-25 15:13:34.708912	neutral	113	Sophia
+340	2014-01-25 15:13:34.708912	neutral	114	Sophia
+341	2014-01-25 15:13:34.708912	neutral	114	Sophia
+342	2014-01-25 15:13:34.708912	neutral	114	Sophia
+343	2014-01-25 15:13:34.708912	neutral	115	Sophia
+344	2014-01-25 15:13:34.708912	neutral	115	Sophia
+345	2014-01-25 15:13:34.708912	neutral	115	Sophia
+346	2014-01-25 15:13:34.708912	neutral	116	Sophia
+347	2014-01-25 15:13:34.708912	neutral	116	Sophia
+348	2014-01-25 15:13:34.708912	neutral	116	Sophia
+349	2014-01-25 15:13:34.708912	neutral	117	Sophia
+350	2014-01-25 15:13:34.708912	neutral	117	Sophia
+351	2014-01-25 15:13:34.708912	neutral	117	Sophia
+352	2014-01-25 15:13:34.708912	neutral	118	Sophia
+353	2014-01-25 15:13:34.708912	neutral	118	Sophia
+354	2014-01-25 15:13:34.708912	neutral	118	Sophia
+355	2014-01-25 15:13:34.708912	positive	119	Sophia
+356	2014-01-25 15:13:34.708912	positive	119	Sophia
+357	2014-01-25 15:13:34.708912	positive	119	Sophia
+358	2014-01-25 15:13:34.708912	positive	120	Sophia
+359	2014-01-25 15:13:34.708912	positive	120	Sophia
+360	2014-01-25 15:13:34.708912	positive	120	Sophia
+361	2014-01-25 15:13:34.708912	positive	121	Sophia
+362	2014-01-25 15:13:34.708912	positive	121	Sophia
+\.
+
+
+--
+-- Name: answers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: aic
+--
+
+SELECT pg_catalog.setval('answers_id_seq', 362, true);
+
+
+--
+-- Data for Name: keywords; Type: TABLE DATA; Schema: public; Owner: aic
+--
+
+COPY keywords (id, keyword, added) FROM stdin;
+1	Apple	2014-01-24 23:43:05.29082
+2	Microsoft	2014-01-24 23:43:05.29082
+3	Facebook	2014-01-24 23:43:05.29082
+4	General Motors	2014-01-24 23:43:05.29082
+5	Google	2014-01-24 23:43:05.29082
+6	Yahoo	2014-01-24 23:43:05.29082
+7	Western Union	2014-01-24 23:43:05.29082
+8	JP Morgan	2014-01-24 23:43:05.29082
+\.
+
+
+--
+-- Name: keywords_id_seq; Type: SEQUENCE SET; Schema: public; Owner: aic
+--
+
+SELECT pg_catalog.setval('keywords_id_seq', 8, true);
+
+
+--
+-- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: aic
+--
+
+COPY projects (id, link, datetime, paragraph) FROM stdin;
+1	http://finance.yahoo.com/blogs/the-exchange/stocks-plunge-in-u-s---dow-sinks-more-than-280-points-205935575.html	2014-01-25 00:16:49.035601	yahoo finance
+4	http://finance.yahoo.com/blogs/talking-numbers/one-portfolio-manager-was-long-gold-for-six-years--then-this-happened-214144849.html	2014-01-25 00:16:49.035601	yahoo finance
+6	http://finance.yahoo.com/blogs/the-exchange/microsoft-s-great-quarter-wasn-t-really-so-great-165834206.html	2014-01-25 00:16:49.035601	yahoo finance
+7	http://finance.yahoo.com/blogs/talking-numbers/retail-investors-are-betting-big-on-this-sector-133044608.html	2014-01-25 00:16:49.035601	yahoo finance
+8	http://finance.yahoo.com/blogs/daily-ticker/jamie-dimon-gets-a-raise--how-the--king--of-wall-street-became-a-martyr-151106975.html	2014-01-25 00:16:49.035601	yahoo finance
+9	http://finance.yahoo.com/blogs/breakout/finding-the-next-tesla--how-to-spot-momentum-stocks-early-in-the-game-151227858.html	2014-01-25 00:16:49.035601	yahoo finance
+10	http://finance.yahoo.com/news/google-39-gmail-down-users-around-world-192926231--sector.html	2014-01-25 00:16:49.035601	yahoo finance
+13	http://finance.yahoo.com/news/goldman-looks-ban-chat-services-004500883.html	2014-01-25 00:16:49.035601	yahoo finance
+17	http://finance.yahoo.com/news/chinese-state-tv-criticizes-wal-121737201.html	2014-01-25 00:16:49.035601	yahoo finance
+19	http://finance.yahoo.com/news/exclusive-icahns-stake-ebay-close-000725004.html	2014-01-25 00:16:49.035601	yahoo finance
+23	http://finance.yahoo.com/blogs/michael-santoli/buy-the--next--dip-in-emerging-markets-stocks-165328273.html	2014-01-25 00:16:49.035601	yahoo finance
+25	http://finance.yahoo.com/news/microsoft-profit-slightly-strong-commercial-211732834.html	2014-01-25 00:16:49.035601	yahoo finance
+27	http://finance.yahoo.com/blogs/hot-stock-minute/stocks-____-after-mixed-economic-news-in-the-u-s--and-disappointing-news-on-china-s-economy-rattled-investors-160716975.html	2014-01-25 00:16:49.035601	yahoo finance
+28	http://finance.yahoo.com/news/icahn-buys-another-500-million-202256608.html	2014-01-25 00:16:49.035601	yahoo finance
+29	http://finance.yahoo.com/blogs/talking-numbers/does-el-erian-s-resignation-mean-trouble-for-bonds-184555119.html	2014-01-25 00:16:49.035601	yahoo finance
+31	http://finance.yahoo.com/blogs/breakout/microsoft-moves-to-thwart-nsa-prying-as-backlash-grows-155051137.html	2014-01-25 00:16:49.035601	yahoo finance
+32	http://finance.yahoo.com/blogs/the-exchange/great-day-for-netflix-shares-could-pay-off-for-carl-icahn-s-son-154639558.html	2014-01-25 00:16:49.035601	yahoo finance
+33	http://finance.yahoo.com/blogs/daily-ticker/how-to-help-workers--eliminate-the-corporate-income-tax-151210262.html	2014-01-25 00:16:49.035601	yahoo finance
+34	http://finance.yahoo.com/blogs/daily-ticker/the-consumer-is-back-says-economist-michelle-meyer-153149475.html	2014-01-25 00:16:49.035601	yahoo finance
+35	http://finance.yahoo.com/blogs/breakout/media-enabling-icahn-s-market-moving-rants--mccullough-191218822.html	2014-01-25 00:16:49.035601	yahoo finance
+36	http://finance.yahoo.com/news/stock-futures-fall-earnings-data-tap-124908491--sector.html	2014-01-25 00:16:49.035601	yahoo finance
+37	http://finance.yahoo.com/blogs/daily-ticker/microsoft-earnings-preview--forget-the-numbers--who-s-the-next-ceo---213857122.html	2014-01-25 00:16:49.035601	yahoo finance
+40	http://finance.yahoo.com/blogs/daily-ticker/can-netflix-continue-its-rapid-growth-132947381.html	2014-01-25 00:16:49.035601	yahoo finance
+41	http://finance.yahoo.com/news/wall-street-week-ahead-stocks-004423153.html	2014-01-25 11:41:05.382502	yahoo finance
+43	http://finance.yahoo.com/news/exclusive-icahns-stake-ebay-close-000725004.html	2014-01-25 11:41:05.382502	yahoo finance
+44	http://finance.yahoo.com/blogs/daily-ticker/jamie-dimon-gets-a-raise--how-the--king--of-wall-street-became-a-martyr-151106975.html	2014-01-25 11:41:05.382502	yahoo finance
+46	http://finance.yahoo.com/blogs/daily-ticker/is-carl-icahn-an-activist-troll--154954680.html	2014-01-25 11:41:05.382502	yahoo finance
+47	http://finance.yahoo.com/blogs/talking-numbers/one-portfolio-manager-was-long-gold-for-six-years--then-this-happened-214144849.html	2014-01-25 11:41:05.382502	yahoo finance
+49	http://finance.yahoo.com/blogs/the-exchange/stocks-plunge-in-u-s---dow-sinks-more-than-280-points-205935575.html	2014-01-25 11:41:05.382502	yahoo finance
+52	http://finance.yahoo.com/blogs/the-exchange/microsoft-s-great-quarter-wasn-t-really-so-great-165834206.html	2014-01-25 11:41:05.382502	yahoo finance
+53	http://finance.yahoo.com/blogs/talking-numbers/retail-investors-are-betting-big-on-this-sector-133044608.html	2014-01-25 11:41:05.382502	yahoo finance
+54	http://finance.yahoo.com/blogs/breakout/finding-the-next-tesla--how-to-spot-momentum-stocks-early-in-the-game-151227858.html	2014-01-25 11:41:05.382502	yahoo finance
+55	http://finance.yahoo.com/news/google-39-gmail-down-users-around-world-192926231--sector.html	2014-01-25 11:41:05.382502	yahoo finance
+58	http://finance.yahoo.com/news/goldman-looks-ban-chat-services-004500883.html	2014-01-25 11:41:05.382502	yahoo finance
+62	http://finance.yahoo.com/news/chinese-state-tv-criticizes-wal-121737201.html	2014-01-25 11:41:05.382502	yahoo finance
+65	http://finance.yahoo.com/blogs/michael-santoli/buy-the--next--dip-in-emerging-markets-stocks-165328273.html	2014-01-25 11:41:05.382502	yahoo finance
+67	http://finance.yahoo.com/news/microsoft-profit-slightly-strong-commercial-211732834.html	2014-01-25 11:41:05.382502	yahoo finance
+69	http://finance.yahoo.com/blogs/hot-stock-minute/stocks-____-after-mixed-economic-news-in-the-u-s--and-disappointing-news-on-china-s-economy-rattled-investors-160716975.html	2014-01-25 11:41:05.382502	yahoo finance
+70	http://finance.yahoo.com/news/icahn-buys-another-500-million-202256608.html	2014-01-25 11:41:05.382502	yahoo finance
+71	http://finance.yahoo.com/blogs/talking-numbers/does-el-erian-s-resignation-mean-trouble-for-bonds-184555119.html	2014-01-25 11:41:05.382502	yahoo finance
+73	http://finance.yahoo.com/blogs/breakout/microsoft-moves-to-thwart-nsa-prying-as-backlash-grows-155051137.html	2014-01-25 11:41:05.382502	yahoo finance
+74	http://finance.yahoo.com/blogs/the-exchange/great-day-for-netflix-shares-could-pay-off-for-carl-icahn-s-son-154639558.html	2014-01-25 11:41:05.382502	yahoo finance
+75	http://finance.yahoo.com/blogs/daily-ticker/how-to-help-workers--eliminate-the-corporate-income-tax-151210262.html	2014-01-25 11:41:05.382502	yahoo finance
+76	http://finance.yahoo.com/blogs/daily-ticker/the-consumer-is-back-says-economist-michelle-meyer-153149475.html	2014-01-25 11:41:05.382502	yahoo finance
+77	http://finance.yahoo.com/blogs/breakout/media-enabling-icahn-s-market-moving-rants--mccullough-191218822.html	2014-01-25 11:41:05.382502	yahoo finance
+78	http://finance.yahoo.com/news/stock-futures-fall-earnings-data-tap-124908491--sector.html	2014-01-25 11:41:05.382502	yahoo finance
+79	http://finance.yahoo.com/blogs/daily-ticker/microsoft-earnings-preview--forget-the-numbers--who-s-the-next-ceo---213857122.html	2014-01-25 11:41:05.382502	yahoo finance
+\.
+
+
+--
+-- Name: projects_id_seq; Type: SEQUENCE SET; Schema: public; Owner: aic
+--
+
+SELECT pg_catalog.setval('projects_id_seq', 80, true);
+
+
+--
+-- Data for Name: publications; Type: TABLE DATA; Schema: public; Owner: aic
+--
+
+COPY publications (id, datetime) FROM stdin;
+1	2014-01-24 15:59:35
+2	2014-01-24 19:44:23
+\.
+
+
+--
+-- Name: publications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: aic
+--
+
+SELECT pg_catalog.setval('publications_id_seq', 2, true);
+
+
+--
+-- Data for Name: tasks; Type: TABLE DATA; Schema: public; Owner: aic
+--
+
+COPY tasks (id, paragraph, project_id, keyword_id, finished_rating, answers_requested, price, price_bonus, datetime, garbage_flag) FROM stdin;
+2	More from Talking Numbers:\n\nHere's why emerging markets scare me, but here's what terrifies me: GartmanRetail investors are betting big on this sectorHere's why Tesla's shares could soon stall ________________\n\nFollow us on Twitter: @CNBCNumbers Like us on Facebook: facebook.com/CNBCNumbers\n	4	3	0	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+3	Maybe Amy Hood, Microsoft’s chief financial officer, should stay in power a little longer – or not.\n\nMicrosoft (MSFT) posted great results for the just ended quarter, sending the stock up as much as 4% Friday. But there’s less than meets the eye to the software giant’s seeming resurgence.\n	6	2	0	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+4	With CEO Steve Ballmer on the way out, Hood oversaw Microsoft’s quarterly earnings and, oh, what a treat investors got. Revenue jumped 14% to a record $24.5 billion and earnings per share of 78 cents beat Wall Street estimates by 10 cents. Microsoft shares settled down after the initial surge and were up 2% at midday amid a falling overall market that hammered most other tech stocks.\n	6	2	0	3	0.0400000000000000008	0	2014-01-25 00:16:49.041966	f
+5	A closer look\n\nLooking closely, too much of the surprise came from one-time boosts, cost cutting and gains in weaker product lines that won’t help much in the future.\n\nStarting with Microsoft’s most profitable niche, sales of Windows and Office software were higher than expected. Overall PC shipments dipped about 6% in the quarter, according to market research firm NPD, but Microsoft’s Windows revenue dropped just 3%.\n	6	2	0	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+6	Unfortunately, the surprise was all on the corporate side, where Microsoft’s decision to end support for Windows XP last year has given sales a short-term bump. Windows 8 remains a controversial product and some analysts say many companies have been asking to install Windows 7 when they upgrade. The shift also helped Office sales, as companies shifted to newer versions as they upgraded operating systems.\n	6	2	0	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+22	, the KFC restaurants of Yum Brands Inc (YUM), drugmaker GlaxoSmithKline (GSK.L) and carmakers Audi (VOW3.DE), Subaru , and Jaguar Land Rover (NSI:TATAMOTORS).\n \nHowever, its reports have had mixed results.\n \nWhile Apple apologized to Chinese customers for poor communication over its warranty policy and changed some of the terms following a critical CCTV broadcast, the station's report on Starbucks was mocked by Chinese internet users and criticized by economic experts.\n 	17	1	5	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+23	And it is key to future growth opportunities. PayPal is considered a leader in U.S. mobile payments, which Forrester Research projects will triple in volume to $90 billion by 2017.\n \nIcahn, who has roiled the tech industry by agitating for change at companies from Apple Inc and Dell Inc to Netflix, took a 0.82 percent stake in eBay this month and made a proposal for it to spin off PayPal, eBay disclosed on Wednesday. On Thursday, a source close to the matter said Icahn's stake stood closer to 2 percent.\n 	19	1	5	3	0.0599999999999999978	0	2014-01-25 00:16:49.041966	f
+24	As a result, says Bank of America Merrill Lynch chief investment strategist Michael Hartnett, among investors, “emerging markets are about as popular as Dennis Rodman at a UN Security Council meeting.”\n\nSizing up specific country markets against individual mega-cap U.S. stocks, Hartnett notes the relative enthusiasm for each market segment is stark: Google Inc. (GOOG) alone has a higher market value than the entire MSCI Brazil index, Wells Fargo Co. (WFC) is now “bigger” than India and Starbucks Corp. (SBUX) is “worth more than Turkey, which for eons has been synonymous with strong coffee in convivial settings."\n	23	5	5	3	0.0700000000000000067	0	2014-01-25 00:16:49.041966	f
+25	By Bill Rigby\n \nSEATTLE (Reuters) - Microsoft Corp posted a bigger-than-expected quarterly profit on Thursday, boosted by strong sales of its Office software to businesses, a solid holiday season for its new Xbox game console and Surface tablets, and a slightly lower tax bill.\n 	25	2	5	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+26	The world's largest software company did not say anything about its unexpectedly long five-month search for a new chief executive to replace Steve Ballmer, who said in August he would retire within a year.\n \nThe company co-founded by Bill Gates 39 years ago was central to the personal computer revolution, but lost its way in the last decade under Ballmer as Apple Inc and Google Inc stormed ahead in mobile computing.\n 	25	1	5	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+27	The world's largest software company did not say anything about its unexpectedly long five-month search for a new chief executive to replace Steve Ballmer, who said in August he would retire within a year.\n \nThe company co-founded by Bill Gates 39 years ago was central to the personal computer revolution, but lost its way in the last decade under Ballmer as Apple Inc and Google Inc stormed ahead in mobile computing.\n 	25	5	5	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+28	The quarter may well be the last full one for Ballmer, and it at least showed some positive momentum for the Surface tablet, Microsoft's long-delayed attempt to knock Apple's iPad off its perch.\n \n"It's a good print to ride off into the sunset with, for the current CEO," said Colin Gillis, an analyst at BGC Financial. "There's still the over-arching question for this company: who's going to be the new CEO, and what direction they take."\n 	25	1	5	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+30	Microsoft's new Xbox One console, launched in November, helped the top line, contributing more than half to the 7.4 million unit sales in the quarter, up from 5.9 million a year ago. That said, Sony's cheaper PlayStation 4 appears to be winning the latest video game showdown.\n 	25	2	10	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+45	To see more of what El-Erian's resignation may signal to the bond market, watch Sanchez on the fundamentals and Busch on the technicals in the video above. \n\nMore from Talking Numbers:\n\nWhy Bitcoin is poised to break out to all-time highsHere's why Facebook's 'disease' could be good for the stockIs Apple the cheapest tech stock out there? ________________\n	29	1	10	3	0.0400000000000000008	0	2014-01-25 00:16:49.041966	f
+8	Another supposed bright spot was sales of the Surface tablet, which doubled from the prior quarter to $893 million. It’s good that Surface tablets are selling better but Hood admitted the effort is still losing money. And the numbers are still so miniscule as to be almost irrelevant in the overall tablet market. In the third quarter – before the holiday shopping period – Apple sold 14.1 million iPads worth $6.2 billion. It’s expected to report selling 23 million to 25 million worth well over $10 billion for the holiday period. And Apple may not even be the leader in tablets anymore, with Android-based devices selling at an even higher rate.\n	6	1	0	3	0.0700000000000000067	0	2014-01-25 00:16:49.041966	f
+9	For Microsoft, going from complete tablet irrelevance to only mostly irrelevant isn’t going to make up for years of further declining PC sales.\n\nAnd Microsoft’s other hardware play, Nokia’s handset division, reported earlier it barely sold more smartphones in the fourth quarter, 8.8 million, than in the prior quarter when it sold 8.2 million.\n	6	2	0	3	0.0400000000000000008	0	2014-01-25 00:16:49.041966	f
+10	Not all bad\n\nNot all the good news came filled with caveats. Microsoft’s server business grew 12% and its Hyper V virtualization program gained 5 points of market share. Those gains are in some of the fastest-growing segments of the entire IT landscape.\n	6	2	0	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+11	More from Talking Numbers:\n\nHere's why Tesla's shares could soon stallWhy Netflix could break more recordsCold weather is making this commodity hot ________________\n\nFollow us on Twitter: @CNBCNumbers Like us on Facebook: facebook.com/CNBCNumbers\n\n \n	7	3	0	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+12	The days ahead should bring more details about executive pay and year-end bonsues on Wall Street, where compensation is way down from the go-go years (pre 2008) but still in the stratosphere relative to just about any other industry.\n\nAaron Task is the host of The Daily Ticker and Editor-in-Chief of Yahoo! Finance. You can follow him on Twitter at @aarontask or email him at altask@yahoo.com.\n	8	6	0	3	0.0400000000000000008	0	2014-01-25 00:16:49.041966	f
+13	After a year of triple-digit gains for the likes of Netflix (NFLX), Tesla (TSLA), Best Buy (BBY), and Facebook (FB), investors are busy trying to find the next big winner. According to Joe Fahmy, managing director at Zor Capital, these so-called “momentum plays” typically have two common traits.“On the fundamental side, their earnings and sales are accelerating,” Fahmy says in the attached video. “And on the technical side, they’re usually breaking out of some sort of technical pattern and moving to the upside.”With that in mind, Fahmy brought a list of ideas to Breakout that he thinks could fit the bill and deliver the kind of upside investor dream of.Fahmy’s first pick is hardly a new theme but it is clearly showing renewed signs of momentum. While the Biotech sector (IBB)  has been rising and setting record highs for six years, its recent surge looks to be accelerating. Specifically, the sector gained 65% last year and 32% the year before, but a two-month sprint of close to 20%, (representing 4x outperformance versus the S&P 500) is a sign that better days are ahead.“I still think it’s in a great uptrend,” says Fahmy in the attached video.  “A lot of the companies (in it) still have powerful earnings growth, huge pipelines of (new) drugs and will continue to grow through acquisition. I think some of the bigger names (CELG, GILD, AMGN, BIIB) will be bigger than Merck or Pfizer 3 to 5 years from now.”Fahmy also see lots of blossoming growth within tech right now, particularly amongst companies that manage and manipulate so called “big data.” One such momentum play that he likes is a company called Splunk (SPLK). Since its debut in April 2012, this San Francisco based provider of operational intelligence has risen more than 140% “Every deal that’s going on in big data, meaning the indexing of all this data, Splunk is involved,” Fahmy says. “They’re the leader and the main company in this space.” For the record, Splunk is forecast to deliver 66% EPS growth this quarter and 40% sales growth.The final so-called ‘mo-mo’ pick from Fahmy is a play on the boom in data and internet security. Again, he has chosen to play it via a new but rapidly growing company called FireEye (FEYE).  “It’s made a big run recently,“ he says of the stock which came public at $20 four months ago and closed yesterday at $70. “Longer term I think this is one of the biggest players, and you’re (still) getting this early.”He’s the first to admit that these types of stocks often ‘’get ahead of themselves” and that would-be buyers need to be on the look out for dips and consolidations. In fact, just this week, JPMorgan downgraded FireEye to neutral from overweight in the wake of its huge short-term move. “Fundamentally, these companies are the new growth names,” he says, noting that most investors still aren’t familiar with them. “As you research them and get to know their stories, you’ll find that these are big winners potentially in the long term.”\n	9	3	0	3	0.309999999999999998	0	2014-01-25 00:16:49.041966	f
+14	SAN FRANCISCO (Reuters) - Google Inc suffered a service outage on Friday that briefly took down Gmail, the Internet email service used by hundreds of millions of people and many businesses across the globe.\n\n Google, which first acknowledged the outage at 11:12 a.m. Pacific Time (19:12 GMT), said roughly one hour later that service had been restored for some users and it expected "a resolution for all users in the near future."\n	10	5	0	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+15	 It remained unclear what triggered the outage, which affected users in at least India, Britain and the United States and prompted a stream of complaints on Twitter from users in many more countries.\n\n "We're investigating reports of an issue with Gmail. We will provide more information shortly," the company said on its "App Status" dashboard online, which tracks the state of various Google services.\n	10	5	5	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+16	 Two other Google properties, the social network Google Plus, and YouTube, appeared to load slowly as well.\n\n Yahoo Inc, which runs a rival Internet mail service, seized the moment to post a screenshot of the Gmail error page to Twitter.\n\n Google users attempting to sign on saw a "temporary error" message and a brief note: "We're sorry, but your Gmail account is temporarily unavailable. We apologize for the inconvenience and suggest trying again in a few minutes."\n	10	5	5	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+17	 Two other Google properties, the social network Google Plus, and YouTube, appeared to load slowly as well.\n\n Yahoo Inc, which runs a rival Internet mail service, seized the moment to post a screenshot of the Gmail error page to Twitter.\n\n Google users attempting to sign on saw a "temporary error" message and a brief note: "We're sorry, but your Gmail account is temporarily unavailable. We apologize for the inconvenience and suggest trying again in a few minutes."\n	10	6	5	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+18	\n Goldman Sachs Group Inc. is planning to ban traders from using some computer-messaging services in a bid to protect proprietary information at the heart of its sales-and-trading operation.\n\n \nUnder a new policy, the Wall Street firm won't allow person-to-person communication over instant-messaging services created by Bloomberg LP, Yahoo Inc., AOL Inc. and other third-party providers including Pivot Inc., according to a draft of a memo reviewed by The Wall Street Journal. Pivot is a unit of CME Group Inc.\n \n \n \n \n \n \n \n \n \n \n \n Bloomberg News\n Goldman Sachs wants to protect its proprietary information.\n \n 	13	6	5	3	0.0700000000000000067	0	2014-01-25 00:16:49.041966	f
+19	Yahoo, AOL and Pivot declined to comment.\n\n \nThe memo is expected to be sent in the coming weeks to the thousands of employees in Goldman's securities division, where the firm's sales and trading takes place. Traders will be permitted to communicate only over systems cleared by Goldman, including the Microsoft Lync desktop-messaging service and Enterprise IM by BlackBerry Inc., said the memo.\n 	13	2	5	3	0.0400000000000000008	0	2014-01-25 00:16:49.041966	f
+20	Yahoo, AOL and Pivot declined to comment.\n\n \nThe memo is expected to be sent in the coming weeks to the thousands of employees in Goldman's securities division, where the firm's sales and trading takes place. Traders will be permitted to communicate only over systems cleared by Goldman, including the Microsoft Lync desktop-messaging service and Enterprise IM by BlackBerry Inc., said the memo.\n 	13	6	5	3	0.0400000000000000008	0	2014-01-25 00:16:49.041966	f
+21	Wal-Mart is the latest in a series of foreign companies it has taken to task on issues ranging from pricing to poor quality products and shoddy customer service.\n \nCompanies it has criticized include coffee chain Starbucks (SBUX), consumer electronics groups Apple (AAPL) and Samsung\n 	17	1	5	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+29	The quarter may well be the last full one for Ballmer, and it at least showed some positive momentum for the Surface tablet, Microsoft's long-delayed attempt to knock Apple's iPad off its perch.\n \n"It's a good print to ride off into the sunset with, for the current CEO," said Colin Gillis, an analyst at BGC Financial. "There's still the over-arching question for this company: who's going to be the new CEO, and what direction they take."\n 	25	2	10	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+32	Sales of the second generation of Surface tablets jumped to $893 million in the key holiday shopping quarter, more than the whole of the previous fiscal year.\n \nHowever, at prices ranging from $450 to $1,800, that figure suggests Microsoft sold no more than 2 million Surface units. By comparison, Apple is expected to announce sales of more than 20 million iPads for the holiday quarter next week.\n 	25	2	10	3	0.0400000000000000008	0	2014-01-25 00:16:49.041966	f
+33	"Xbox is definitely a feather in Microsoft's cap, they defied the skeptics," said Daniel Ives, an analyst at FBR Capital Markets. "But Surface continues to be the Mount Everest of uphill battles."\n \nOverall, Microsoft reported a fiscal second-quarter profit of $6.56 billion, or 78 cents per share, compared with $6.38 billion, or 76 cents per share, in the year-ago quarter.\n 	25	2	10	3	0.0400000000000000008	0	2014-01-25 00:16:49.041966	f
+34	That easily beat Wall Street's average estimate of 68 cents, according to Thomson Reuters I/B/E/S, lifting Microsoft shares 3.4 percent in after hours trading.\n \nOverall revenue rose 14 percent to $24.5 billion, also beating Wall Street's forecast of $23.7 billion.\n 	25	2	10	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+35	Netflix (NFLX) was a bright spot for stocks. Netflix shares soared after the company surpassed expectations for fourth quarter earnings and subscribers, and offered an upbeat outlook for the first quarter.\n\nAfter the bell, Microsoft (MSFT), Starbucks (SBUX) and E*TRADE (ETFC) are expected to report results for the fourth quarter.\n	27	2	10	3	0.0400000000000000008	0	2014-01-25 00:16:49.041966	f
+36	By Edwin Chan\n \nSAN FRANCISCO (Reuters) - Activist investor Carl Icahn picked up another $500 million of Apple Inc shares on Thursday to take his investment in the iPhone maker to $3.6 billion, while ratcheting up his months-long campaign to pry open the company's cash hoard.\n 	28	1	10	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+37	Icahn, who repeatedly has called Apple a "no brainer" even as he wages a campaign to get it to return more cash to shareholders, tweeted his latest move just a day after revealing a position of over $3 billion in the company.\n \nIn a lengthy letter to shareholders filed with the Securities and Exchange Commission on Thursday, Icahn urged shareholders to vote "yea" to his proposal for a new $50 billion buyback, and laid out familiar arguments as to why Apple should share more of its $146 billion cash hoard.\n 	28	1	10	3	0.0599999999999999978	0	2014-01-25 00:16:49.041966	f
+38	Apple's strong market position in smartphones and tablets does not justify the company's official stance that it needed to maintain reserves to compete in a fast-evolving consumer electronics industry, Icahn said.\n \nHe said the stock's price-to-earnings multiple stood 71 percent below the S&P 500's and that the shares could be worth $840 if that gap was closed. An expansion of its capital return program could help bridge that difference, while allowing the company to express confidence in its own stock.\n 	28	1	10	3	0.0599999999999999978	0	2014-01-25 00:16:49.041966	f
+39	"Even if the story ended with Apple's existing product and software lines, we would still choose to make Apple our largest investment," Icahn said in the letter.\n \n"But there is more to the story! (CEO) Tim Cook keeps saying that he expects to introduce 'new products in new categories' and yet very few people seem to be listening."\n 	28	1	10	3	0.0400000000000000008	0	2014-01-25 00:16:49.041966	f
+40	Apple on Thursday referred back to its December proxy statement, in which it urged shareholders to vote down Icahn's proposal, warning that it needed ready access to cash in a fast-evolving and competitive mobile devices industry. Arch-foe Samsung Electronics has grabbed market share from Apple in past years while a host of smaller rivals like Huawei are aggressively competing in emerging markets.\n 	28	1	10	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+41	Shares of Apple closed up 0.8 percent at $556.18.\n \nNO BACKING DOWN\n \nIcahn, known for decades of strong-arm tactics including proxy fights against major corporations, appears to be stepping up efforts in the technology realm.\n \nOn Wednesday, eBay Inc disclosed that Icahn had taken a 0.82 percent stake in the company and was pressing for a spinoff of PayPal, the ecommerce giant's fastest-growing and most profitable division.\n 	28	1	10	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+42	On Thursday, he set his sights again on Apple, accusing its board of lacking investment management experience.\n \nIt was unclear when or how much stock the activist investor, who in August began trying to get Cook to agree to a $150 billion buyback, now holds. In a letter to Cook made public on October 24, Icahn said he had increased his stake to 4.7 million shares.\n 	28	1	10	3	0.0400000000000000008	0	2014-01-25 00:16:49.041966	f
+43	Apple's stock has surged 17 percent since Icahn first disclosed a significant stake in the company on August 13, when the shares were trading below $500. An additional $500 million investment on Thursday would translate into roughly 900,000 shares at current levels.\n 	28	1	10	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+44	Apple is in the midst of returning $100 billion to shareholders, including a total share repurchase program of $60 billion. It said it had already returned $43 billion in dividends and repurchases.\n \nBut more could be done, Icahn argued.\n \n"Given this massive net cash position and robust earnings generation, Apple is perhaps the most overcapitalized company in corporate history," Icahn said in his letter.\n 	28	1	10	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+46	To see more of what El-Erian's resignation may signal to the bond market, watch Sanchez on the fundamentals and Busch on the technicals in the video above. \n\nMore from Talking Numbers:\n\nWhy Bitcoin is poised to break out to all-time highsHere's why Facebook's 'disease' could be good for the stockIs Apple the cheapest tech stock out there? ________________\n	29	3	10	3	0.0400000000000000008	0	2014-01-25 00:16:49.041966	f
+58	 After the bell, Microsoft Corp said fiscal second-quarter profit rose 3 percent, as strong sales of its Office software to businesses offset another weak quarter for its flagship Windows system, and as consumers increasingly favor tablets over personal computers. The stock rose 3.7 percent in extended trade.	36	2	10	3	0.0400000000000000008	0	2014-01-25 00:16:49.041966	f
+59	 Apple Inc rose 0.8 percent to $556.18. Activist investor Carl Icahn picked up another $500 million of Apple shares, taking the billionaire's total investment in the iPhone maker to $3.6 billion.\n In other earnings, McDonald's Corp reported weaker-than-expected revenue as fewer customers ate at its restaurants. Shares rebounded from earlier losses to close up 0.5 percent to $95.32.	36	1	10	3	0.0400000000000000008	0	2014-01-25 00:16:49.041966	f
+48	In fact, a new poll from USA Today shows a majority of Americans are against the President on the surveillance program and have little confidence that policies will be changed. One can only presume that an equally large number of non-Americans are opposed to it as well, which is why Microsoft is stepping up to meet demand.To be fair, even if Microsoft - or other companies - start to house more data offshore, it would seem at best to be ineffective given the NSA’s widely reported foreign data collection operations in places like Brazil and Europe. There’s also the unsettling reality that the government can always demand access to the data if and when it feels the need.“What the government has done is to create a market opportunity for companies to go offshore with this data,” Macke declares. “It’s a curious turn of events.”\n	31	2	10	3	0.0899999999999999967	0	2014-01-25 00:16:49.041966	f
+49	The final reckoning won’t be for a couple more years, however, when Carl Icahn is due to make the next profit-sharing payment to his son and Schechter, who manage a $5 billion fund, known as the Sargon Portfolio, within the firm.\n\nCarl Icahn has shifted his energies to other investments. He is pushing Apple (AAPL) to increase its stock buybacks and dividend payments and, on Wednesday, said he wants eBay (EBAY) to split off its lucrative PayPal unit.\n	32	1	10	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+50	He writes in the New York Times: "What can workers do to mitigate their plight? One useful step would be to lobby to eliminate the corporate income tax."\n\nYou may wonder how giving corporations a tax bill of zero would unleash investment when companies are already hoarding equity at the highest levels this century, with one-third of non-financial corporations sitting on 82 percent of the $2.8 trillion in cash in corporate coffers. This includes company's like Apple (AAPL), Google (GOOG), and Exxon Mobil (XOM). Not to mention, many people may recall the story of General Electric (GE) already succeeding at paying no U.S. income tax a few years back. \n	33	1	10	3	0.0700000000000000067	0	2014-01-25 00:16:49.041966	f
+51	He writes in the New York Times: "What can workers do to mitigate their plight? One useful step would be to lobby to eliminate the corporate income tax."\n\nYou may wonder how giving corporations a tax bill of zero would unleash investment when companies are already hoarding equity at the highest levels this century, with one-third of non-financial corporations sitting on 82 percent of the $2.8 trillion in cash in corporate coffers. This includes company's like Apple (AAPL), Google (GOOG), and Exxon Mobil (XOM). Not to mention, many people may recall the story of General Electric (GE) already succeeding at paying no U.S. income tax a few years back. \n	33	5	10	3	0.0700000000000000067	0	2014-01-25 00:16:49.041966	f
+52	Follow The Daily Ticker on Facebook and Twitter! (@DailyTicker)\n\nMore from The Daily Ticker\n\nJobless benefits slashed in more states: Is the safety net coming to an end?\n\nWhat it's really like to work on Wall Street\n\nInvestors look on the bright side: Are they wearing blinders?\n	33	3	10	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+53	Follow The Daily Ticker on Facebook and Twitter (@DailyTicker)!\n\nMore from The Daily Ticker\n\nNext up for Netflix? More profits\n\nMicrosoft earnings preview: Forget the numbers, who's the next CEO? \n\nJobless benefits slashed in more states: Is the safety net coming to an end?\n	34	2	10	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+54	Follow The Daily Ticker on Facebook and Twitter (@DailyTicker)!\n\nMore from The Daily Ticker\n\nNext up for Netflix? More profits\n\nMicrosoft earnings preview: Forget the numbers, who's the next CEO? \n\nJobless benefits slashed in more states: Is the safety net coming to an end?\n	34	3	10	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+55	One day after he used Twitter to announce the purchase of another $500 million worth of Apple (AAPL) stock, Carl Icahn attacked the company in a lengthy open letter to his "fellow Apple shareholders" on Thursday afternoon.\n\n"Given the degree to which Apple appears undervalued to us, we feel it's almost a waste of time to debate the point," wrote Icahn in his nearly 3,000 word note. The extreme activist proceeded to argue that Apple should capitalize on "advancements in miniaturization and continued improvements in Siri" to produce an extended list of products from wearable gadgets to televisions.\n	35	1	10	3	0.0700000000000000067	0	2014-01-25 00:16:49.041966	f
+56	It was classic Icahn, humble-bragging about his massive profits since first tweeting about Apple last summer, even as he lectured the board for continuing to ignore the "biggest no-brainer" opportunities he's seen in "five decades of successful investing."\n	35	1	10	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+57	The Icahn-effect is punditry taken to the extreme. There’s nothing immoral or illegal about arguing a stock you hold is undervalued. Icahn saying Apple shares are a good buy is an opinion, not a command. Icahn is telling people what he really believes. He’d argue what he’s doing isn’t exploitation but giving tremendously valuable financial advice for free and having a blast doing it. Given that type of influence and platform McCullough or I would do more or less the same thing.\n	35	1	10	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+73	 \n\nIcahn is also keeping busy with Apple (AAPL). He has bought an additional $500 million worth of stock in the company, bringing his total to $3.6 billion. In addition to his purchase, he released an official letter to Apple shareholders listing the reasons he believes the tech giant should increase its stock buyback.\n	46	1	0	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+76	According to Icahn, Apple is against his proposal.\n\n“I’ve finally figured out what Carl is,” says Yahoo Finance’s Jeff Macke in the video above. “He is an activist troll. I don’t mean that negatively, he’s very good at it. He's bragging about making billions on his Apple call even as he’s assaulting the board for being the biggest group of idiots he’s ever seen.”\n	46	6	0	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+121	To see more of what El-Erian's resignation may signal to the bond market, watch Sanchez on the fundamentals and Busch on the technicals in the video above. \n\nMore from Talking Numbers:\n\nWhy Bitcoin is poised to break out to all-time highsHere's why Facebook's 'disease' could be good for the stockIs Apple the cheapest tech stock out there? ________________\n	71	1	\N	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+61	Ballmer announced last August that he plans to leave the company within a year. Ford CEO Alan Mulally was rumored to be a top choice but he has said he's not interested.\n\nDavid Garrity, principal of GVA Research, says his "odds-on favorite candidate is Satya Nadella, executive vice president of Microsoft’s Cloud and Enterprise group whose appointment would confirm Microsoft's intention to fully exploit its position as the number 2 in cloud computing after Amazon (AMZN).\n	37	2	5	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+62	Other candidates that have been mentioned:--Tony Bates, Microsoft's Executive Vice President for Business Development and Evangelism who is the former president of Skype, which Microsoft acquired in 2011.--Stephen Elop, former Microsoft Office head who moved onto Nokia as CEO and is now executive vice president of Nokia's devices and services unit, which Microsoft has purchased.--Hans Vestberg, CEO of Ericsson, which has acquired Microsoft's Mediaroom unit.Related: Ballmer’s Legacy at Microsoft: It’s Complicated, Says Santoli\n	37	2	5	3	0.0599999999999999978	0	2014-01-25 00:16:49.041966	f
+63	Garrity tells The Daily Ticker in the video above that no matter who is chosen as Microsoft CEO the company will not lose focus on its "devices and services,” strategy which aims to have hardware, online services and apps working together seamlessly across different screens and gadgets. Microsoft announced the "one strategy, one Microsoft” initiative last July and Ballmer stressed it during his August announcement to leave within a year.\n	37	2	5	3	0.0500000000000000028	0	2014-01-25 00:16:49.041966	f
+64	Garrity, who owns Microsoft shares, expects the company to report earnings for the quarter ending December 31, 2013 at $0.70 per share, down 8% from a year ago, with revenues of $23 billion, up 7% from a year ago. The average estimate among analysts is $0.68 a share and $23.7B in revenues.\n	37	2	5	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+65	Follow The Daily on Facebook and Twitter @dailyticker.\n\nMore From The Daily Ticker\n\nJobless benefits slashed in more states: Is the safety net coming to an end?\n\nWhat it's really like to work on Wall Street\n\nInvestors look on the bright side: Are they wearing blinders?  \n	37	3	5	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+66	Follow The Daily Ticker on Facebook and Twitter! (@DailyTicker)\n\nMore from The Daily Ticker\n\nJobless benefits slashed in more states: Is the safety net coming to an end?\n\nWhat it's really like to work on Wall Street\n\nInvestors look on the bright side: Are they wearing blinders?\n	40	3	5	3	0.0299999999999999989	0	2014-01-25 00:16:49.041966	f
+67	The last time the spread between the CBOE Volatility Index (^VIX) and three-month VIX futures turned negative was in mid-October, shortly after a 4.8 percent pullback in the S&P 500 opened the door to the last leg of the 2013 market rally.\n \nAPPLE EARNINGS TO START THE WEEK\n 	41	1	5	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+68	Aside from the Fed and economic data, traders will also face next week's flood of earnings, including results from Dow components Caterpillar(CAT), DuPont (DD), Pfizer (PFE), AT&T (NYS:T) and 3M (MMM).\n \nTechnology giants like Google (GOOG) and Facebook (FB.O) will also post quarterly scorecards. Apple (AAPL), the largest U.S. company by market capitalization, will set the stage after the closing bell on Monday.\n 	41	1	5	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+69	Aside from the Fed and economic data, traders will also face next week's flood of earnings, including results from Dow components Caterpillar(CAT), DuPont (DD), Pfizer (PFE), AT&T (NYS:T) and 3M (MMM).\n \nTechnology giants like Google (GOOG) and Facebook (FB.O) will also post quarterly scorecards. Apple (AAPL), the largest U.S. company by market capitalization, will set the stage after the closing bell on Monday.\n 	41	3	5	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+70	Aside from the Fed and economic data, traders will also face next week's flood of earnings, including results from Dow components Caterpillar(CAT), DuPont (DD), Pfizer (PFE), AT&T (NYS:T) and 3M (MMM).\n \nTechnology giants like Google (GOOG) and Facebook (FB.O) will also post quarterly scorecards. Apple (AAPL), the largest U.S. company by market capitalization, will set the stage after the closing bell on Monday.\n 	41	5	0	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+71	And it is key to future growth opportunities. PayPal is considered a leader in U.S. mobile payments, which Forrester Research projects will triple in volume to $90 billion by 2017.\n \nIcahn, who has roiled the tech industry by agitating for change at companies from Apple Inc and Dell Inc to Netflix, took a 0.82 percent stake in eBay this month and made a proposal for it to spin off PayPal, eBay disclosed on Wednesday. On Thursday, a source close to the matter said Icahn's stake stood closer to 2 percent.\n 	43	1	0	3	0.0599999999999999978	0	2014-01-25 11:41:05.389943	f
+72	The days ahead should bring more details about executive pay and year-end bonsues on Wall Street, where compensation is way down from the go-go years (pre 2008) but still in the stratosphere relative to just about any other industry.\n\nAaron Task is the host of The Daily Ticker and Editor-in-Chief of Yahoo! Finance. You can follow him on Twitter at @aarontask or email him at altask@yahoo.com.\n	44	6	0	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+74	"The S&P 500’s price to earnings multiple is 71% higher than Apple’s, and if Apple were simply valued at the same multiple, its share price would be $840, which is 52% higher than its current price," writes Icahn. "This is a dramatic valuation disconnect that simply makes no sense to us, and it seems that the company agrees with us on this point."\n	46	1	0	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+75	According to Icahn, Apple is against his proposal.\n\n“I’ve finally figured out what Carl is,” says Yahoo Finance’s Jeff Macke in the video above. “He is an activist troll. I don’t mean that negatively, he’s very good at it. He's bragging about making billions on his Apple call even as he’s assaulting the board for being the biggest group of idiots he’s ever seen.”\n	46	1	0	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+77	Follow The Daily Ticker on Facebook and Twitter (@DailyTicker)!\n\nMore from The Daily Ticker\n\nNext up for Netflix? More profits\n\nMicrosoft earnings preview: Forget the numbers, who's the next CEO? \n\nJobless benefits slashed in more states: Is the safety net coming to an end?\n	46	2	0	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+78	Follow The Daily Ticker on Facebook and Twitter (@DailyTicker)!\n\nMore from The Daily Ticker\n\nNext up for Netflix? More profits\n\nMicrosoft earnings preview: Forget the numbers, who's the next CEO? \n\nJobless benefits slashed in more states: Is the safety net coming to an end?\n	46	3	0	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+81	Maybe Amy Hood, Microsoft’s chief financial officer, should stay in power a little longer – or not.\n\nMicrosoft (MSFT) posted great results for the just ended quarter, sending the stock up as much as 4% Friday. But there’s less than meets the eye to the software giant’s seeming resurgence.\n	52	2	0	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+83	A closer look\n\nLooking closely, too much of the surprise came from one-time boosts, cost cutting and gains in weaker product lines that won’t help much in the future.\n\nStarting with Microsoft’s most profitable niche, sales of Windows and Office software were higher than expected. Overall PC shipments dipped about 6% in the quarter, according to market research firm NPD, but Microsoft’s Windows revenue dropped just 3%.\n	52	2	0	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+92	 It remained unclear what triggered the outage, which affected users in at least India, Britain and the United States and prompted a stream of complaints on Twitter from users in many more countries.\n\n "We're investigating reports of an issue with Gmail. We will provide more information shortly," the company said on its "App Status" dashboard online, which tracks the state of various Google services.\n	55	5	5	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+97	Yahoo, AOL and Pivot declined to comment.\n\n \nThe memo is expected to be sent in the coming weeks to the thousands of employees in Goldman's securities division, where the firm's sales and trading takes place. Traders will be permitted to communicate only over systems cleared by Goldman, including the Microsoft Lync desktop-messaging service and Enterprise IM by BlackBerry Inc., said the memo.\n 	58	6	10	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+98	Wal-Mart is the latest in a series of foreign companies it has taken to task on issues ranging from pricing to poor quality products and shoddy customer service.\n \nCompanies it has criticized include coffee chain Starbucks (SBUX), consumer electronics groups Apple (AAPL) and Samsung\n 	62	1	10	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+100	As a result, says Bank of America Merrill Lynch chief investment strategist Michael Hartnett, among investors, “emerging markets are about as popular as Dennis Rodman at a UN Security Council meeting.”\n\nSizing up specific country markets against individual mega-cap U.S. stocks, Hartnett notes the relative enthusiasm for each market segment is stark: Google Inc. (GOOG) alone has a higher market value than the entire MSCI Brazil index, Wells Fargo Co. (WFC) is now “bigger” than India and Starbucks Corp. (SBUX) is “worth more than Turkey, which for eons has been synonymous with strong coffee in convivial settings."\n	65	5	10	3	0.0700000000000000067	0	2014-01-25 11:41:05.389943	f
+103	The world's largest software company did not say anything about its unexpectedly long five-month search for a new chief executive to replace Steve Ballmer, who said in August he would retire within a year.\n \nThe company co-founded by Bill Gates 39 years ago was central to the personal computer revolution, but lost its way in the last decade under Ballmer as Apple Inc and Google Inc stormed ahead in mobile computing.\n 	67	5	10	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+106	Microsoft's new Xbox One console, launched in November, helped the top line, contributing more than half to the 7.4 million unit sales in the quarter, up from 5.9 million a year ago. That said, Sony's cheaper PlayStation 4 appears to be winning the latest video game showdown.\n 	67	2	10	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+109	"Xbox is definitely a feather in Microsoft's cap, they defied the skeptics," said Daniel Ives, an analyst at FBR Capital Markets. "But Surface continues to be the Mount Everest of uphill battles."\n \nOverall, Microsoft reported a fiscal second-quarter profit of $6.56 billion, or 78 cents per share, compared with $6.38 billion, or 76 cents per share, in the year-ago quarter.\n 	67	2	5	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+113	Icahn, who repeatedly has called Apple a "no brainer" even as he wages a campaign to get it to return more cash to shareholders, tweeted his latest move just a day after revealing a position of over $3 billion in the company.\n \nIn a lengthy letter to shareholders filed with the Securities and Exchange Commission on Thursday, Icahn urged shareholders to vote "yea" to his proposal for a new $50 billion buyback, and laid out familiar arguments as to why Apple should share more of its $146 billion cash hoard.\n 	70	1	5	3	0.0599999999999999978	0	2014-01-25 11:41:05.389943	f
+116	Apple on Thursday referred back to its December proxy statement, in which it urged shareholders to vote down Icahn's proposal, warning that it needed ready access to cash in a fast-evolving and competitive mobile devices industry. Arch-foe Samsung Electronics has grabbed market share from Apple in past years while a host of smaller rivals like Huawei are aggressively competing in emerging markets.\n 	70	1	5	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+120	Apple is in the midst of returning $100 billion to shareholders, including a total share repurchase program of $60 billion. It said it had already returned $43 billion in dividends and repurchases.\n \nBut more could be done, Icahn argued.\n \n"Given this massive net cash position and robust earnings generation, Apple is perhaps the most overcapitalized company in corporate history," Icahn said in his letter.\n 	70	1	10	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+82	With CEO Steve Ballmer on the way out, Hood oversaw Microsoft’s quarterly earnings and, oh, what a treat investors got. Revenue jumped 14% to a record $24.5 billion and earnings per share of 78 cents beat Wall Street estimates by 10 cents. Microsoft shares settled down after the initial surge and were up 2% at midday amid a falling overall market that hammered most other tech stocks.\n	52	2	0	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+84	Unfortunately, the surprise was all on the corporate side, where Microsoft’s decision to end support for Windows XP last year has given sales a short-term bump. Windows 8 remains a controversial product and some analysts say many companies have been asking to install Windows 7 when they upgrade. The shift also helped Office sales, as companies shifted to newer versions as they upgraded operating systems.\n	52	2	0	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+87	For Microsoft, going from complete tablet irrelevance to only mostly irrelevant isn’t going to make up for years of further declining PC sales.\n\nAnd Microsoft’s other hardware play, Nokia’s handset division, reported earlier it barely sold more smartphones in the fourth quarter, 8.8 million, than in the prior quarter when it sold 8.2 million.\n	52	2	0	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+93	 Two other Google properties, the social network Google Plus, and YouTube, appeared to load slowly as well.\n\n Yahoo Inc, which runs a rival Internet mail service, seized the moment to post a screenshot of the Gmail error page to Twitter.\n\n Google users attempting to sign on saw a "temporary error" message and a brief note: "We're sorry, but your Gmail account is temporarily unavailable. We apologize for the inconvenience and suggest trying again in a few minutes."\n	55	5	5	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+95	\n Goldman Sachs Group Inc. is planning to ban traders from using some computer-messaging services in a bid to protect proprietary information at the heart of its sales-and-trading operation.\n\n \nUnder a new policy, the Wall Street firm won't allow person-to-person communication over instant-messaging services created by Bloomberg LP, Yahoo Inc., AOL Inc. and other third-party providers including Pivot Inc., according to a draft of a memo reviewed by The Wall Street Journal. Pivot is a unit of CME Group Inc.\n \n \n \n \n \n \n \n \n \n \n \n Bloomberg News\n Goldman Sachs wants to protect its proprietary information.\n \n 	58	6	5	3	0.0700000000000000067	0	2014-01-25 11:41:05.389943	f
+99	, the KFC restaurants of Yum Brands Inc (YUM), drugmaker GlaxoSmithKline (GSK.L) and carmakers Audi (VOW3.DE), Subaru , and Jaguar Land Rover (NSI:TATAMOTORS).\n \nHowever, its reports have had mixed results.\n \nWhile Apple apologized to Chinese customers for poor communication over its warranty policy and changed some of the terms following a critical CCTV broadcast, the station's report on Starbucks was mocked by Chinese internet users and criticized by economic experts.\n 	62	1	10	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+101	By Bill Rigby\n \nSEATTLE (Reuters) - Microsoft Corp posted a bigger-than-expected quarterly profit on Thursday, boosted by strong sales of its Office software to businesses, a solid holiday season for its new Xbox game console and Surface tablets, and a slightly lower tax bill.\n 	67	2	10	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+104	The quarter may well be the last full one for Ballmer, and it at least showed some positive momentum for the Surface tablet, Microsoft's long-delayed attempt to knock Apple's iPad off its perch.\n \n"It's a good print to ride off into the sunset with, for the current CEO," said Colin Gillis, an analyst at BGC Financial. "There's still the over-arching question for this company: who's going to be the new CEO, and what direction they take."\n 	67	1	10	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+107	Sales of the second generation of Surface tablets jumped to $893 million in the key holiday shopping quarter, more than the whole of the previous fiscal year.\n \nHowever, at prices ranging from $450 to $1,800, that figure suggests Microsoft sold no more than 2 million Surface units. By comparison, Apple is expected to announce sales of more than 20 million iPads for the holiday quarter next week.\n 	67	1	10	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+110	That easily beat Wall Street's average estimate of 68 cents, according to Thomson Reuters I/B/E/S, lifting Microsoft shares 3.4 percent in after hours trading.\n \nOverall revenue rose 14 percent to $24.5 billion, also beating Wall Street's forecast of $23.7 billion.\n 	67	2	5	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+114	Apple's strong market position in smartphones and tablets does not justify the company's official stance that it needed to maintain reserves to compete in a fast-evolving consumer electronics industry, Icahn said.\n \nHe said the stock's price-to-earnings multiple stood 71 percent below the S&P 500's and that the shares could be worth $840 if that gap was closed. An expansion of its capital return program could help bridge that difference, while allowing the company to express confidence in its own stock.\n 	70	1	5	3	0.0599999999999999978	0	2014-01-25 11:41:05.389943	f
+117	Shares of Apple closed up 0.8 percent at $556.18.\n \nNO BACKING DOWN\n \nIcahn, known for decades of strong-arm tactics including proxy fights against major corporations, appears to be stepping up efforts in the technology realm.\n \nOn Wednesday, eBay Inc disclosed that Icahn had taken a 0.82 percent stake in the company and was pressing for a spinoff of PayPal, the ecommerce giant's fastest-growing and most profitable division.\n 	70	1	5	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+118	On Thursday, he set his sights again on Apple, accusing its board of lacking investment management experience.\n \nIt was unclear when or how much stock the activist investor, who in August began trying to get Cook to agree to a $150 billion buyback, now holds. In a letter to Cook made public on October 24, Icahn said he had increased his stake to 4.7 million shares.\n 	70	1	5	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+122	To see more of what El-Erian's resignation may signal to the bond market, watch Sanchez on the fundamentals and Busch on the technicals in the video above. \n\nMore from Talking Numbers:\n\nWhy Bitcoin is poised to break out to all-time highsHere's why Facebook's 'disease' could be good for the stockIs Apple the cheapest tech stock out there? ________________\n	71	3	\N	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+137	Ballmer announced last August that he plans to leave the company within a year. Ford CEO Alan Mulally was rumored to be a top choice but he has said he's not interested.\n\nDavid Garrity, principal of GVA Research, says his "odds-on favorite candidate is Satya Nadella, executive vice president of Microsoft’s Cloud and Enterprise group whose appointment would confirm Microsoft's intention to fully exploit its position as the number 2 in cloud computing after Amazon (AMZN).\n	79	2	\N	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+140	Garrity, who owns Microsoft shares, expects the company to report earnings for the quarter ending December 31, 2013 at $0.70 per share, down 8% from a year ago, with revenues of $23 billion, up 7% from a year ago. The average estimate among analysts is $0.68 a share and $23.7B in revenues.\n	79	2	\N	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+88	Not all bad\n\nNot all the good news came filled with caveats. Microsoft’s server business grew 12% and its Hyper V virtualization program gained 5 points of market share. Those gains are in some of the fastest-growing segments of the entire IT landscape.\n	52	2	0	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+89	More from Talking Numbers:\n\nHere's why Tesla's shares could soon stallWhy Netflix could break more recordsCold weather is making this commodity hot ________________\n\nFollow us on Twitter: @CNBCNumbers Like us on Facebook: facebook.com/CNBCNumbers\n\n \n	53	3	0	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+90	After a year of triple-digit gains for the likes of Netflix (NFLX), Tesla (TSLA), Best Buy (BBY), and Facebook (FB), investors are busy trying to find the next big winner. According to Joe Fahmy, managing director at Zor Capital, these so-called “momentum plays” typically have two common traits.“On the fundamental side, their earnings and sales are accelerating,” Fahmy says in the attached video. “And on the technical side, they’re usually breaking out of some sort of technical pattern and moving to the upside.”With that in mind, Fahmy brought a list of ideas to Breakout that he thinks could fit the bill and deliver the kind of upside investor dream of.Fahmy’s first pick is hardly a new theme but it is clearly showing renewed signs of momentum. While the Biotech sector (IBB)  has been rising and setting record highs for six years, its recent surge looks to be accelerating. Specifically, the sector gained 65% last year and 32% the year before, but a two-month sprint of close to 20%, (representing 4x outperformance versus the S&P 500) is a sign that better days are ahead.“I still think it’s in a great uptrend,” says Fahmy in the attached video.  “A lot of the companies (in it) still have powerful earnings growth, huge pipelines of (new) drugs and will continue to grow through acquisition. I think some of the bigger names (CELG, GILD, AMGN, BIIB) will be bigger than Merck or Pfizer 3 to 5 years from now.”Fahmy also see lots of blossoming growth within tech right now, particularly amongst companies that manage and manipulate so called “big data.” One such momentum play that he likes is a company called Splunk (SPLK). Since its debut in April 2012, this San Francisco based provider of operational intelligence has risen more than 140% “Every deal that’s going on in big data, meaning the indexing of all this data, Splunk is involved,” Fahmy says. “They’re the leader and the main company in this space.” For the record, Splunk is forecast to deliver 66% EPS growth this quarter and 40% sales growth.The final so-called ‘mo-mo’ pick from Fahmy is a play on the boom in data and internet security. Again, he has chosen to play it via a new but rapidly growing company called FireEye (FEYE).  “It’s made a big run recently,“ he says of the stock which came public at $20 four months ago and closed yesterday at $70. “Longer term I think this is one of the biggest players, and you’re (still) getting this early.”He’s the first to admit that these types of stocks often ‘’get ahead of themselves” and that would-be buyers need to be on the look out for dips and consolidations. In fact, just this week, JPMorgan downgraded FireEye to neutral from overweight in the wake of its huge short-term move. “Fundamentally, these companies are the new growth names,” he says, noting that most investors still aren’t familiar with them. “As you research them and get to know their stories, you’ll find that these are big winners potentially in the long term.”\n	54	3	0	3	0.309999999999999998	0	2014-01-25 11:41:05.389943	f
+91	SAN FRANCISCO (Reuters) - Google Inc suffered a service outage on Friday that briefly took down Gmail, the Internet email service used by hundreds of millions of people and many businesses across the globe.\n\n Google, which first acknowledged the outage at 11:12 a.m. Pacific Time (19:12 GMT), said roughly one hour later that service had been restored for some users and it expected "a resolution for all users in the near future."\n	55	5	5	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+94	 Two other Google properties, the social network Google Plus, and YouTube, appeared to load slowly as well.\n\n Yahoo Inc, which runs a rival Internet mail service, seized the moment to post a screenshot of the Gmail error page to Twitter.\n\n Google users attempting to sign on saw a "temporary error" message and a brief note: "We're sorry, but your Gmail account is temporarily unavailable. We apologize for the inconvenience and suggest trying again in a few minutes."\n	55	6	5	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+96	Yahoo, AOL and Pivot declined to comment.\n\n \nThe memo is expected to be sent in the coming weeks to the thousands of employees in Goldman's securities division, where the firm's sales and trading takes place. Traders will be permitted to communicate only over systems cleared by Goldman, including the Microsoft Lync desktop-messaging service and Enterprise IM by BlackBerry Inc., said the memo.\n 	58	2	5	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+102	The world's largest software company did not say anything about its unexpectedly long five-month search for a new chief executive to replace Steve Ballmer, who said in August he would retire within a year.\n \nThe company co-founded by Bill Gates 39 years ago was central to the personal computer revolution, but lost its way in the last decade under Ballmer as Apple Inc and Google Inc stormed ahead in mobile computing.\n 	67	1	10	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+105	The quarter may well be the last full one for Ballmer, and it at least showed some positive momentum for the Surface tablet, Microsoft's long-delayed attempt to knock Apple's iPad off its perch.\n \n"It's a good print to ride off into the sunset with, for the current CEO," said Colin Gillis, an analyst at BGC Financial. "There's still the over-arching question for this company: who's going to be the new CEO, and what direction they take."\n 	67	2	10	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+108	Sales of the second generation of Surface tablets jumped to $893 million in the key holiday shopping quarter, more than the whole of the previous fiscal year.\n \nHowever, at prices ranging from $450 to $1,800, that figure suggests Microsoft sold no more than 2 million Surface units. By comparison, Apple is expected to announce sales of more than 20 million iPads for the holiday quarter next week.\n 	67	2	10	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+111	Netflix (NFLX) was a bright spot for stocks. Netflix shares soared after the company surpassed expectations for fourth quarter earnings and subscribers, and offered an upbeat outlook for the first quarter.\n\nAfter the bell, Microsoft (MSFT), Starbucks (SBUX) and E*TRADE (ETFC) are expected to report results for the fourth quarter.\n	69	2	5	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+112	By Edwin Chan\n \nSAN FRANCISCO (Reuters) - Activist investor Carl Icahn picked up another $500 million of Apple Inc shares on Thursday to take his investment in the iPhone maker to $3.6 billion, while ratcheting up his months-long campaign to pry open the company's cash hoard.\n 	70	1	5	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+115	"Even if the story ended with Apple's existing product and software lines, we would still choose to make Apple our largest investment," Icahn said in the letter.\n \n"But there is more to the story! (CEO) Tim Cook keeps saying that he expects to introduce 'new products in new categories' and yet very few people seem to be listening."\n 	70	1	5	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+119	Apple's stock has surged 17 percent since Icahn first disclosed a significant stake in the company on August 13, when the shares were trading below $500. An additional $500 million investment on Thursday would translate into roughly 900,000 shares at current levels.\n 	70	1	10	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+123	Of all the sexy growth stories vying for attention in the tech sector, none is as boldly opportunistic as Microsoft’s (MSFT) new effort to tap into growing global outrage over spying by the National Security Agency.In an unprecedented move, Microsoft is now offering its customers abroad to choose where they would like to have their data stored, and comes as the backlash over U.S. surveillance operations intensifies.“People should have the ability to make an informed choice of where their data resides," said Microsoft general counsel Brad Smith yesterday.As my co-host Jeff Macke and I discuss in the attached video, the action by the software giant may be the first of its kind, but is surely won’t be the last. In fact, by getting a jump on its industry rivals, Microsoft is making a shrewd business decision that could pay off in spades.In addition, Microsoft’s pushback comes on the very same day that the government’s new privacy watchdog is set to release a report that calls the NSA’s indiscriminate data gathering illegal, scarcely effective and calls for it to be closed down. So far, President Obama and anti-terrorism operatives have given almost no ground in the face of public protestations over the program. As recently as last week, the President sought to soothe concerns in an address to the nation on the issue, but polls show what little he offered in the form of concessions or curtailment did nothing to sway opinion.\n	73	2	\N	3	0.149999999999999994	0	2014-01-25 11:41:05.389943	f
+124	In fact, a new poll from USA Today shows a majority of Americans are against the President on the surveillance program and have little confidence that policies will be changed. One can only presume that an equally large number of non-Americans are opposed to it as well, which is why Microsoft is stepping up to meet demand.To be fair, even if Microsoft - or other companies - start to house more data offshore, it would seem at best to be ineffective given the NSA’s widely reported foreign data collection operations in places like Brazil and Europe. There’s also the unsettling reality that the government can always demand access to the data if and when it feels the need.“What the government has done is to create a market opportunity for companies to go offshore with this data,” Macke declares. “It’s a curious turn of events.”\n	73	2	\N	3	0.0899999999999999967	0	2014-01-25 11:41:05.389943	f
+125	The final reckoning won’t be for a couple more years, however, when Carl Icahn is due to make the next profit-sharing payment to his son and Schechter, who manage a $5 billion fund, known as the Sargon Portfolio, within the firm.\n\nCarl Icahn has shifted his energies to other investments. He is pushing Apple (AAPL) to increase its stock buybacks and dividend payments and, on Wednesday, said he wants eBay (EBAY) to split off its lucrative PayPal unit.\n	74	1	\N	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+126	He writes in the New York Times: "What can workers do to mitigate their plight? One useful step would be to lobby to eliminate the corporate income tax."\n\nYou may wonder how giving corporations a tax bill of zero would unleash investment when companies are already hoarding equity at the highest levels this century, with one-third of non-financial corporations sitting on 82 percent of the $2.8 trillion in cash in corporate coffers. This includes company's like Apple (AAPL), Google (GOOG), and Exxon Mobil (XOM). Not to mention, many people may recall the story of General Electric (GE) already succeeding at paying no U.S. income tax a few years back. \n	75	1	\N	3	0.0700000000000000067	0	2014-01-25 11:41:05.389943	f
+127	He writes in the New York Times: "What can workers do to mitigate their plight? One useful step would be to lobby to eliminate the corporate income tax."\n\nYou may wonder how giving corporations a tax bill of zero would unleash investment when companies are already hoarding equity at the highest levels this century, with one-third of non-financial corporations sitting on 82 percent of the $2.8 trillion in cash in corporate coffers. This includes company's like Apple (AAPL), Google (GOOG), and Exxon Mobil (XOM). Not to mention, many people may recall the story of General Electric (GE) already succeeding at paying no U.S. income tax a few years back. \n	75	5	\N	3	0.0700000000000000067	0	2014-01-25 11:41:05.389943	f
+128	Follow The Daily Ticker on Facebook and Twitter! (@DailyTicker)\n\nMore from The Daily Ticker\n\nJobless benefits slashed in more states: Is the safety net coming to an end?\n\nWhat it's really like to work on Wall Street\n\nInvestors look on the bright side: Are they wearing blinders?\n	75	3	\N	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+129	Follow The Daily Ticker on Facebook and Twitter (@DailyTicker)!\n\nMore from The Daily Ticker\n\nNext up for Netflix? More profits\n\nMicrosoft earnings preview: Forget the numbers, who's the next CEO? \n\nJobless benefits slashed in more states: Is the safety net coming to an end?\n	76	2	\N	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+130	Follow The Daily Ticker on Facebook and Twitter (@DailyTicker)!\n\nMore from The Daily Ticker\n\nNext up for Netflix? More profits\n\nMicrosoft earnings preview: Forget the numbers, who's the next CEO? \n\nJobless benefits slashed in more states: Is the safety net coming to an end?\n	76	3	\N	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+131	One day after he used Twitter to announce the purchase of another $500 million worth of Apple (AAPL) stock, Carl Icahn attacked the company in a lengthy open letter to his "fellow Apple shareholders" on Thursday afternoon.\n\n"Given the degree to which Apple appears undervalued to us, we feel it's almost a waste of time to debate the point," wrote Icahn in his nearly 3,000 word note. The extreme activist proceeded to argue that Apple should capitalize on "advancements in miniaturization and continued improvements in Siri" to produce an extended list of products from wearable gadgets to televisions.\n	77	1	\N	3	0.0700000000000000067	0	2014-01-25 11:41:05.389943	f
+132	It was classic Icahn, humble-bragging about his massive profits since first tweeting about Apple last summer, even as he lectured the board for continuing to ignore the "biggest no-brainer" opportunities he's seen in "five decades of successful investing."\n	77	1	\N	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+134	 After the bell, Microsoft Corp said fiscal second-quarter profit rose 3 percent, as strong sales of its Office software to businesses offset another weak quarter for its flagship Windows system, and as consumers increasingly favor tablets over personal computers. The stock rose 3.7 percent in extended trade.	78	2	\N	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+133	The Icahn-effect is punditry taken to the extreme. There’s nothing immoral or illegal about arguing a stock you hold is undervalued. Icahn saying Apple shares are a good buy is an opinion, not a command. Icahn is telling people what he really believes. He’d argue what he’s doing isn’t exploitation but giving tremendously valuable financial advice for free and having a blast doing it. Given that type of influence and platform McCullough or I would do more or less the same thing.\n	77	1	\N	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+135	 Apple Inc rose 0.8 percent to $556.18. Activist investor Carl Icahn picked up another $500 million of Apple shares, taking the billionaire's total investment in the iPhone maker to $3.6 billion.\n In other earnings, McDonald's Corp reported weaker-than-expected revenue as fewer customers ate at its restaurants. Shares rebounded from earlier losses to close up 0.5 percent to $95.32.	78	1	\N	3	0.0400000000000000008	0	2014-01-25 11:41:05.389943	f
+138	Other candidates that have been mentioned:--Tony Bates, Microsoft's Executive Vice President for Business Development and Evangelism who is the former president of Skype, which Microsoft acquired in 2011.--Stephen Elop, former Microsoft Office head who moved onto Nokia as CEO and is now executive vice president of Nokia's devices and services unit, which Microsoft has purchased.--Hans Vestberg, CEO of Ericsson, which has acquired Microsoft's Mediaroom unit.Related: Ballmer’s Legacy at Microsoft: It’s Complicated, Says Santoli\n	79	2	\N	3	0.0599999999999999978	0	2014-01-25 11:41:05.389943	f
+141	Follow The Daily on Facebook and Twitter @dailyticker.\n\nMore From The Daily Ticker\n\nJobless benefits slashed in more states: Is the safety net coming to an end?\n\nWhat it's really like to work on Wall Street\n\nInvestors look on the bright side: Are they wearing blinders?  \n	79	3	\N	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+136	When Microsoft (MSFT) releases its latest earnings report after today's market close, it will not be numbers that analysts and investors will be looking for but a name--the name of the person who will replace outgoing CEO Steve Ballmer.\n\nThere's no guarantee the tech giant will name Ballmer's successor today but it's possible. Kara Swisher, co-executive editor of Re/Code, reports that "major investors and other Wall Street sources" who have been in touch with Microsoft's board say it has already chosen a CEO and will soon reveal it.\n	79	2	\N	3	0.0599999999999999978	0	2014-01-25 11:41:05.389943	f
+139	Garrity tells The Daily Ticker in the video above that no matter who is chosen as Microsoft CEO the company will not lose focus on its "devices and services,” strategy which aims to have hardware, online services and apps working together seamlessly across different screens and gadgets. Microsoft announced the "one strategy, one Microsoft” initiative last July and Ballmer stressed it during his August announcement to leave within a year.\n	79	2	\N	3	0.0500000000000000028	0	2014-01-25 11:41:05.389943	f
+1	Concerns about weak growth in China  — a critical market for Western trade — melded with currency drops in countries such as Turkey, prompting investors to flee from stocks, which are viewed as riskier than bonds or gold. The S&P 500, a broad measure of the American market, lost 2.1% to 1,790 Friday, and the Nasdaq Composite slid 2.2% to 4,128. On both the Nasdaq and the New York Stock Exchange, about 85% of all stocks declined.Among the Dow's 30 members, only three escaped the session with gains — Merck (MRK), Microsoft (MSFT) and Procter & Gamble (PG). General Electric (GE), 3M (MMM) and Boeing (BA) were three of the hardest hit, each falling around 3%. The last time the Dow had a single day that was worse came on June 20, when it gave up 354 points, FactSet data show. On Thursday the index skidded 176 points, so its two-day loss is now 494 points, taking it to 15,879.\n	1	2	0	3	0.0899999999999999967	0	2014-01-25 00:16:49.041966	f
+7	Microsoft’s hardware efforts, old and new, also came in above expectations but, again, digging into the details reveals more weakness.\n\nFor example, the company said it sold 7.4 million Xbox gaming consoles. But only 3.9 million were the new Xbox One – the rest were sales of the prior model. Xbox One consoles carry a negligible profit margin but should lead to sales of much higher-margin new games and online services down the road. The older Xbox 360 boxes, based on a design that’s now essentially nine years old, have a much higher immediate profit margin, helping this quarter's bottom line. But they won’t bring in nearly as much in future game sales, as the owners won’t be able to run fancy new games created for the new platform.\n	6	2	0	3	0.0800000000000000017	0	2014-01-25 00:16:49.041966	f
+31	Sales of the second generation of Surface tablets jumped to $893 million in the key holiday shopping quarter, more than the whole of the previous fiscal year.\n \nHowever, at prices ranging from $450 to $1,800, that figure suggests Microsoft sold no more than 2 million Surface units. By comparison, Apple is expected to announce sales of more than 20 million iPads for the holiday quarter next week.\n 	25	1	10	3	0.0400000000000000008	0	2014-01-25 00:16:49.041966	f
+47	Of all the sexy growth stories vying for attention in the tech sector, none is as boldly opportunistic as Microsoft’s (MSFT) new effort to tap into growing global outrage over spying by the National Security Agency.In an unprecedented move, Microsoft is now offering its customers abroad to choose where they would like to have their data stored, and comes as the backlash over U.S. surveillance operations intensifies.“People should have the ability to make an informed choice of where their data resides," said Microsoft general counsel Brad Smith yesterday.As my co-host Jeff Macke and I discuss in the attached video, the action by the software giant may be the first of its kind, but is surely won’t be the last. In fact, by getting a jump on its industry rivals, Microsoft is making a shrewd business decision that could pay off in spades.In addition, Microsoft’s pushback comes on the very same day that the government’s new privacy watchdog is set to release a report that calls the NSA’s indiscriminate data gathering illegal, scarcely effective and calls for it to be closed down. So far, President Obama and anti-terrorism operatives have given almost no ground in the face of public protestations over the program. As recently as last week, the President sought to soothe concerns in an address to the nation on the issue, but polls show what little he offered in the form of concessions or curtailment did nothing to sway opinion.\n	31	2	10	3	0.149999999999999994	0	2014-01-25 00:16:49.041966	f
+60	When Microsoft (MSFT) releases its latest earnings report after today's market close, it will not be numbers that analysts and investors will be looking for but a name--the name of the person who will replace outgoing CEO Steve Ballmer.\n\nThere's no guarantee the tech giant will name Ballmer's successor today but it's possible. Kara Swisher, co-executive editor of Re/Code, reports that "major investors and other Wall Street sources" who have been in touch with Microsoft's board say it has already chosen a CEO and will soon reveal it.\n	37	2	5	3	0.0599999999999999978	0	2014-01-25 00:16:49.041966	f
+79	More from Talking Numbers:\n\nHere's why emerging markets scare me, but here's what terrifies me: GartmanRetail investors are betting big on this sectorHere's why Tesla's shares could soon stall ________________\n\nFollow us on Twitter: @CNBCNumbers Like us on Facebook: facebook.com/CNBCNumbers\n	47	3	0	3	0.0299999999999999989	0	2014-01-25 11:41:05.389943	f
+80	Concerns about weak growth in China  — a critical market for Western trade — melded with currency drops in countries such as Turkey, prompting investors to flee from stocks, which are viewed as riskier than bonds or gold. The S&P 500, a broad measure of the American market, lost 2.1% to 1,790 Friday, and the Nasdaq Composite slid 2.2% to 4,128. On both the Nasdaq and the New York Stock Exchange, about 85% of all stocks declined.Among the Dow's 30 members, only three escaped the session with gains — Merck (MRK), Microsoft (MSFT) and Procter & Gamble (PG). General Electric (GE), 3M (MMM) and Boeing (BA) were three of the hardest hit, each falling around 3%. The last time the Dow had a single day that was worse came on June 20, when it gave up 354 points, FactSet data show. On Thursday the index skidded 176 points, so its two-day loss is now 494 points, taking it to 15,879.\n	49	2	0	3	0.0899999999999999967	0	2014-01-25 11:41:05.389943	f
+85	Microsoft’s hardware efforts, old and new, also came in above expectations but, again, digging into the details reveals more weakness.\n\nFor example, the company said it sold 7.4 million Xbox gaming consoles. But only 3.9 million were the new Xbox One – the rest were sales of the prior model. Xbox One consoles carry a negligible profit margin but should lead to sales of much higher-margin new games and online services down the road. The older Xbox 360 boxes, based on a design that’s now essentially nine years old, have a much higher immediate profit margin, helping this quarter's bottom line. But they won’t bring in nearly as much in future game sales, as the owners won’t be able to run fancy new games created for the new platform.\n	52	2	0	3	0.0800000000000000017	0	2014-01-25 11:41:05.389943	f
+86	Another supposed bright spot was sales of the Surface tablet, which doubled from the prior quarter to $893 million. It’s good that Surface tablets are selling better but Hood admitted the effort is still losing money. And the numbers are still so miniscule as to be almost irrelevant in the overall tablet market. In the third quarter – before the holiday shopping period – Apple sold 14.1 million iPads worth $6.2 billion. It’s expected to report selling 23 million to 25 million worth well over $10 billion for the holiday period. And Apple may not even be the leader in tablets anymore, with Android-based devices selling at an even higher rate.\n	52	1	0	3	0.0700000000000000067	0	2014-01-25 11:41:05.389943	f
+\.
+
+
+--
+-- Name: tasks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: aic
+--
+
+SELECT pg_catalog.setval('tasks_id_seq', 141, true);
+
+
+--
+-- Data for Name: workers; Type: TABLE DATA; Schema: public; Owner: aic
+--
+
+COPY workers (id, worker_rating, blocked, first_seen) FROM stdin;
+Ursula	0	0	2014-01-25 15:14:44.835252
+Peter	0	0	2014-01-25 15:20:37.913587
+Jacob	0	0	2014-01-25 15:24:44.879051
+Sophia	0	0	2014-01-25 15:28:36.07125
+\.
+
+
+--
+-- Name: answers_pkey; Type: CONSTRAINT; Schema: public; Owner: aic; Tablespace: 
+--
+
+ALTER TABLE ONLY answers
+    ADD CONSTRAINT answers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: keywords_pkey; Type: CONSTRAINT; Schema: public; Owner: aic; Tablespace: 
+--
+
+ALTER TABLE ONLY keywords
+    ADD CONSTRAINT keywords_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: projects_pkey; Type: CONSTRAINT; Schema: public; Owner: aic; Tablespace: 
+--
+
+ALTER TABLE ONLY projects
+    ADD CONSTRAINT projects_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: publications_pkey; Type: CONSTRAINT; Schema: public; Owner: aic; Tablespace: 
+--
+
+ALTER TABLE ONLY publications
+    ADD CONSTRAINT publications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: aic; Tablespace: 
+--
+
+ALTER TABLE ONLY tasks
+    ADD CONSTRAINT tasks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workers_pkey; Type: CONSTRAINT; Schema: public; Owner: aic; Tablespace: 
+--
+
+ALTER TABLE ONLY workers
+    ADD CONSTRAINT workers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: answers_task_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: aic
+--
+
+ALTER TABLE ONLY answers
+    ADD CONSTRAINT answers_task_id_fkey FOREIGN KEY (task_id) REFERENCES tasks(id);
+
+
+--
+-- Name: answers_worker_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: aic
+--
+
+ALTER TABLE ONLY answers
+    ADD CONSTRAINT answers_worker_id_fkey FOREIGN KEY (worker_id) REFERENCES workers(id);
+
+
+--
+-- Name: tasks_keyword_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: aic
+--
+
+ALTER TABLE ONLY tasks
+    ADD CONSTRAINT tasks_keyword_id_fkey FOREIGN KEY (keyword_id) REFERENCES keywords(id);
+
+
+--
+-- Name: tasks_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: aic
+--
+
+ALTER TABLE ONLY tasks
+    ADD CONSTRAINT tasks_project_id_fkey FOREIGN KEY (project_id) REFERENCES projects(id);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
