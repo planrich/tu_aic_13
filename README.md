@@ -7,7 +7,7 @@ This app also depends on the application located at: https://github.com/planrich
 ## Full automated
 
 ~~~
-curl -O https://raw.github.com/planrich/tu_aic_13/master/setup.sh | sh
+curl https://raw.github.com/planrich/tu_aic_13/master/setup.sh | sh
 ~~~
 
 ## In more detail
