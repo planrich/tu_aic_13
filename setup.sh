@@ -1,5 +1,5 @@
 
-sudo apt-get install git python python-dev python-pip postgresql-9.1 python-psycopg2 python-lxml python-numpy python-requests python-sqlalchemy
+sudo apt-get -y install git python python-dev python-pip postgresql-9.1 python-psycopg2 python-lxml python-numpy python-requests python-sqlalchemy
 
 mkdir aic
 cd aic
