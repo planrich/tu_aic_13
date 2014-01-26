@@ -4,12 +4,15 @@ This app also depends on the application located at: https://github.com/planrich
 
 # Installation - Ubuntu 12.04
 
+The following setup instructinos has been tested in virtual box using the 32 bit
+ubuntu 12.04 lts version.
+
 ## Fully automated
 
 This script contains sudo statements to install software.
 
 ~~~
-curl https://raw.github.com/planrich/tu_aic_13/master/setup.sh | sh
+wget -q -O - https://raw.github.com/planrich/tu_aic_13/master/setup.sh | sh
 ~~~
 
 ## In more detail
@@ -68,7 +71,6 @@ You can look at the Makefiles so see which commands you can issue.
 ## Sentiment app Makefile
 
 in more detail!
-
 
 # Setup for development
 
