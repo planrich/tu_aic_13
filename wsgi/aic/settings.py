@@ -32,7 +32,7 @@ if production:
     DOMAIN = 'http://main-tuaic13.rhcloud.com'
     CROWD_DOMAIN = 'http://crowd-tuaic13.rhcloud.com'
 else:
-    DB_URL = 'postgresql://aic:aic@localhost/aic'
+    DB_URL = 'postgresql://aic:aic@127.0.0.1/aic'
     DOMAIN = 'http://127.0.0.1:5000'
     CROWD_DOMAIN = 'http://127.0.0.1:5001'
 

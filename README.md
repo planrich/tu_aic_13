@@ -1,17 +1,75 @@
-# Setup
+# AIC WS 2013
 
-You must also setup https://github.com/planrich/tu_aic_crowd_source using the same commands below to get this working.
+This app also depends on the application located at: https://github.com/planrich/tu_aic_crowd_source.
 
-recommended structure:
+# Installation - Ubuntu 12.04
+
+## Full automated
+
 ~~~
-aic/
-  crowd/-> https://github.com/planrich/tu_aic_crowd_source
-  main/ -> https://github.com/planrich/tu_aic_13
+curl -O https://raw.github.com/planrich/tu_aic_crowd_source/master/setup.sh | sh
 ~~~
 
-To get started you need pip (optionally virtualenv) installed.
+## In more detail
 
-## virtualenv
+dependencies:
+
+~~~
+git (1:1.7.9.5-1)
+python (2.7.3)
+python-dev (2.7.3)
+python-pip (1.0-1build1)
+python-flask (0.8-1)
+python-psycopg2 (2.4.5-1)
+python-lxml (2.3.2-1)
+python-numpy (1:1.6.1-6ubuntu1)
+python-requests (0.8.2-1)
+python-sqlalchemy (0.7.4-1ubuntu0.1)
+postgresql-9.1 (9.1.11-0ubuntu0.12.04)
+~~~
+
+on ubuntu 12.04 LTS do the following:
+~~~
+sudo apt-get install git python python-dev python-pip postgresql-9.1 python-psycopg2 python-lxml python-numpy python-requests python-sqlalchemy
+~~~
+
+now clone the repository by issueing the following commands:
+
+~~~
+mkdir aic
+cd aic
+git clone https://github.com/planrich/tu_aic_13.git main
+git clone https://github.com/planrich/tu_aic_crowd_source.git crowd
+~~~
+
+There are some dependencies that are not included in the ubuntu repository. Thus issue the two commands
+
+~~~
+sudo python crowd/setup.py install
+sudo python main/setup.py install
+~~~
+
+Setup the database user and create the database:
+
+~~~
+echo 'create role aic with password 'aic';' | sudo -u postgres psql
+sudo -u postgres createdb -O aic aic
+~~~
+
+# Try it out
+
+Open two shells and type `make run` in the two folders (crowd,main).
+Not the crowdsourcing app runs at `127.0.0.1:5001` and the sentiment app on
+`127.0.0.1:5000`.
+
+You can look at the Makefiles so see which commands you can issue.
+
+## Sentiment app Makefile
+
+in more detail!
+
+
+# Setup for development
 
 Virtual env is a way to manage the pip packages locally.
 You simply execute the following:
@@ -35,25 +93,14 @@ Then to install the dependencies:
 (venv) $ pip install -r requirements.txt
 ~~~
 
-## Without virtualenv
-
-~~~
-$ pip install -r requirements.txt
-~~~
-
-An pip will try to install the dependencies into the global package directory. 
-On most setups it is required to be root to issue this command.
-
 # Postgres
 
 You should have a postgres instance up and running and login as root:
 
 ~~~
-$ psql
-rich=#
+postgres@localhost$ psql
+postgres=#
 ~~~
-
-in my case the username is rich and the # shows that i'm root user.
 
 Then create the user and database:
 

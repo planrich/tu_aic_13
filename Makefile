@@ -1,7 +1,7 @@
-run_server:
+run:
 	python wsgi/aic/app.py
 
-demo_run_server:
+demo_run:
 	python wsgi/aic/app.py --demo
 
 test:
@@ -9,11 +9,11 @@ test:
 
 reset_db:
 	sudo -u postgres dropdb aic
-	sudo -u postgres createdb aic
+	sudo -u postgres createdb -O aic aic
 	python seed.py
 
 create_db:
-	sudo -u postgres createdb aic
+	sudo -u postgres createdb -O aic aic
 
 demo_set_db:
 	sudo -u postgres psql aic < aic_main_dump
