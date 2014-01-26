@@ -2,12 +2,10 @@
 
 This app also depends on the application located at: https://github.com/planrich/tu_aic_crowd_source.
 
-# Installation - Ubuntu 12.04
+# Basic operation system
+Ubuntu 12.04 lts (tested with 32 bit version in virtual box)
 
-The following setup instructinos has been tested in virtual box using the 32 bit
-ubuntu 12.04 lts version.
-
-## Fully automated
+# Fully automated instalation
 
 This script contains sudo statements to install software.
 
@@ -15,30 +13,23 @@ This script contains sudo statements to install software.
 wget -q -O - https://raw.github.com/planrich/tu_aic_13/master/setup.sh | sh
 ~~~
 
-## In more detail
+# manual installation
 
-dependencies:
+## Required software
+* git - 1:1.7.9.5-1 - `sudo apt-get install git`
+* python - 2.7.3 - `sudo apt-get install python`
+* python-dev - 2.7.3 - `sudo apt-get install python-dev`
+* python-pip - 1.0-1build1 - `sudo apt-get install python-pip`
+* python-flask - 0.8-1 - `sudo apt-get install python-flask`
+* python-psycopg2 - 2.4.5-1 - `sudo apt-get install python-psycopg2` 
+* python-lxml - 2.3.2-1 - `sudo apt-get install python-lxml`
+* python-numpy - 1:1.6.1-6ubuntu1 - `sudo apt-get install python-numpy`
+* python-requests - 0.8.2-1 - `sudo apt-get install python-requests`
+* python-sqlalchemy - 0.7.4-1ubuntu0.1 - `sudo apt-get install python-sqlalchemy`
+* postgresql-9.1 - 9.1.11-0ubuntu0.12.04 - `sudo apt-get install postgresql-9.1`
 
-~~~
-git (1:1.7.9.5-1)
-python (2.7.3)
-python-dev (2.7.3)
-python-pip (1.0-1build1)
-python-flask (0.8-1)
-python-psycopg2 (2.4.5-1)
-python-lxml (2.3.2-1)
-python-numpy (1:1.6.1-6ubuntu1)
-python-requests (0.8.2-1)
-python-sqlalchemy (0.7.4-1ubuntu0.1)
-postgresql-9.1 (9.1.11-0ubuntu0.12.04)
-~~~
-
-on ubuntu 12.04 LTS do the following:
-~~~
-sudo apt-get install git python python-dev python-pip postgresql-9.1 python-psycopg2 python-lxml python-numpy python-requests python-sqlalchemy
-~~~
-
-now clone the repository by issueing the following commands:
+## Setup scripts
+clone the repository by issueing the following commands:
 
 ~~~
 mkdir aic
@@ -60,17 +51,47 @@ Setup the database user and create the database:
 echo "create user aic with password 'aic'; create database aic owner aic;" | sudo -u postgres psql
 ~~~
 
-# Try it out
+# Run the application
 
 Open two shells and type `make run` in the two folders (crowd,main).
-Not the crowdsourcing app runs at `127.0.0.1:5001` and the sentiment app on
+Now the crowdsourcing app runs at `127.0.0.1:5001` and the sentiment app on
 `127.0.0.1:5000`.
+Please consider that the database is empty and you won't get any sentiment when you query the main app. Also you won't see any open tasks on the crowd app as it takes up to one hour until the Advanced Python Scheduler starts the first scraping of the articles. If you want to see how the application works use the prepared demo data. (see next section)
 
-You can look at the Makefiles so see which commands you can issue.
+#Available features
 
-## Sentiment app Makefile
+## Fill the database with demo data
+We have prepared some data that you can see how the application works. To fill the data in the database open two shells and type `make demo_set_db` in the two folders (crowd, main)
 
-in more detail!
+## Start the application in demo mode
+The application has a demo mode. In contrast to the normal mode where the scraping of articles, dynamic pricing of tasks and garbarge collection of tasks is started hourly by the Advanced Python Scheduler you can start this things per hand in the demo mode. To start the application in demo mode open two shells and type `make demo_run` in the two folders (crowd, main).
+
+## Query the sentiment (the application must run in demo mode)
+Open `127.0.0.1:5000` with firefox and enter your search. (eg. Microsoft)
+
+## Manage the sentiment, workers and keywords (the application must run in demo mode)
+Open `127.0.0.1:5000` with firefox and klick on the gear-wheel. There you have the menu point Open tasks to get an overview of the open tasks, the menu point workers to manage your workers and the menu point keywords to manage the keywords.
+
+## Solve tasks (the application must run in demo mode)
+Open `127.0.0.1:5001` with firefox. You can see a list with all tasks that should be solved. Choose one an click on solve, enter your worker ID, read the text, answer the question and click on send solution.
+
+## Start the scraper (to get new tasks based on the articles; the application must run in demo mode)
+Open a new shell in main and type `make demo_run_scraper`. You can then see the new tasks in the crowd(Open `127.0.0.1:5001` with firefox, go to the last page) and the main(Open `127.0.0.1:5000` with firefox, klick on the gear-wheel, go to the last page) app.
+
+## Start the garbage collection (the application must run in demo mode)
+There are some tasks in the demo data that are older than 10 days. You can then see this tasks in the crowd(Open `127.0.0.1:5001` with firefox) and the main(Open `127.0.0.1:5000` with firefox, klick on the gear-wheel) app. Open a new shell in main and type `make demo_run_garbage_collector` to delete this tasks. If you check the crowd or the main app after this tasks are gone.
+
+## Start the dynamic pricing (the application must run in demo mode)
+There are some tasks in the demo data that are older than 4 respectively 8 but younger than 10 day. You can then see this tasks in the crowd(Open `127.0.0.1:5001` with firefox) and the main(Open `127.0.0.1:5000` with firefox, klick on the gear-wheel) app. Open a new shell in main and type `make demo_run_dynamic_pricer` to give this tasks a bonus of 0.25 respectively 0.5 percent of the normal price.
+
+## Block bad worker (the application must run in demo mode)
+When you open `127.0.0.1:5000` with firefox, klick on the gear-wheel and klick on workers you can see all your workers. All workers have a rating that is decresed on bad performance. If a worker reaches the rating -20 it is automatically blocked. In this overview you can manually block/unblock workers by clicking on the button.
+
+## Run scraper, garbage collection and dynamic pricing with the Advanced Python Scheduler hourly (the application must run in demo mode)
+Open a shell in main an type `make demo_run_scheduler`. Please consider that it takes up to one hour until the first run of the scraper, garbage collection and dynamic pricing.
+
+# Reset the database
+You can reset the database (eg to delete the demo data and use the application with real data). Therefor you have to open a shell in main an type `make reset_db`
 
 # Setup for development
 
