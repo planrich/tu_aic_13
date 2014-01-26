@@ -9,4 +9,4 @@ git clone https://github.com/planrich/tu_aic_crowd_source.git crowd
 sudo python crowd/setup.py install
 sudo python main/setup.py install
 
-sudo -u postgres psql <<< "create user aic with password 'aic'; create database aic owner aic;"
+echo "create user aic with password 'aic'; create database aic owner aic;" | sudo -u postgres psql 

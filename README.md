@@ -4,7 +4,9 @@ This app also depends on the application located at: https://github.com/planrich
 
 # Installation - Ubuntu 12.04
 
-## Full automated
+## Fully automated
+
+This script contains sudo statements to install software.
 
 ~~~
 curl https://raw.github.com/planrich/tu_aic_13/master/setup.sh | sh
@@ -52,8 +54,7 @@ sudo python main/setup.py install
 Setup the database user and create the database:
 
 ~~~
-echo 'create role aic with password 'aic';' | sudo -u postgres psql
-sudo -u postgres createdb -O aic aic
+echo "create user aic with password 'aic'; create database aic owner aic;" | sudo -u postgres psql
 ~~~
 
 # Try it out
