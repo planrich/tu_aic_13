@@ -49,7 +49,10 @@ def createLog(name):
 		path = os.environ.get('OPENSHIFT_TMP_DIR')+'/logs/'
 		logFile = logging.FileHandler(filename=path+name+'.log')
 	else:
-		logFile = logging.FileHandler(filename='logs/'+name+'.log')
+		path = 'logs/'
+		if not os.path.exists(path):
+			os.makedirs(path)
+		logFile = logging.FileHandler(filename=path+name+'.log')
 	
 	logFile.setLevel(logging.INFO)
 	logFile.setFormatter(formatter)
