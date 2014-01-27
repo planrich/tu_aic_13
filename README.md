@@ -24,14 +24,23 @@ After Vagrant is installed get the vagrant-hostmanager plugin:
 vagrant plugin install vagrant-hostmanager
 ~~~
 
-Now simply run 
+Clone this repository:
+
+~~~
+git clone https://github.com/planrich/tu_aic_13
+cd tu_aic_13
+~~~
+
+Now simply run:
 
 ~~~
 vagrant up
 ~~~
 
-and after a few minutes a new VirtualBox VM named "g2t2-apps.vm" will be
-running the main and crowd applications. Now point your browser to:
+After a few minutes a new VirtualBox VM named "g2t2-apps.vm" will be
+running the main and crowd applications.
+
+Now point your browser to:
 
 * Main: http://g2t2-apps.vm:5000
 * Crowd: http://g2t2-apps.vm:5001
