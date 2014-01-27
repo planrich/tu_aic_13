@@ -2,18 +2,73 @@
 
 This app also depends on the application located at: https://github.com/planrich/tu_aic_crowd_source.
 
-# Basic operation system
+# Operating system
 Ubuntu 12.04 lts (tested with 32 bit version in virtual box)
 
-# Fully automated instalation
+# Fully automated installation
 
-This script contains sudo statements to install software.
+## Option 1: Using Vagrant
+
+We provide a Vagrantfile and accompanying provisioning scripts to create an
+Ubuntu 12.04 VM (VirtualBox) and install and deploy the main and crowd
+applications. This requires VirtualBox, Vagrant and the Vagrant Hostmanager
+plugin. The Hostmanager plugin updates your the VM's and your local
+`/etc/hosts` file with the name and address of the newly provisioned VM.
+
+* VirtualBox: https://www.virtualbox.org/wiki/Downloads
+* Vagrant: http://www.vagrantup.com/downloads.html
+
+After Vagrant is installed get the vagrant-hostmanager plugin:
+
+~~~
+vagrant plugin install vagrant-hostmanager
+~~~
+
+Now simply run 
+
+~~~
+vagrant up
+~~~
+
+and after a few minutes a new VirtualBox VM named "g2t2-apps.vm" will be
+running the main and crowd applications. Now point your browser to:
+
+* Main: http://g2t2-apps.vm:5000
+* Crowd: http://g2t2-apps.vm:5001
+
+Various warnings issued during Vagrant provisioning when installing the
+applications or importing demo data can be ignored.
+
+To connect to the VM via SSH:
+
+~~~
+vagrant ssh
+~~~
+
+The applications are managed as Upstart tasks so you can use `start`, `stop`,
+`restart` and `status` or their `service` equivalents inside the VM:
+
+~~~
+status g2t2-main
+restart g2t2-crowd
+...
+~~~
+
+To shutdown and remove the VM:
+
+~~~
+vagrant destroy -f
+~~~
+
+## Option 2: On the local machine
+
+Use the `setup.sh` script to install the main and crowd applications on your local machine:
 
 ~~~
 wget -q -O - https://raw.github.com/planrich/tu_aic_13/master/setup.sh | sh
 ~~~
 
-# manual installation
+# Manual installation
 
 ## Required software
 * git - 1:1.7.9.5-1 - `sudo apt-get install git`
@@ -29,7 +84,7 @@ wget -q -O - https://raw.github.com/planrich/tu_aic_13/master/setup.sh | sh
 * postgresql-9.1 - 9.1.11-0ubuntu0.12.04 - `sudo apt-get install postgresql-9.1`
 
 ## Setup scripts
-clone the repository by issueing the following commands:
+clone the repository by issuing the following commands:
 
 ~~~
 mkdir aic
