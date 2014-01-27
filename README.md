@@ -31,6 +31,12 @@ git clone https://github.com/planrich/tu_aic_13
 cd tu_aic_13
 ~~~
 
+To add a vagrant box, enter the following line:
+
+~~~
+vagrant box add precise64 http://files.vagrantup.com/precise64.box
+~~~
+
 Now simply run:
 
 ~~~
