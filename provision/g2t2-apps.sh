@@ -5,9 +5,11 @@ apt-get update >/dev/null
 
 echo "Installing required packages ..."
 apt-get -y install make git python python-dev python-pip postgresql-9.1 \
-	python-psycopg2 python-lxml python-numpy python-requests curl \
+	curl python-psycopg2 python-lxml python-numpy  \
 	python-sqlalchemy language-pack-de language-pack-en vim-nox >/dev/null
 
+
+pip install requests
 echo "Creating database ..."
 echo "create user aic with password 'aic'" | sudo -u postgres -H psql >/dev/null
 sudo -u postgres -H createdb --locale=en_US.utf8 -E UTF-8 -T template0 -O aic aic > /dev/null
