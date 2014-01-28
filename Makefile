@@ -14,6 +14,7 @@ reset_db:
 
 create_db:
 	sudo -u postgres createdb -O aic aic
+	python seed.py
 
 demo_set_db:
 	sudo -u postgres psql aic < aic_main_dump

@@ -240,6 +240,6 @@ The crowd webapp runs on 5001 and the normal main app runs on port 5000!
 
 # The idea
 
-Task is a question "Keyword mentioned bad/neutral/negative in this paragrpah"
+Task is a question "Keyword mentioned bad/neutral/negative in this paragraph"
 We aggrate the answers of workers only when a task is complete. Before the aggregation we should find
 bad workers.
