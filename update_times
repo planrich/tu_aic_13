@@ -13,7 +13,7 @@ Where id in (135,136,137,138,139);
 
 UPDATE public.workers set first_seen = NOW() - '1 Year'::INTERVAL; 
 UPDATE public.workers set first_seen = first_seen - '1 day'::INTERVAL * ROUND(RANDOM() * 28);
-UPDATE public.workers set worker_rating = -19 WHERE id='Peter'; 
+UPDATE public.workers set worker_rating = -20 WHERE id='Peter'; 
 
 UPDATE public.keywords set added = NOW() - '1 Year'::INTERVAL;
 UPDATE public.keywords set added = added - '1 day'::INTERVAL * ROUND(RANDOM() * 28);
