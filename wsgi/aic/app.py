@@ -279,12 +279,19 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--demo", help="run in demo mode, without scheduled tasks", action="store_true")
     args = parser.parse_args()
+    main_host = '127.0.0.1'
+    main_port = 5000
+    if settings.MAIN_LISTEN_ADDRESS:
+        main_host = settings.MAIN_LISTEN_ADDRESS
+    if settings.MAIN_LISTEN_PORT:
+        main_port = settings.MAIN_LISTEN_PORT
+
     if not args.demo:
         startScheduledJobs()
     else:
         logger.warning("running in demo mode, without scheduled tasks")
 
     application.debug = True
-    application.run()
+    application.run(host=main_host, port=main_port)
 
 

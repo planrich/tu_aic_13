@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>AIC Final Presentation | Shower Presentation Engine</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=792, user-scalable=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="shower/themes/ribbon/styles/screen.css">
+    <script type="text/javascript"
+  	src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+</head>
+<body class="list">
+    <header class="caption">
+        <h1></h1>
+        <p></p>
+    </header>
+    <section class="slide cover" id="Cover"><div>
+        <h2>Crowd-sourced sentiment analysis</h2>
+        <h3>Topic 2 - Group 2</h3>
+        <p>
+        Diego Barbera (1327823)<br>
+        Viktor Kvaternjak (1328111)<br>
+        Andreas Ntaflos (0326302)<br>
+        Richard Plangger (1025637)<br>
+        Christian Schnitzer (0828380)<br>
+        Konrad Steiner (0927159)<br>
+        </p> 
+        <style>
+            .cover h2 {
+                margin:30px 0 0;
+                color:#FFF;
+                text-align:center;
+                font-size:60px;
+			}
+            #Cover h3 {
+                margin:10px 0 0;
+                color:#FFF;
+                text-align:center;
+                font-size:40px;
+			}
+            #Cover p {
+                margin: 10px 0 0;
+                text-align:center;
+                color:#FFF;
+                font-style:italic;
+                font-size:20px;
+			}
+			#Cover p a {
+				color:#FFF;
+			}
+        </style>
+    </div></section>
+   
+    <section class="slide"><div>
+        <h2>Quick reminder</h2>
+        <ol>
+			<li>Extract data from Yahoo Finance</li>
+			<li>Ask human workers to determine sentiment of data</li>
+		   	<li>Build a knowledge base of company and product mentions</li>
+		   	<li>Allow our users to query it and obtain meaningful information</li>
+    </div></section>
+    <section class="slide"><div>
+        <h2>System components</h2>
+        <img style="width: 100%;" src="pictures/overview.png"/>
+    </div></section>
+    <section class="slide"><div>
+	<h2>Brand new user interface</h2>
+	<div style="height:50%"><img style="width: 100%;" src="pictures/ui1.png"/></div>
+	<div style="height:50%"><img style="width: 100%;" src="pictures/ui2.png"/></div>
+    </div></section>
+    <section class="slide"><div>
+	<h2>(Dynamic) pricing</h2>
+	<ul>
+		<li>Direct monetary payment</li>
+		<li>Make easy tasks cheap, and difficult ones more rewarding</li>
+		<li>Base price is 1 cent per 100 letters</li>
+		<li>First bonus is \(\frac{1}{4}\) of a price, and activates after 4 days</li>
+		<li>Second bonus is \(\frac{1}{2}\) of a price, and activates after 8 days</li>
+
+    </div></section>
+
+    <section class="slide"><div>
+	<h2>Management of bad workers</h2>
+	<ul>
+		<li>Workers collect negative points if their opinion differs from majority</li>
+		<li> \(p \) - percentage of most common answer</li>
+		<li>\(p \ge 80\%\): good gets +3, bad gets -2</li>
+		<li>\(50\% < p < 80\%\): good gets +1, bad gets -1</li>
+		<li>\(p \le 50\%\): everyone gets -1</li>	
+    </div></section>
+    <section class="slide"><div>
+	<h2>Task cleaning</h2>
+	<ul>
+		<li>There may be many tasks left open</li>
+		<li>Size of workforce, current interest, price fluctuations...</li>
+		<li>Very old tasks are providing only historical data</li>
+		<li>Tasks that are older than 10 days are automatically removed</li>
+    </div></section>
+    <section class="slide cover"><div>
+		<h2>Demo</h2>
+    </div></section>
+    <section class="slide cover"><div>
+		<h2>Questions?</h2>
+    </div></section>
+    <script src="shower/shower.min.js"></script>
+</body>
+</html>

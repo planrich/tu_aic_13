@@ -11,7 +11,11 @@ DATE_FORMAT_KEYWORD = '%Y-%m-%d'
 #Number of ratings per page
 PAGE_SIZE_KEYWORD = 20
 
+MAIN_LISTEN_ADDRESS = "0.0.0.0"
+MAIN_LISTEN_PORT = 5000
 
+CROWD_LISTEN_ADDRESS = "0.0.0.0"
+CROWD_LISTEN_PORT = 5001
 
 # bonus_matrix: each row is a bonus step
 # bonus_matrix: in column 0 is the time when the bonus is active (5 means the bonus is set after 5 days)
@@ -33,9 +37,8 @@ if production:
     CROWD_DOMAIN = 'http://crowd-tuaic13.rhcloud.com'
 else:
     DB_URL = 'postgresql://aic:aic@127.0.0.1/aic'
-    DOMAIN = 'http://127.0.0.1:5000'
-    CROWD_DOMAIN = 'http://127.0.0.1:5001'
-
+    DOMAIN = "http://" + MAIN_LISTEN_ADDRESS + ":" + str(MAIN_LISTEN_PORT)
+    CROWD_DOMAIN = "http://" + CROWD_LISTEN_ADDRESS + ":" + str(CROWD_LISTEN_PORT)
 
 def createLog(name):
 	logger = logging.getLogger(name)
@@ -49,7 +52,10 @@ def createLog(name):
 		path = os.environ.get('OPENSHIFT_TMP_DIR')+'/logs/'
 		logFile = logging.FileHandler(filename=path+name+'.log')
 	else:
-		logFile = logging.FileHandler(filename='logs/'+name+'.log')
+		path = 'logs/'
+		if not os.path.exists(path):
+			os.makedirs(path)
+		logFile = logging.FileHandler(filename=path+name+'.log')
 	
 	logFile.setLevel(logging.INFO)
 	logFile.setFormatter(formatter)
