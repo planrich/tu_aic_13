@@ -5,7 +5,7 @@ apt-get update >/dev/null
 
 echo "Installing required packages ..."
 apt-get -y install make git python python-dev python-pip postgresql-9.1 \
-	curl python-psycopg2 python-lxml python-numpy  \
+	curl byobu python-psycopg2 python-lxml python-numpy  \
 	python-sqlalchemy language-pack-de language-pack-en vim-nox emacs23-nox >/dev/null
 
 
