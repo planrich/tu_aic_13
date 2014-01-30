@@ -94,7 +94,6 @@ wget -q -O - https://raw.github.com/planrich/tu_aic_13/master/setup.sh | sh
 * python-psycopg2 - 2.4.5-1 - `sudo apt-get install python-psycopg2` 
 * python-lxml - 2.3.2-1 - `sudo apt-get install python-lxml`
 * python-numpy - 1:1.6.1-6ubuntu1 - `sudo apt-get install python-numpy`
-* python-requests - 0.8.2-1 - `sudo apt-get install python-requests`
 * python-sqlalchemy - 0.7.4-1ubuntu0.1 - `sudo apt-get install python-sqlalchemy`
 * postgresql-9.1 - 9.1.11-0ubuntu0.12.04 - `sudo apt-get install postgresql-9.1`
 
